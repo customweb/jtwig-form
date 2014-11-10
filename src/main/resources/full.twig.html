@@ -1,0 +1,23 @@
+
+
+{% form dataObject method="POST" action="actionUrl" %}
+
+	{% formcheckbox path='active' label='Active' %}
+		
+	{% endformelement %}
+	
+	{% formselect path='some.list' label="List" items="itemsListVariable" %}
+		
+	{% endformselect %}
+
+	<div class="form-actions form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button type="submit" class="btn btn-primary">
+				{{ "Save Account" | translate }}
+			</button>
+			<a href="{{ 'application/account/list' | url }}" class="btn btn-link">{{ "Cancel" | translate }}</a>
+		</div>
+	</div>
+
+
+{% endform %}
