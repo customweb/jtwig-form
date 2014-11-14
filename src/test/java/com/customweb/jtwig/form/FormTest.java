@@ -23,12 +23,17 @@ public class FormTest {
 		
 		JtwigModelMap map = new JtwigModelMap();
 		
-		map.add("test", "formValue");
+		
+		map.add("dataObject", new DataObject());
 		
         String result = template.output(map);
         
         System.out.println(result);
         
+	}
+	
+	public class DataObject {
+		private String value1  = "test";
 	}
 
 }

@@ -1,40 +1,29 @@
 package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Collection;
 
-import com.lyncode.jtwig.addons.AddonModel;
+import com.customweb.jtwig.lib.model.AttributeModel;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.expressions.api.CompilableExpression;
-import com.lyncode.jtwig.expressions.model.Constant;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class Form extends AddonModel<Form> {
+public class Form extends AttributeModel<Form> {
 	
-	Map<String, String> attributes = new HashMap<String, String>();
-
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(super.compile(context), this.attributes);
+		return new Compiled(super.compile(context), this);
 	}
 	
-	public Form addAttribute(CompilableExpression key, CompilableExpression value) {
-		attributes.put((String) ((Constant) key).getValue(), (String) ((Constant) value).getValue());
-		return this;
-	}
-
 	private class Compiled implements Renderable {
 		private final Renderable content;
-		private Map<String, String> attributes;
+		private final Form form;
 
-		private Compiled(Renderable content, Map<String, String> attributes) {
+		private Compiled(Renderable content, Form form) {
 			this.content = content;
-			this.attributes = attributes;
+			this.form = form;
 		}
 
 		@Override
@@ -45,18 +34,27 @@ public class Form extends AddonModel<Form> {
 			context.with("other", "sample");
 			
 			StringBuilder builder = new StringBuilder();
-			for (Entry<String, String> attribute : attributes.entrySet()) {
-				builder.append(attribute.getKey()).append("=").append(attribute.getValue()).append(" ");
+			for (Attribute attribute : this.form.getDynamicAttributes()) {
+				builder.append(" ").append(attribute.toString());
 			}
 			
+			VariableAttribute dataObjectAttribute = (VariableAttribute) this.form.getAttribute(Attributes.DATAOBJECT.name());
+			if (dataObjectAttribute == null) {
+				throw new IllegalArgumentException("The data object attribute is mandatory.");
+			}
+						
 			try {
-				context.write(("<form name=\"" + builder.toString() + "\">").getBytes());
+				context.write(("<form" + builder.toString() + ">").getBytes());
 				this.content.render(context);
 				context.write("</form>".getBytes());
 			} catch (IOException e) {
 			}
 
 		}
+	}
+	
+	public enum Attributes {
+		DATAOBJECT
 	}
 
 }

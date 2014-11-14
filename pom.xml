@@ -22,6 +22,12 @@
 	</build>
 	<dependencies>
 		<dependency>
+			<groupId>com.customweb</groupId>
+			<artifactId>jtwig-lib</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.lyncode</groupId>
 			<artifactId>jtwig-core</artifactId>
 			<version>3.0.0</version>
