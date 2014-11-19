@@ -1,8 +1,8 @@
 package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
-import java.util.Collection;
 
+import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeModel;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
@@ -14,16 +14,16 @@ public class Form extends AttributeModel<Form> {
 	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(super.compile(context), this);
+		return new Compiled(super.compile(context), this.getAttributeCollection());
 	}
 	
 	private class Compiled implements Renderable {
 		private final Renderable content;
-		private final Form form;
+		private final AttributeCollection<Form> attributeCollection;
 
-		private Compiled(Renderable content, Form form) {
+		private Compiled(Renderable content, AttributeCollection<Form> attributeCollection) {
 			this.content = content;
-			this.form = form;
+			this.attributeCollection = attributeCollection;
 		}
 
 		@Override
@@ -34,11 +34,11 @@ public class Form extends AttributeModel<Form> {
 			context.with("other", "sample");
 			
 			StringBuilder builder = new StringBuilder();
-			for (Attribute attribute : this.form.getDynamicAttributes()) {
+			for (Attribute attribute : this.attributeCollection.getDynamicAttributes()) {
 				builder.append(" ").append(attribute.toString());
 			}
 			
-			VariableAttribute dataObjectAttribute = (VariableAttribute) this.form.getAttribute(Attributes.DATAOBJECT.name());
+			VariableAttribute dataObjectAttribute = (VariableAttribute) this.attributeCollection.getAttribute(Attributes.DATAOBJECT.name());
 			if (dataObjectAttribute == null) {
 				throw new IllegalArgumentException("The data object attribute is mandatory.");
 			}
