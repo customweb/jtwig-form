@@ -1,9 +1,16 @@
 package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.customweb.jtwig.lib.model.Attribute;
 import com.customweb.jtwig.lib.model.AttributeCollection;
+import com.customweb.jtwig.lib.model.AttributeDefinition;
 import com.customweb.jtwig.lib.model.AttributeModel;
+import com.customweb.jtwig.lib.model.DynamicAttribute;
+import com.customweb.jtwig.lib.model.DynamicAttributeDefinition;
+import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
@@ -11,17 +18,27 @@ import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
 public class Form extends AttributeModel<Form> {
-	
+
+	@Override
+	public List<AttributeDefinition> getAttributeDefinitions() {
+		List<AttributeDefinition> definitions = new ArrayList<AttributeDefinition>();
+		definitions.add(new VariableAttributeDefinition("dataobject", true));
+		definitions.add(new DynamicAttributeDefinition());
+		return definitions;
+	}
+
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(super.compile(context), this.getAttributeCollection());
+		return new Compiled(super.compile(context),
+				this.getAttributeCollection());
 	}
-	
+
 	private class Compiled implements Renderable {
 		private final Renderable content;
 		private final AttributeCollection<Form> attributeCollection;
 
-		private Compiled(Renderable content, AttributeCollection<Form> attributeCollection) {
+		private Compiled(Renderable content,
+				AttributeCollection<Form> attributeCollection) {
 			this.content = content;
 			this.attributeCollection = attributeCollection;
 		}
@@ -32,17 +49,13 @@ public class Form extends AttributeModel<Form> {
 			// Prevent access on grid variables outside
 			context = context.isolatedModel();
 			context.with("other", "sample");
-			
+
 			StringBuilder builder = new StringBuilder();
-			for (Attribute attribute : this.attributeCollection.getDynamicAttributes()) {
+			for (Attribute attribute : this.attributeCollection
+					.getAttributes(DynamicAttribute.class)) {
 				builder.append(" ").append(attribute.toString());
 			}
-			
-			VariableAttribute dataObjectAttribute = (VariableAttribute) this.attributeCollection.getAttribute(Attributes.DATAOBJECT.name());
-			if (dataObjectAttribute == null) {
-				throw new IllegalArgumentException("The data object attribute is mandatory.");
-			}
-						
+
 			try {
 				context.write(("<form" + builder.toString() + ">").getBytes());
 				this.content.render(context);
@@ -51,10 +64,6 @@ public class Form extends AttributeModel<Form> {
 			}
 
 		}
-	}
-	
-	public enum Attributes {
-		DATAOBJECT
 	}
 
 }
