@@ -12,7 +12,7 @@ public class FormCheckboxAddon extends FormElementAddon<FormCheckbox> {
 
 	@Override
 	protected String keyword() {
-		return "checkbox";
+		return "form:checkbox";
 	}
 
 	@Override

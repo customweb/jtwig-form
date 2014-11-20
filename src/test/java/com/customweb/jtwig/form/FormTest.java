@@ -20,6 +20,7 @@ public class FormTest {
 		JtwigConfiguration config = new JtwigConfiguration();
 		config.parse().addons().withAddon(FormAddon.class);
 		config.parse().addons().withAddon(FormCheckboxAddon.class);
+		config.parse().addons().withAddon(FormLabelAddon.class);
 		JtwigTemplate template = new JtwigTemplate(new ClasspathJtwigResource("classpath:/views/default.twig"), config);
 		
 		JtwigModelMap map = new JtwigModelMap();
@@ -35,6 +36,10 @@ public class FormTest {
 	
 	public class DataObject {
 		private String active  = "test";
+		
+		public String getActive() {
+			return this.active + "Value";
+		}
 	}
 
 }

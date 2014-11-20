@@ -1,5 +1,7 @@
 <pre>
-{% form method="post" action="http://www.sellxed.com" dataobject="dataObject" %}
-	{% checkbox path="active" label="Active" %}{% endcheckbox %}
-{% endform %}
+{% form:form method="post" action="http://www.sellxed.com" dataobject="dataObject" %}
+	{% form:checkbox value="testValue" path="active" label="Active" %}{% endform:checkbox %}
+	
+	{% form:label path="active" class="form-label" %}Active{% endform:label %}
+{% endform:form %}
 </pre>

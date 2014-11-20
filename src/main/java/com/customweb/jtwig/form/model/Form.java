@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.customweb.jtwig.form.Util;
-import com.customweb.jtwig.lib.model.Attribute;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinition;
 import com.customweb.jtwig.lib.model.AttributeModel;

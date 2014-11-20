@@ -1,9 +1,13 @@
 package com.customweb.jtwig.form.model;
 
-import java.lang.reflect.Field;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.PropertyUtils;
+
+import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinition;
 import com.customweb.jtwig.lib.model.AttributeModel;
 import com.customweb.jtwig.lib.model.DynamicAttributeDefinition;
@@ -21,25 +25,43 @@ public abstract class FormElement<T extends FormElement<T>> extends AttributeMod
 		definitions.add(new DynamicAttributeDefinition());
 		return definitions;
 	}
-	
+
 	protected abstract class CompiledFormElement implements Renderable {
-		
+		private final AttributeCollection<FormCheckbox> attributeCollection;
+
+		protected CompiledFormElement(Renderable content, AttributeCollection<FormCheckbox> attributeCollection) {
+			this.attributeCollection = attributeCollection;
+		}
+
+		protected AttributeCollection<FormCheckbox> getAttributeCollection() {
+			return this.attributeCollection;
+		}
+
+		protected void renderLabel(RenderContext context) {
+			if (this.attributeCollection.hasAttribute("label")) {
+				String path = this.getAttributeCollection().getAttribute("path").getValue();
+				String label = this.attributeCollection.getAttribute("label").getValue();
+
+				try {
+					context.write(("<label for=\"" + path + "\">" + label + "</label>").getBytes());
+				} catch (IOException e) {
+				}
+			}
+		}
+
 		protected Object getFormDataValue(RenderContext context, String fieldName) {
 			Object formDataObject = context.map("formDataObject");
 			Object fieldValue = null;
-			Field field;
 			try {
-				field = formDataObject.getClass().getDeclaredField(fieldName);
-				field.setAccessible(true);
-				fieldValue = field.get(formDataObject);
-			} catch (NoSuchFieldException e1) {
+				fieldValue = PropertyUtils.getProperty(formDataObject, fieldName);
+			} catch (NoSuchMethodException e1) {
 				throw new RuntimeException("The form data object does not have a field named '" + fieldName + "'.");
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException e1) {
+			} catch (InvocationTargetException | IllegalAccessException e1) {
 				throw new RuntimeException("The value of the field '" + fieldName + "' cannot be read.");
 			}
 			return fieldValue;
 		}
-		
+
 	}
 
 }

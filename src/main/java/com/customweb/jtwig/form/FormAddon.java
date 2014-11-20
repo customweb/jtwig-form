@@ -13,7 +13,7 @@ public class FormAddon extends AttributeAddon<Form> {
 
 	@Override
 	protected String keyword() {
-		return "form";
+		return "form:form";
 	}
 
 	@Override
