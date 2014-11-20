@@ -19,12 +19,13 @@ public class FormTest {
 		
 		JtwigConfiguration config = new JtwigConfiguration();
 		config.parse().addons().withAddon(FormAddon.class);
-		JtwigTemplate template = new JtwigTemplate(new ClasspathJtwigResource("classpath:/views/default.twig.html"), config);
+		config.parse().addons().withAddon(FormCheckboxAddon.class);
+		JtwigTemplate template = new JtwigTemplate(new ClasspathJtwigResource("classpath:/views/default.twig"), config);
 		
 		JtwigModelMap map = new JtwigModelMap();
 		
 		
-		map.add("dataObject", new DataObject());
+		map.add("dataobject", new DataObject());
 		
         String result = template.output(map);
         
@@ -33,7 +34,7 @@ public class FormTest {
 	}
 	
 	public class DataObject {
-		private String value1  = "test";
+		private String active  = "test";
 	}
 
 }
