@@ -1,15 +1,11 @@
 package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.customweb.jtwig.form.Util;
+import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinition;
+import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.AttributeModel;
-import com.customweb.jtwig.lib.model.DynamicAttribute;
-import com.customweb.jtwig.lib.model.DynamicAttributeDefinition;
 import com.customweb.jtwig.lib.model.VariableAttribute;
 import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
@@ -21,11 +17,10 @@ import com.lyncode.jtwig.render.RenderContext;
 public class Form extends AttributeModel<Form> {
 
 	@Override
-	public List<AttributeDefinition> getAttributeDefinitions() {
-		List<AttributeDefinition> definitions = new ArrayList<AttributeDefinition>();
-		definitions.add(new VariableAttributeDefinition("dataobject", true));
-		definitions.add(new DynamicAttributeDefinition());
-		return definitions;
+	public AttributeDefinitionCollection getAttributeDefinitions() {
+		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
+		attributeDefinitions.add(new VariableAttributeDefinition("dataobject", false));
+		return attributeDefinitions;
 	}
 
 	@Override
@@ -33,25 +28,28 @@ public class Form extends AttributeModel<Form> {
 		return new Compiled(super.compile(context), this.getAttributeCollection());
 	}
 
-	private class Compiled implements Renderable {
-		private final Renderable content;
-		private final AttributeCollection<Form> attributeCollection;
-
-		private Compiled(Renderable content, AttributeCollection<Form> attributeCollection) {
-			this.content = content;
-			this.attributeCollection = attributeCollection;
+	private class Compiled extends AbstractAttributeModelCompiled {
+		protected Compiled(Renderable content, AttributeCollection attributeCollection) {
+			super(content, attributeCollection);
 		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			// Prevent access on grid variables outside
 			context = context.isolatedModel();
-			context.with("formDataObject", this.attributeCollection.getAttribute("dataobject", VariableAttribute.class)
-					.getVariable(context));
+			if (this.getAttributeCollection().hasAttribute("dataobject")) {
+				context.with(
+						"formDataObject",
+						this.getAttributeCollection().getAttribute("dataobject", VariableAttribute.class).getVariable(
+								context));
+				context.with("formDataObjectVariable",
+						this.getAttributeValue("dataobject"));
+			}
 
 			try {
-				context.write(("<form" + Util.concatAttributes(this.attributeCollection.getAttributes(DynamicAttribute.class)) + ">").getBytes());
-				this.content.render(context);
+				context.write(("<form"
+						+ Utils.concatAttributes(this.getDynamicAttributes()) + ">")
+						.getBytes());
+				this.getContent().render(context);
 				context.write("</form>".getBytes());
 			} catch (IOException e) {
 			}

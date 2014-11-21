@@ -1,9 +1,10 @@
 package com.customweb.jtwig.form;
 
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
-import com.customweb.jtwig.form.FormAddon;
 import com.lyncode.jtwig.JtwigModelMap;
 import com.lyncode.jtwig.JtwigTemplate;
 import com.lyncode.jtwig.configuration.JtwigConfiguration;
@@ -20,6 +21,7 @@ public class FormTest {
 		JtwigConfiguration config = new JtwigConfiguration();
 		config.parse().addons().withAddon(FormAddon.class);
 		config.parse().addons().withAddon(FormCheckboxAddon.class);
+		config.parse().addons().withAddon(FormMultiCheckboxAddon.class);
 		config.parse().addons().withAddon(FormLabelAddon.class);
 		JtwigTemplate template = new JtwigTemplate(new ClasspathJtwigResource("classpath:/views/default.twig"), config);
 		
@@ -27,6 +29,7 @@ public class FormTest {
 		
 		
 		map.add("dataobject", new DataObject());
+		map.add("itemlist", Arrays.asList(new String[]{ "testValue", "hallo", "welt" }));
 		
         String result = template.output(map);
         

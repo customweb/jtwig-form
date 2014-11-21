@@ -1,12 +1,11 @@
 package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
-import java.util.List;
 
-import com.customweb.jtwig.form.Util;
+import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinition;
-import com.customweb.jtwig.lib.model.DynamicAttribute;
+import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
@@ -14,36 +13,59 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormCheckbox extends FormElement<FormCheckbox> {
+public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
 
 	@Override
-	public List<AttributeDefinition> getAttributeDefinitions() {
-		List<AttributeDefinition> definitions = super.getAttributeDefinitions();
-		definitions.add(0, new NamedAttributeDefinition("value", true));
-		return definitions;
+	public AttributeDefinitionCollection getAttributeDefinitions() {
+		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
+		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
+		attributeDefinitions.add(new NamedAttributeDefinition("label", false));
+		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
+		return attributeDefinitions;
 	}
 
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(super.compile(context), this.getAttributeCollection());
+		return new Compiled(this.getAttributeCollection());
 	}
 
-	private class Compiled extends CompiledFormElement {
-		protected Compiled(Renderable content, AttributeCollection<FormCheckbox> attributeCollection) {
-			super(content, attributeCollection);
+	private class Compiled extends AbstractFormCheckedElementCompiled {
+		protected Compiled(AttributeCollection attributeCollection) {
+			super(null, attributeCollection);
+		}
+
+		public String getValue() {
+			return this.getAttributeValue("value");
+		}
+
+		public String getLabel() {
+			return this.getAttributeValue("label");
+		}
+
+		public boolean hasLabel() {
+			return this.getAttributeCollection().hasAttribute("label");
+		}
+
+		public boolean isDisabled() {
+			return this.getAttributeCollection().hasAttribute("disabled");
 		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			String path = this.getAttributeCollection().getAttribute("path").getValue();
-			String value = this.getAttributeCollection().getAttribute("value").getValue();
-			boolean checked = value.equals(this.getFormDataValue(context, path));
-
 			try {
-				this.renderLabel(context);
-				context.write(("<input type=\"checkbox\" name=\"" + path + "\" id=\"" + path + "\" " + (checked ? "checked=\"checked\" " : "")
-						+ Util.concatAttributes(this.getAttributeCollection().getAttributes(DynamicAttribute.class)) + "/>").getBytes());
-			} catch (IOException e) {}
+				if (this.hasLabel()) {
+					context.write(("<label>").getBytes());
+				}
+				context.write(("<input type=\"checkbox\" name=\"" + this.getName(context) + "\" id=\""
+						+ this.getId(context) + "\" value=\"" + this.getValue() + "\" "
+						+ (this.isOptionSelected(context, this.getValue()) ? "checked=\"checked\" " : "")
+						+ (this.isDisabled() ? "disabled=\"disabled\" " : "")
+						+ Utils.concatAttributes(this.getDynamicAttributes()) + "/>").getBytes());
+				if (this.hasLabel()) {
+					context.write((" " + this.getLabel() + "</label>").getBytes());
+				}
+			} catch (IOException e) {
+			}
 		}
 	}
 }
