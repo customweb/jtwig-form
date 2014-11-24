@@ -42,7 +42,7 @@ public class FormOption extends AbstractFormElement<FormOption> {
 		public String getValue() {
 			return this.getAttributeValue("value");
 		}
-
+		
 		public boolean isDisabled() {
 			return this.getAttributeCollection().hasAttribute("disabled");
 		}

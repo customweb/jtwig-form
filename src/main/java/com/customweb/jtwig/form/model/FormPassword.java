@@ -12,12 +12,11 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormPassword extends AbstractDataBoundFormElement<FormPassword> {
+public class FormPassword extends AbstractFormInputElement<FormPassword> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
 		attributeDefinitions.add(new EmptyAttributeDefinition("showpassword"));
 		return attributeDefinitions;
 	}
@@ -27,13 +26,9 @@ public class FormPassword extends AbstractDataBoundFormElement<FormPassword> {
 		return new Compiled(this.getAttributeCollection());
 	}
 
-	private class Compiled extends AbstractDataBoundFormElementCompiled {
+	private class Compiled extends AbstractFormInputElementCompiled {
 		protected Compiled(AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
-		}
-
-		public boolean isDisabled() {
-			return this.getAttributeCollection().hasAttribute("disabled");
 		}
 
 		public boolean isShowPassword() {

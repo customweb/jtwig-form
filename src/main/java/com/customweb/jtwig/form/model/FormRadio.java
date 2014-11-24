@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
@@ -13,14 +12,13 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormRadio extends AbstractFormCheckedElement<FormRadio> {
+public class FormRadio extends AbstractFormInputElement<FormRadio> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
 		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("label", false));
-		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
 		return attributeDefinitions;
 	}
 
@@ -29,9 +27,14 @@ public class FormRadio extends AbstractFormCheckedElement<FormRadio> {
 		return new Compiled(this.getAttributeCollection());
 	}
 
-	private class Compiled extends AbstractFormCheckedElementCompiled {
+	private class Compiled extends AbstractFormInputElementCompiled {
 		protected Compiled(AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
+		}
+		
+		@Override
+		public String getId(RenderContext context) {
+			return Utils.nextId(super.getId(context), context);
 		}
 
 		public String getValue() {
@@ -50,10 +53,6 @@ public class FormRadio extends AbstractFormCheckedElement<FormRadio> {
 			return this.getAttributeCollection().hasAttribute("label");
 		}
 
-		public boolean isDisabled() {
-			return this.getAttributeCollection().hasAttribute("disabled");
-		}
-
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
@@ -61,7 +60,7 @@ public class FormRadio extends AbstractFormCheckedElement<FormRadio> {
 					context.write(("<label>").getBytes());
 				}
 				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"radio\" value=\""
-						+ this.escapeHtml(this.getValue()) + "\"" + (this.isOptionSelected(context, this.getValue()) ? " checked=\"checked\"" : "")
+						+ this.escapeHtml(this.getValue()) + "\"" + (SelectedValueComparator.isSelected(context, this.getValue()) ? " checked=\"checked\"" : "")
 						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
 						.getBytes());
 				if (this.hasLabel()) {

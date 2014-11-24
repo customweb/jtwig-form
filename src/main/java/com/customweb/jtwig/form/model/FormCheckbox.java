@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
@@ -13,14 +12,13 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
+public class FormCheckbox extends AbstractFormInputElement<FormCheckbox> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
 		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("label", false));
-		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
 		return attributeDefinitions;
 	}
 
@@ -29,9 +27,14 @@ public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
 		return new Compiled(this.getAttributeCollection());
 	}
 
-	private class Compiled extends AbstractFormCheckedElementCompiled {
+	private class Compiled extends AbstractFormInputElementCompiled {
 		protected Compiled(AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
+		}
+		
+		@Override
+		public String getId(RenderContext context) {
+			return Utils.nextId(super.getId(context), context);
 		}
 
 		public String getValue() {
@@ -49,9 +52,23 @@ public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
 		public boolean hasLabel() {
 			return this.getAttributeCollection().hasAttribute("label");
 		}
-
-		public boolean isDisabled() {
-			return this.getAttributeCollection().hasAttribute("disabled");
+		
+		public String renderDetails(RenderContext context, String value) {
+			Object actualValue = this.getDataValue(context, this.getPath());
+			boolean checked;
+			if (Boolean.class.equals(actualValue.getClass()) || boolean.class.equals(actualValue.getClass())) {
+				if (actualValue instanceof String) {
+					actualValue = Boolean.valueOf((String) actualValue);
+				}
+				checked = (actualValue != null ? (Boolean) actualValue : Boolean.FALSE);
+				value = "true";
+			} else {
+				if (value == null) {
+					throw new RuntimeException("Attribute 'value' is required when binding to non-boolean values");
+				}
+				checked = SelectedValueComparator.isSelected(context, value);
+			}
+			return "value=\"" + this.escapeHtml(value) + "\"" + (checked ? " checked=\"checked\"" : "");
 		}
 
 		@Override

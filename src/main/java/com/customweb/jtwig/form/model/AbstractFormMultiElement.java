@@ -1,6 +1,5 @@
 package com.customweb.jtwig.form.model;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -12,14 +11,11 @@ import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
 import com.customweb.jtwig.lib.model.VariableAttribute;
 import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
-import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormMultiOption extends AbstractFormElement<FormMultiOption> {
-	
+abstract public class AbstractFormMultiElement<T extends AbstractFormMultiElement<T>> extends AbstractFormInputElement<T> {
+
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
@@ -29,22 +25,15 @@ public class FormMultiOption extends AbstractFormElement<FormMultiOption> {
 		return attributeDefinitions;
 	}
 
-	@Override
-	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(this.getAttributeCollection());
-	}
+	abstract protected class AbstractFormMultiElementCompiled extends AbstractFormInputElementCompiled {
+		protected AbstractFormMultiElementCompiled(Renderable content, AttributeCollection attributeCollection) {
+			super(content, attributeCollection);
+		}
+		
+		public boolean hasItems() {
+			return this.getAttributeCollection().hasAttribute("items");
+		}
 
-	private class Compiled extends AbstractFormElementCompiled {
-		protected Compiled(AttributeCollection attributeCollection) {
-			super(null, attributeCollection);
-		}
-		
-		public void checkSelect(RenderContext context) {
-			if (!context.map("isSelectStarted").equals(Boolean.TRUE)) {
-				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
-			}
-		}
-		
 		public Collection<?> getItems(RenderContext context) {
 			Object items = this.getAttributeCollection().getAttribute("items", VariableAttribute.class).getVariable(context);
 			if (items instanceof Collection) {
@@ -82,19 +71,6 @@ public class FormMultiOption extends AbstractFormElement<FormMultiOption> {
 			}
 			return item.toString();
 		}
-
-		@Override
-		public void render(RenderContext context) throws RenderException {
-			this.checkSelect(context);
-			
-			try {
-				for (Object item : this.getItems(context)) {
-					context.write(("<option value=\"" + this.escapeHtml(this.getItemValue(item)) + "\""
-							+ (SelectedValueComparator.isSelected(context.map("selectActualValue"), this.getItemValue(item)) ? " selected=\"selected\"" : "")
-							+ Utils.concatAttributes(this.getDynamicAttributes()) + ">" + this.escapeHtml(this.getItemLabel(item)) + "</option>").getBytes());
-				}
-			} catch (IOException e) {
-			}
-		}
 	}
+
 }
