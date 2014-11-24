@@ -6,7 +6,7 @@ import java.util.Collection;
 import com.customweb.jtwig.lib.model.Attribute;
 
 abstract public class Utils {
-	
+
 	public static String concatAttributes(Collection<? extends Attribute> attributes) {
 		StringBuilder builder = new StringBuilder();
 		for (Attribute attribute : attributes) {
@@ -14,7 +14,7 @@ abstract public class Utils {
 		}
 		return builder.toString();
 	}
-	
+
 	public static boolean nullSafeEquals(Object o1, Object o2) {
 		if (o1 == o2) {
 			return true;
@@ -56,5 +56,5 @@ abstract public class Utils {
 		}
 		return false;
 	}
-	
+
 }

@@ -16,11 +16,10 @@ abstract public class SelectedValueComparator {
 		}
 		if (actualValue.getClass().isArray()) {
 			return Arrays.asList(actualValue).contains(candidateValue);
-		}
-		else if (actualValue instanceof Collection) {
+		} else if (actualValue instanceof Collection) {
 			return ((Collection<?>) actualValue).contains(candidateValue);
 		}
 		return false;
 	}
-	
+
 }

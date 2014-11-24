@@ -1,7 +1,15 @@
-<pre>
-{% form:form method="post" action="http://www.sellxed.com" dataobject="dataobject" %}
+{% form:form method="post" action="http://www.sellxed.com" model="dataobject" errors="errors" %}
 	{% form:label path="active" class="form-label" %}Active{% endform:label %}
 	{% form:checkbox value="testValue" path="active" label="Is active?" disabled %}{% endform:checkbox %}
 	{% form:multicheckbox items="itemlist" path="active" %}{% endform:multicheckbox %}
+	{% form:hidden path="active" %}{% endform:hidden %}
+	{% form:input path="active" disabled %}{% endform:input %}
+	{% form:option value="my_value" label="Label" %}{% endform:option %}
+	{% form:multioption items="itemlist" path="active" %}{% endform:multioption %}
+	{% form:password path="active" disabled %}{% endform:password %}
+	{% form:radio value="testValue" path="active" label="Is active?" disabled %}{% endform:radio %}
+	{% form:multiradio items="itemlist" path="active" %}{% endform:multiradio %}
+	{% form:select items="itemlist" path="active" %}{% endform:select %}
+	{% form:textarea path="active" disabled cols="2" rows="4" %}{% endform:textarea %}
+	{% form:errors path="active" class="alert" %}{% endform:errors %}
 {% endform:form %}
-</pre>

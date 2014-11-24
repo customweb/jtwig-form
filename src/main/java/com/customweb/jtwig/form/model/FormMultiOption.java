@@ -18,12 +18,11 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormMultiCheckbox extends AbstractFormCheckedElement<FormMultiCheckbox> {
+public class FormMultiOption extends AbstractFormElement<FormMultiOption> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new NamedAttributeDefinition("element", false));
 		attributeDefinitions.add(new VariableAttributeDefinition("items", true));
 		attributeDefinitions.add(new NamedAttributeDefinition("itemLabel", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("itemValue", false));
@@ -36,16 +35,9 @@ public class FormMultiCheckbox extends AbstractFormCheckedElement<FormMultiCheck
 		return new Compiled(this.getAttributeCollection());
 	}
 
-	private class Compiled extends AbstractFormCheckedElementCompiled {
+	private class Compiled extends AbstractFormElementCompiled {
 		protected Compiled(AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
-		}
-
-		public String getElement() {
-			if (this.getAttributeCollection().hasAttribute("element")) {
-				return this.getAttributeValue("element");
-			}
-			return "div";
 		}
 
 		public Collection<?> getItems(RenderContext context) {
@@ -93,17 +85,10 @@ public class FormMultiCheckbox extends AbstractFormCheckedElement<FormMultiCheck
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				int idCount = 1;
 				for (Object item : this.getItems(context)) {
-					String itemId = this.getId(context) + "-" + idCount++;
-					context.write(("<" + this.getElement() + ">").getBytes());
-					context.write(("<label for=\"" + itemId + "\">").getBytes());
-					context.write(("<input type=\"checkbox\" name=\"" + this.getName(context) + "\" id=\"" + itemId + "\" value=\""
-							+ this.escapeHtml(this.getItemValue(item)) + "\" "
-							+ (this.isOptionSelected(context, this.getItemValue(item)) ? "checked=\"checked\" " : "")
-							+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + "/>").getBytes());
-					context.write((" " + this.escapeHtml(this.getItemLabel(item)) + "</label>").getBytes());
-					context.write(("</" + this.getElement() + ">").getBytes());
+					context.write(("<option value=\"" + this.escapeHtml(this.getItemValue(item)) + "\""
+							+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + ">" + this.escapeHtml(this.getItemLabel(item)) + "</option>")
+							.getBytes());
 				}
 			} catch (IOException e) {
 			}

@@ -32,8 +32,8 @@ public class AbstractDataBoundFormElement<T extends AbstractDataBoundFormElement
 		}
 
 		public final String getName(RenderContext context) {
-			if (this.hasDataObjectProperty(context, this.getPath())) {
-				return context.map("formDataObjectVariable") + "." + this.getPath();
+			if (this.hasDataModelProperty(context, this.getPath())) {
+				return context.map("formDataModelVariable") + "." + this.getPath();
 			}
 			return this.getPath();
 		}
@@ -49,41 +49,41 @@ public class AbstractDataBoundFormElement<T extends AbstractDataBoundFormElement
 			return id;
 		}
 
-		public boolean hasDataObject(RenderContext context) {
-			Object dataObject = context.map("formDataObject");
+		public boolean hasDataModel(RenderContext context) {
+			Object dataObject = context.map("formDataModel");
 			return dataObject != null && !dataObject.equals(Undefined.UNDEFINED);
 		}
 
-		public boolean hasDataObjectProperty(RenderContext context, String fieldName) {
-			if (!this.hasDataObject(context)) {
+		public boolean hasDataModelProperty(RenderContext context, String fieldName) {
+			if (!this.hasDataModel(context)) {
 				return false;
 			}
 
 			try {
-				PropertyUtils.getProperty(this.getDataObject(context), fieldName);
+				PropertyUtils.getProperty(this.getDataModel(context), fieldName);
 				return true;
 			} catch (Exception e) {
 				return false;
 			}
 		}
 
-		public Object getDataObject(RenderContext context) throws NoSuchElementException {
-			if (!this.hasDataObject(context)) {
-				throw new NoSuchElementException("The data object has not been set.");
+		public Object getDataModel(RenderContext context) throws NoSuchElementException {
+			if (!this.hasDataModel(context)) {
+				throw new NoSuchElementException("The form data model has not been set.");
 			}
-			return context.map("formDataObject");
+			return context.map("formDataModel");
 		}
 
-		public Object geDataValue(RenderContext context, String fieldName) {
-			if (this.hasDataObjectProperty(context, fieldName)) {
+		public Object getDataValue(RenderContext context, String fieldName) {
+			if (this.hasDataModelProperty(context, fieldName)) {
 				try {
-					return PropertyUtils.getProperty(this.getDataObject(context), fieldName);
+					return PropertyUtils.getProperty(this.getDataModel(context), fieldName);
 				} catch (Exception e) {
 				}
 			}
 			Object fieldValue = context.map("fieldName");
 			if (fieldValue.equals(Undefined.UNDEFINED)) {
-				throw new RuntimeException("The form data object does not have a field named '" + fieldName + "'.");
+				throw new RuntimeException("The form data model does not have a field named '" + fieldName + "'.");
 			}
 			return fieldValue;
 		}

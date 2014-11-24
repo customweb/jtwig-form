@@ -13,7 +13,7 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
+public class FormRadio extends AbstractFormCheckedElement<FormRadio> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
@@ -56,7 +56,7 @@ public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
 				if (this.hasLabel()) {
 					context.write(("<label>").getBytes());
 				}
-				context.write(("<input type=\"checkbox\" name=\"" + this.getName(context) + "\" id=\"" + this.getId(context) + "\" value=\""
+				context.write(("<input type=\"radio\" name=\"" + this.getName(context) + "\" id=\"" + this.getId(context) + "\" value=\""
 						+ this.escapeHtml(this.getValue()) + "\" " + (this.isOptionSelected(context, this.getValue()) ? "checked=\"checked\" " : "")
 						+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
 						.getBytes());

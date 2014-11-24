@@ -19,7 +19,8 @@ public class Form extends AttributeModel<Form> {
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new VariableAttributeDefinition("dataobject", false));
+		attributeDefinitions.add(new VariableAttributeDefinition("model", false));
+		attributeDefinitions.add(new VariableAttributeDefinition("errors", false));
 		return attributeDefinitions;
 	}
 
@@ -36,19 +37,18 @@ public class Form extends AttributeModel<Form> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			context = context.isolatedModel();
-			if (this.getAttributeCollection().hasAttribute("dataobject")) {
-				context.with(
-						"formDataObject",
-						this.getAttributeCollection().getAttribute("dataobject", VariableAttribute.class).getVariable(
-								context));
-				context.with("formDataObjectVariable",
-						this.getAttributeValue("dataobject"));
+			if (this.getAttributeCollection().hasAttribute("model")) {
+				context.with("formDataModel", this.getAttributeCollection().getAttribute("model", VariableAttribute.class).getVariable(context));
+				context.with("formDataModelVariable", this.getAttributeValue("model"));
+			}
+
+			if (this.getAttributeCollection().hasAttribute("errors")) {
+				context.with("formErrorModel", this.getAttributeCollection().getAttribute("errors", VariableAttribute.class).getVariable(context));
+				context.with("formErrorModelVariable", this.getAttributeValue("errors"));
 			}
 
 			try {
-				context.write(("<form"
-						+ Utils.concatAttributes(this.getDynamicAttributes()) + ">")
-						.getBytes());
+				context.write(("<form" + Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
 				this.getContent().render(context);
 				context.write("</form>".getBytes());
 			} catch (IOException e) {

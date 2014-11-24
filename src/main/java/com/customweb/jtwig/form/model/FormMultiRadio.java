@@ -18,7 +18,7 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormMultiCheckbox extends AbstractFormCheckedElement<FormMultiCheckbox> {
+public class FormMultiRadio extends AbstractFormCheckedElement<FormMultiRadio> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
@@ -98,7 +98,7 @@ public class FormMultiCheckbox extends AbstractFormCheckedElement<FormMultiCheck
 					String itemId = this.getId(context) + "-" + idCount++;
 					context.write(("<" + this.getElement() + ">").getBytes());
 					context.write(("<label for=\"" + itemId + "\">").getBytes());
-					context.write(("<input type=\"checkbox\" name=\"" + this.getName(context) + "\" id=\"" + itemId + "\" value=\""
+					context.write(("<input type=\"radio\" name=\"" + this.getName(context) + "\" id=\"" + itemId + "\" value=\""
 							+ this.escapeHtml(this.getItemValue(item)) + "\" "
 							+ (this.isOptionSelected(context, this.getItemValue(item)) ? "checked=\"checked\" " : "")
 							+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + "/>").getBytes());
