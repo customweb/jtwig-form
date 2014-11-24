@@ -2,6 +2,8 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
@@ -13,12 +15,13 @@ import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormOption extends AbstractFormElement<FormOption> {
+public class FormButton extends AbstractFormElement<FormButton> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new NamedAttributeDefinition("value", true));
+		attributeDefinitions.add(new NamedAttributeDefinition("name", false));
+		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
 		return attributeDefinitions;
 	}
@@ -33,14 +36,35 @@ public class FormOption extends AbstractFormElement<FormOption> {
 			super(content, attributeCollection);
 		}
 
-		public void checkSelect(RenderContext context) {
-			if (!context.map("isSelectStarted").equals(Boolean.TRUE)) {
-				throw new RuntimeException("The 'option' tag can only be used inside a valid 'select' tag.");
+		public String getId(RenderContext context) {
+			String id = StringUtils.remove(StringUtils.remove(this.getName(), '['), ']');
+			if (this.getAttributeCollection().hasAttribute("id")) {
+				String value = this.getAttributeValue("id");
+				if (value != null && !value.isEmpty()) {
+					id = value;
+				}
 			}
+			return id;
+		}
+
+		public boolean hasId() {
+			return this.getAttributeCollection().hasAttribute("id") || this.hasName();
+		}
+
+		public String getName() {
+			return this.getAttributeValue("name");
+		}
+
+		public boolean hasName() {
+			return this.getAttributeCollection().hasAttribute("name");
 		}
 
 		public String getValue() {
-			return this.getAttributeValue("value");
+			if (this.getAttributeCollection().hasAttribute("value")) {
+				return this.getAttributeValue("value");
+			} else {
+				return "Submit";
+			}
 		}
 
 		public boolean isDisabled() {
@@ -49,16 +73,15 @@ public class FormOption extends AbstractFormElement<FormOption> {
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			this.checkSelect(context);
-
 			try {
-				context.write(("<option value=\"" + this.escapeHtml(this.getValue()) + "\"" + (this.isDisabled() ? " disabled=\"disabled\"" : "")
-						+ (SelectedValueComparator.isSelected(context.map("selectActualValue"), this.getValue()) ? " selected=\"selected\"" : "")
-						+ Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
+				context.write(("<button" + (this.hasId() ? " id=\"" + this.getId(context) + "\"" : "")
+						+ (this.hasName() ? " name=\"" + this.getName() + "\"" : "") + " type=\"submit\" value=\"" + this.getValue() + "\""
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
 				this.getContent().render(context);
-				context.write(("</option>").getBytes());
+				context.write("</label>".getBytes());
 			} catch (IOException e) {
 			}
 		}
 	}
+
 }

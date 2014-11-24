@@ -38,10 +38,10 @@ public class FormInput extends AbstractDataBoundFormElement<FormInput> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				context.write(("<input type=\"text\" name=\"" + this.getName(context) + "\" id=\"" + this.getId(context) + "\" value=\""
-						+ this.escapeHtml(this.getDataValue(context, this.getPath()).toString()) + "\" "
-						+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
-						.getBytes());
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\""
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + " type=\"text\" value=\""
+						+ this.escapeHtml(this.getDataValue(context, this.getPath())) + "\""
+						+ Utils.concatAttributes(this.getDynamicAttributes()) + " />").getBytes());
 			} catch (IOException e) {
 			}
 		}

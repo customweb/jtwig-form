@@ -2,6 +2,7 @@ package com.customweb.jtwig.form.model;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.AttributeModel;
@@ -26,11 +27,12 @@ abstract public class AbstractFormElement<T extends AbstractFormElement<T>> exte
 			return this.getAttributeCollection().hasAttribute("htmlescape");
 		}
 
-		public String escapeHtml(String input) {
+		public String escapeHtml(Object input) {
+			String inputString = Utils.nullSafeToString(input);
 			if (this.isHtmlEscape()) {
-				return StringEscapeUtils.escapeHtml(input);
+				return StringEscapeUtils.escapeHtml(inputString);
 			} else {
-				return input;
+				return inputString;
 			}
 		}
 	}

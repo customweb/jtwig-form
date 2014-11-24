@@ -25,8 +25,8 @@ public class FormHidden extends AbstractDataBoundFormElement<FormHidden> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				context.write(("<input type=\"hidden\" name=\"" + this.getName(context) + "\" id=\"" + this.getId(context) + "\" value=\""
-						+ this.escapeHtml(this.getDataValue(context, this.getPath()).toString()) + "\" "
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"hidden\" value=\""
+						+ this.escapeHtml(this.getDataValue(context, this.getPath())) + "\""
 						+ Utils.concatAttributes(this.getDynamicAttributes()) + " />").getBytes());
 			} catch (IOException e) {
 			}

@@ -6,6 +6,7 @@ import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.AttributeModel;
+import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
 import com.customweb.jtwig.lib.model.VariableAttribute;
 import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
@@ -19,6 +20,8 @@ public class Form extends AttributeModel<Form> {
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
+		attributeDefinitions.add(new NamedAttributeDefinition("action", false));
+		attributeDefinitions.add(new NamedAttributeDefinition("method", false));
 		attributeDefinitions.add(new VariableAttributeDefinition("model", false));
 		attributeDefinitions.add(new VariableAttributeDefinition("errors", false));
 		return attributeDefinitions;
@@ -32,6 +35,24 @@ public class Form extends AttributeModel<Form> {
 	private class Compiled extends AbstractAttributeModelCompiled {
 		protected Compiled(Renderable content, AttributeCollection attributeCollection) {
 			super(content, attributeCollection);
+		}
+		
+		public String getId() {
+			return this.getAttributeValue("model");
+		}
+		
+		public String getAction() {
+			if (this.getAttributeCollection().hasAttribute("action")) {
+				return this.getAttributeValue("action");
+			}
+			return "";
+		}
+		
+		public String getMethod() {
+			if (this.getAttributeCollection().hasAttribute("method")) {
+				return this.getAttributeValue("method");
+			}
+			return "post";
 		}
 
 		@Override
@@ -48,7 +69,7 @@ public class Form extends AttributeModel<Form> {
 			}
 
 			try {
-				context.write(("<form" + Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
+				context.write(("<form id=\"" + this.getId() + "\" action=\"" + this.getAction() + "\" method=\"" + this.getMethod() + "\"" + Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
 				this.getContent().render(context);
 				context.write("</form>".getBytes());
 			} catch (IOException e) {

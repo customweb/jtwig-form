@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
+import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
@@ -45,7 +46,7 @@ public class FormMultiRadio extends AbstractFormCheckedElement<FormMultiRadio> {
 			if (this.getAttributeCollection().hasAttribute("element")) {
 				return this.getAttributeValue("element");
 			}
-			return "div";
+			return "span";
 		}
 
 		public Collection<?> getItems(RenderContext context) {
@@ -53,7 +54,7 @@ public class FormMultiRadio extends AbstractFormCheckedElement<FormMultiRadio> {
 			if (items instanceof Collection) {
 				return (Collection<?>) items;
 			} else if (items.getClass().isArray()) {
-				return Arrays.asList(items);
+				return Arrays.asList((Object[]) items);
 			}
 			throw new RuntimeException("The 'items' attribute value has to be a collection.");
 		}
@@ -62,7 +63,7 @@ public class FormMultiRadio extends AbstractFormCheckedElement<FormMultiRadio> {
 			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
 				String fieldName = this.getAttributeValue("itemLabel");
 				try {
-					return PropertyUtils.getProperty(item, fieldName).toString();
+					return Utils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
@@ -74,13 +75,13 @@ public class FormMultiRadio extends AbstractFormCheckedElement<FormMultiRadio> {
 			if (this.getAttributeCollection().hasAttribute("itemValue")) {
 				String fieldName = this.getAttributeValue("itemValue");
 				try {
-					return PropertyUtils.getProperty(item, fieldName).toString();
+					return Utils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
 			}
 			try {
-				return PropertyUtils.getProperty(item, "value").toString();
+				return Utils.nullSafeToString(PropertyUtils.getProperty(item, "value"));
 			} catch (Exception e) {
 			}
 			return item.toString();
@@ -93,15 +94,14 @@ public class FormMultiRadio extends AbstractFormCheckedElement<FormMultiRadio> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				int idCount = 1;
 				for (Object item : this.getItems(context)) {
-					String itemId = this.getId(context) + "-" + idCount++;
+					String itemId = this.getId(context);
 					context.write(("<" + this.getElement() + ">").getBytes());
 					context.write(("<label for=\"" + itemId + "\">").getBytes());
-					context.write(("<input type=\"radio\" name=\"" + this.getName(context) + "\" id=\"" + itemId + "\" value=\""
-							+ this.escapeHtml(this.getItemValue(item)) + "\" "
-							+ (this.isOptionSelected(context, this.getItemValue(item)) ? "checked=\"checked\" " : "")
-							+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + "/>").getBytes());
+					context.write(("<input id=\"" + itemId + "\" name=\"" + this.getName() + "\" type=\"radio\"" + (this.isDisabled() ? " disabled=\"disabled\"" : "") + " value=\""
+							+ this.escapeHtml(this.getItemValue(item)) + "\""
+							+ (this.isOptionSelected(context, this.getItemValue(item)) ? " checked=\"checked\"" : "")
+						 + " />").getBytes());
 					context.write((" " + this.escapeHtml(this.getItemLabel(item)) + "</label>").getBytes());
 					context.write(("</" + this.getElement() + ">").getBytes());
 				}

@@ -43,9 +43,9 @@ public class FormPassword extends AbstractDataBoundFormElement<FormPassword> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				context.write(("<input type=\"" + (this.isShowPassword() ? "text" : "password") + "\" name=\"" + this.getName(context) + "\" id=\""
-						+ this.getId(context) + "\" value=\"" + this.escapeHtml(this.getDataValue(context, this.getPath()).toString()) + "\" "
-						+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"password\" value=\""
+						+ (this.isShowPassword() ? this.escapeHtml(this.getDataValue(context, this.getPath())) : "") + "\""
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
 						.getBytes());
 			} catch (IOException e) {
 			}

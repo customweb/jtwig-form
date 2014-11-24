@@ -42,6 +42,11 @@ public class FormErrors extends AbstractDataBoundFormElement<FormErrors> {
 		protected Compiled(AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
 		}
+		
+		@Override
+		public String getId(RenderContext context) {
+			return super.getId(context) + ".errors";
+		}
 
 		public String getElement() {
 			if (this.getAttributeCollection().hasAttribute("element")) {
@@ -80,7 +85,7 @@ public class FormErrors extends AbstractDataBoundFormElement<FormErrors> {
 
 		@SuppressWarnings("unchecked")
 		public Map<String, List<String>> getErrorMap(RenderContext context) {
-			if (!this.hasDataModel(context)) {
+			if (!this.hasErrorModel(context)) {
 				throw new NoSuchElementException("The form error model has not been set.");
 			}
 			Object errorModel = context.map("formErrorModel");
@@ -105,10 +110,10 @@ public class FormErrors extends AbstractDataBoundFormElement<FormErrors> {
 		public void render(RenderContext context) throws RenderException {
 			try {
 				if (this.hasErrors(context)) {
-					context.write(("<" + this.getElement() + Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
+					context.write(("<" + this.getElement() + Utils.concatAttributes(this.getDynamicAttributes()) + " id=\"" + this.getId(context) + "\">").getBytes());
 					Iterator<String> iterator = this.getErrors(context).iterator();
 					while (iterator.hasNext()) {
-						context.write((iterator.next()).getBytes());
+						context.write((this.escapeHtml(iterator.next())).getBytes());
 						if (iterator.hasNext()) {
 							context.write(this.getDelimiter().getBytes());
 						}

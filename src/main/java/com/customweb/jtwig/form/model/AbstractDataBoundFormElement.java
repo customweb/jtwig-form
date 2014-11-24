@@ -10,7 +10,6 @@ import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.types.Undefined;
 
 public class AbstractDataBoundFormElement<T extends AbstractDataBoundFormElement<T>> extends AbstractFormElement<T> {
 
@@ -27,19 +26,16 @@ public class AbstractDataBoundFormElement<T extends AbstractDataBoundFormElement
 			super(content, attributeCollection);
 		}
 
-		public final String getPath() {
+		public String getPath() {
 			return this.getAttributeValue("path");
 		}
 
-		public final String getName(RenderContext context) {
-			if (this.hasDataModelProperty(context, this.getPath())) {
-				return context.map("formDataModelVariable") + "." + this.getPath();
-			}
+		public String getName() {
 			return this.getPath();
 		}
 
-		public final String getId(RenderContext context) {
-			String id = StringUtils.remove(StringUtils.remove(this.getName(context), '['), ']');
+		public String getId(RenderContext context) {
+			String id = StringUtils.remove(StringUtils.remove(this.getName(), '['), ']');
 			if (this.getAttributeCollection().hasAttribute("id")) {
 				String value = this.getAttributeValue("id");
 				if (value != null && !value.isEmpty()) {
@@ -49,43 +45,16 @@ public class AbstractDataBoundFormElement<T extends AbstractDataBoundFormElement
 			return id;
 		}
 
-		public boolean hasDataModel(RenderContext context) {
-			Object dataObject = context.map("formDataModel");
-			return dataObject != null && !dataObject.equals(Undefined.UNDEFINED);
-		}
-
-		public boolean hasDataModelProperty(RenderContext context, String fieldName) {
-			if (!this.hasDataModel(context)) {
-				return false;
-			}
-
-			try {
-				PropertyUtils.getProperty(this.getDataModel(context), fieldName);
-				return true;
-			} catch (Exception e) {
-				return false;
-			}
-		}
-
 		public Object getDataModel(RenderContext context) throws NoSuchElementException {
-			if (!this.hasDataModel(context)) {
-				throw new NoSuchElementException("The form data model has not been set.");
-			}
 			return context.map("formDataModel");
 		}
 
 		public Object getDataValue(RenderContext context, String fieldName) {
-			if (this.hasDataModelProperty(context, fieldName)) {
-				try {
-					return PropertyUtils.getProperty(this.getDataModel(context), fieldName);
-				} catch (Exception e) {
-				}
-			}
-			Object fieldValue = context.map("fieldName");
-			if (fieldValue.equals(Undefined.UNDEFINED)) {
+			try {
+				return PropertyUtils.getProperty(this.getDataModel(context), fieldName);
+			} catch (Exception e) {
 				throw new RuntimeException("The form data model does not have a field named '" + fieldName + "'.");
 			}
-			return fieldValue;
 		}
 	}
 

@@ -35,7 +35,11 @@ public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
 		}
 
 		public String getValue() {
-			return this.getAttributeValue("value");
+			if (this.getAttributeCollection().hasAttribute("value")) {
+				return this.getAttributeValue("value");
+			} else {
+				return null;
+			}
 		}
 
 		public String getLabel() {
@@ -56,10 +60,9 @@ public class FormCheckbox extends AbstractFormCheckedElement<FormCheckbox> {
 				if (this.hasLabel()) {
 					context.write(("<label>").getBytes());
 				}
-				context.write(("<input type=\"checkbox\" name=\"" + this.getName(context) + "\" id=\"" + this.getId(context) + "\" value=\""
-						+ this.escapeHtml(this.getValue()) + "\" " + (this.isOptionSelected(context, this.getValue()) ? "checked=\"checked\" " : "")
-						+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
-						.getBytes());
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"checkbox\" "
+						+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + this.renderDetails(context, this.getValue())
+						+ Utils.concatAttributes(this.getDynamicAttributes()) + " />").getBytes());
 				if (this.hasLabel()) {
 					context.write((" " + this.escapeHtml(this.getLabel()) + "</label>").getBytes());
 				}

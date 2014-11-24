@@ -38,6 +38,7 @@ public class FormTest {
 		config.parse().addons().withAddon(FormTextareaAddon.class);
 		config.parse().addons().withAddon(FormLabelAddon.class);
 		config.parse().addons().withAddon(FormErrorsAddon.class);
+		config.parse().addons().withAddon(FormButtonAddon.class);
 		JtwigTemplate template = new JtwigTemplate(new ClasspathJtwigResource("classpath:/views/default.twig"), config);
 		
 		JtwigModelMap map = new JtwigModelMap();

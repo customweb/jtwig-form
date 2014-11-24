@@ -2,10 +2,31 @@ package com.customweb.jtwig.form;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.customweb.jtwig.lib.model.Attribute;
+import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.types.Undefined;
 
 abstract public class Utils {
+	
+	@SuppressWarnings("unchecked")
+	public static String nextId(String name, RenderContext context) {
+		Map<String, Integer> idCountCache;
+		if (context.map("idCountCache") == null || context.map("idCountCache") == Undefined.UNDEFINED) {
+			idCountCache = new HashMap<String, Integer>();
+			context.with("idCountCache", idCountCache);
+		} else {
+			idCountCache = (Map<String, Integer>) context.map("idCountCache");
+		}
+		int count = 1;
+		if (idCountCache.containsKey(name)) {
+			count = idCountCache.get(name) + 1;
+		}
+		idCountCache.put(name, count);
+		return name + count;
+	}
 
 	public static String concatAttributes(Collection<? extends Attribute> attributes) {
 		StringBuilder builder = new StringBuilder();
@@ -13,6 +34,14 @@ abstract public class Utils {
 			builder.append(" ").append(attribute.toString());
 		}
 		return builder.toString();
+	}
+	
+	public static String nullSafeToString(Object o) {
+		if (o == null) {
+			return "";
+		} else {
+			return o.toString();
+		}
 	}
 
 	public static boolean nullSafeEquals(Object o1, Object o2) {
