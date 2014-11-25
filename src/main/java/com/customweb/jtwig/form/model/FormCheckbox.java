@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
@@ -34,7 +33,7 @@ public class FormCheckbox extends AbstractFormInputElement<FormCheckbox> {
 		
 		@Override
 		public String getId(RenderContext context) {
-			return Utils.nextId(super.getId(context), context);
+			return IdGenerator.nextId(super.getId(context), context);
 		}
 
 		public String getValue() {
@@ -54,7 +53,7 @@ public class FormCheckbox extends AbstractFormInputElement<FormCheckbox> {
 		}
 		
 		public String renderDetails(RenderContext context, String value) {
-			Object actualValue = this.getDataValue(context, this.getPath());
+			Object actualValue = this.getBoundValue(context);
 			boolean checked;
 			if (Boolean.class.equals(actualValue.getClass()) || boolean.class.equals(actualValue.getClass())) {
 				if (actualValue instanceof String) {
@@ -66,7 +65,7 @@ public class FormCheckbox extends AbstractFormInputElement<FormCheckbox> {
 				if (value == null) {
 					throw new RuntimeException("Attribute 'value' is required when binding to non-boolean values");
 				}
-				checked = SelectedValueComparator.isSelected(context, value);
+				checked = this.isOptionSelected(context, value);
 			}
 			return "value=\"" + this.escapeHtml(value) + "\"" + (checked ? " checked=\"checked\"" : "");
 		}
@@ -77,9 +76,9 @@ public class FormCheckbox extends AbstractFormInputElement<FormCheckbox> {
 				if (this.hasLabel()) {
 					context.write(("<label>").getBytes());
 				}
-				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"checkbox\" "
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\" type=\"checkbox\" "
 						+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + this.renderDetails(context, this.getValue())
-						+ Utils.concatAttributes(this.getDynamicAttributes()) + " />").getBytes());
+						+ this.concatDynamicAttributes() + " />").getBytes());
 				if (this.hasLabel()) {
 					context.write((" " + this.escapeHtml(this.getLabel()) + "</label>").getBytes());
 				}

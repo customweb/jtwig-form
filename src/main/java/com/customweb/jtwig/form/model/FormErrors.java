@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
@@ -110,7 +109,7 @@ public class FormErrors extends AbstractDataBoundFormElement<FormErrors> {
 		public void render(RenderContext context) throws RenderException {
 			try {
 				if (this.hasErrors(context)) {
-					context.write(("<" + this.getElement() + Utils.concatAttributes(this.getDynamicAttributes()) + " id=\"" + this.getId(context) + "\">").getBytes());
+					context.write(("<" + this.getElement() + " id=\"" + this.getId(context) + "\"" + this.concatDynamicAttributes() + ">").getBytes());
 					Iterator<String> iterator = this.getErrors(context).iterator();
 					while (iterator.hasNext()) {
 						context.write((this.escapeHtml(iterator.next())).getBytes());

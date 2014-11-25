@@ -46,6 +46,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>4.1.2.RELEASE</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-validation</artifactId>
 			<version>0.8</version>

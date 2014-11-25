@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
@@ -34,7 +33,7 @@ public class FormRadio extends AbstractFormInputElement<FormRadio> {
 		
 		@Override
 		public String getId(RenderContext context) {
-			return Utils.nextId(super.getId(context), context);
+			return IdGenerator.nextId(super.getId(context), context);
 		}
 
 		public String getValue() {
@@ -59,9 +58,9 @@ public class FormRadio extends AbstractFormInputElement<FormRadio> {
 				if (this.hasLabel()) {
 					context.write(("<label>").getBytes());
 				}
-				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"radio\" value=\""
-						+ this.escapeHtml(this.getValue()) + "\"" + (SelectedValueComparator.isSelected(context, this.getValue()) ? " checked=\"checked\"" : "")
-						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\" type=\"radio\" value=\""
+						+ this.escapeHtml(this.getValue()) + "\"" + (this.isOptionSelected(context, this.getValue()) ? " checked=\"checked\"" : "")
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + " />")
 						.getBytes());
 				if (this.hasLabel()) {
 					context.write((" " + this.escapeHtml(this.getLabel()) + "</label>").getBytes());

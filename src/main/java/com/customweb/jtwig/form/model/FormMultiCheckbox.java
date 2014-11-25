@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
@@ -33,7 +32,7 @@ public class FormMultiCheckbox extends AbstractFormMultiElement<FormMultiCheckbo
 		
 		@Override
 		public String getId(RenderContext context) {
-			return Utils.nextId(super.getId(context), context);
+			return IdGenerator.nextId(super.getId(context), context);
 		}
 
 		public String getElement() {
@@ -50,10 +49,10 @@ public class FormMultiCheckbox extends AbstractFormMultiElement<FormMultiCheckbo
 					String itemId = this.getId(context);
 					context.write(("<" + this.getElement() + ">").getBytes());
 					context.write(("<label for=\"" + itemId + "\">").getBytes());
-					context.write(("<input id=\"" + itemId + "\" name=\"" + this.getName() + "\" "
+					context.write(("<input id=\"" + itemId + "\" name=\"" + this.getName(context) + "\" "
 							+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + "type=\"checkbox\" value=\""
 							+ this.escapeHtml(this.getItemValue(item)) + "\" "
-							+ (SelectedValueComparator.isSelected(context, this.getItemValue(item)) ? "checked=\"checked\" " : "") + "/>").getBytes());
+							+ (this.isOptionSelected(context, this.getItemValue(item)) ? "checked=\"checked\" " : "") + "/>").getBytes());
 					context.write((" " + this.escapeHtml(this.getItemLabel(item)) + "</label>").getBytes());
 					context.write(("</" + this.getElement() + ">").getBytes());
 				}

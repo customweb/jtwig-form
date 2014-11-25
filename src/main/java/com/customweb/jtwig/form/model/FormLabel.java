@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
@@ -39,7 +38,7 @@ public class FormLabel extends AbstractFormElement<FormLabel> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				context.write(("<label for=\"" + this.getPath() + "\"" + Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
+				context.write(("<label for=\"" + this.getPath() + "\"" + this.concatDynamicAttributes() + ">").getBytes());
 				this.getContent().render(context);
 				context.write("</label>".getBytes());
 			} catch (IOException e) {

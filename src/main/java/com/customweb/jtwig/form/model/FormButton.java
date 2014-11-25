@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
@@ -76,7 +75,7 @@ public class FormButton extends AbstractFormElement<FormButton> {
 			try {
 				context.write(("<button" + (this.hasId() ? " id=\"" + this.getId(context) + "\"" : "")
 						+ (this.hasName() ? " name=\"" + this.getName() + "\"" : "") + " type=\"submit\" value=\"" + this.getValue() + "\""
-						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + ">").getBytes());
 				this.getContent().render(context);
 				context.write("</label>".getBytes());
 			} catch (IOException e) {

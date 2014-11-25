@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
@@ -33,10 +32,8 @@ public class FormOption extends AbstractFormElement<FormOption> {
 			super(content, attributeCollection);
 		}
 
-		public void checkSelect(RenderContext context) {
-			if (!context.map("isSelectStarted").equals(Boolean.TRUE)) {
-				throw new RuntimeException("The 'option' tag can only be used inside a valid 'select' tag.");
-			}
+		public boolean isSelectActive(RenderContext context) {
+			return context.map(FormSelect.SELECT_ACTIVE_VARIABLE_NAME).equals(Boolean.TRUE);
 		}
 
 		public String getValue() {
@@ -46,15 +43,21 @@ public class FormOption extends AbstractFormElement<FormOption> {
 		public boolean isDisabled() {
 			return this.getAttributeCollection().hasAttribute("disabled");
 		}
+		
+		public BindStatus getBindStatus(RenderContext context) {
+			return (BindStatus) context.map(FormSelect.SELECT_BIND_STATUS_VARIABLE_NAME);
+		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			this.checkSelect(context);
+			if (!this.isSelectActive(context)) {
+				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
+			}
 
 			try {
 				context.write(("<option value=\"" + this.escapeHtml(this.getValue()) + "\"" + (this.isDisabled() ? " disabled=\"disabled\"" : "")
-						+ (SelectedValueComparator.isSelected(context.map("selectActualValue"), this.getValue()) ? " selected=\"selected\"" : "")
-						+ Utils.concatAttributes(this.getDynamicAttributes()) + ">").getBytes());
+						+ (SelectedValueComparator.isSelected(this.getBindStatus(context), this.getValue()) ? " selected=\"selected\"" : "")
+						+ this.concatDynamicAttributes() + ">").getBytes());
 				this.getContent().render(context);
 				context.write(("</option>").getBytes());
 			} catch (IOException e) {

@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
@@ -25,9 +24,9 @@ public class FormHidden extends AbstractDataBoundFormElement<FormHidden> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"hidden\" value=\""
-						+ this.escapeHtml(this.getDataValue(context, this.getPath())) + "\""
-						+ Utils.concatAttributes(this.getDynamicAttributes()) + " />").getBytes());
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\" type=\"hidden\" value=\""
+						+ this.getBoundValue(context) + "\""
+						+ this.concatDynamicAttributes() + " />").getBytes());
 			} catch (IOException e) {
 			}
 		}

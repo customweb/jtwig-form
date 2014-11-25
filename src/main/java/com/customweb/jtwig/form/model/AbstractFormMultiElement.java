@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.util.ObjectUtils;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
@@ -48,7 +48,7 @@ abstract public class AbstractFormMultiElement<T extends AbstractFormMultiElemen
 			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
 				String fieldName = this.getAttributeValue("itemLabel");
 				try {
-					return Utils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
@@ -60,13 +60,13 @@ abstract public class AbstractFormMultiElement<T extends AbstractFormMultiElemen
 			if (this.getAttributeCollection().hasAttribute("itemValue")) {
 				String fieldName = this.getAttributeValue("itemValue");
 				try {
-					return Utils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
 			}
 			try {
-				return Utils.nullSafeToString(PropertyUtils.getProperty(item, "value"));
+				return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, "value"));
 			} catch (Exception e) {
 			}
 			return item.toString();

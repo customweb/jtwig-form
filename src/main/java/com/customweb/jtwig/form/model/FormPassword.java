@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
@@ -38,9 +37,9 @@ public class FormPassword extends AbstractFormInputElement<FormPassword> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\" type=\"password\" value=\""
-						+ (this.isShowPassword() ? this.escapeHtml(this.getDataValue(context, this.getPath())) : "") + "\""
-						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + Utils.concatAttributes(this.getDynamicAttributes()) + " />")
+				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\" type=\"password\" value=\""
+						+ (this.isShowPassword() ? this.getBoundValue(context) : "") + "\""
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + " />")
 						.getBytes());
 			} catch (IOException e) {
 			}

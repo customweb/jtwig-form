@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.util.ObjectUtils;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
@@ -39,10 +39,8 @@ public class FormMultiOption extends AbstractFormElement<FormMultiOption> {
 			super(null, attributeCollection);
 		}
 		
-		public void checkSelect(RenderContext context) {
-			if (!context.map("isSelectStarted").equals(Boolean.TRUE)) {
-				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
-			}
+		public boolean isSelectActive(RenderContext context) {
+			return context.map(FormSelect.SELECT_ACTIVE_VARIABLE_NAME).equals(Boolean.TRUE);
 		}
 		
 		public Collection<?> getItems(RenderContext context) {
@@ -59,7 +57,7 @@ public class FormMultiOption extends AbstractFormElement<FormMultiOption> {
 			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
 				String fieldName = this.getAttributeValue("itemLabel");
 				try {
-					return Utils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
@@ -71,27 +69,33 @@ public class FormMultiOption extends AbstractFormElement<FormMultiOption> {
 			if (this.getAttributeCollection().hasAttribute("itemValue")) {
 				String fieldName = this.getAttributeValue("itemValue");
 				try {
-					return Utils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
 			}
 			try {
-				return Utils.nullSafeToString(PropertyUtils.getProperty(item, "value"));
+				return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, "value"));
 			} catch (Exception e) {
 			}
 			return item.toString();
 		}
+		
+		public BindStatus getBindStatus(RenderContext context) {
+			return (BindStatus) context.map(FormSelect.SELECT_BIND_STATUS_VARIABLE_NAME);
+		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			this.checkSelect(context);
+			if (!this.isSelectActive(context)) {
+				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
+			}
 			
 			try {
 				for (Object item : this.getItems(context)) {
 					context.write(("<option value=\"" + this.escapeHtml(this.getItemValue(item)) + "\""
-							+ (SelectedValueComparator.isSelected(context.map("selectActualValue"), this.getItemValue(item)) ? " selected=\"selected\"" : "")
-							+ Utils.concatAttributes(this.getDynamicAttributes()) + ">" + this.escapeHtml(this.getItemLabel(item)) + "</option>").getBytes());
+							+ (SelectedValueComparator.isSelected(this.getBindStatus(context), this.getItemValue(item)) ? " selected=\"selected\"" : "")
+							+ this.concatDynamicAttributes() + ">" + this.escapeHtml(this.getItemLabel(item)) + "</option>").getBytes());
 				}
 			} catch (IOException e) {
 			}

@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.model;
 
 import java.io.IOException;
 
-import com.customweb.jtwig.form.Utils;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
@@ -25,9 +24,9 @@ public class FormTextarea extends AbstractFormInputElement<FormTextarea> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
-				context.write(("<textarea id=\"" + this.getId(context) + "\" name=\"" + this.getName() + "\""
-						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + Utils.concatAttributes(this.getDynamicAttributes()) + ">"
-						+ this.escapeHtml(this.getDataValue(context, this.getPath())) + "</textarea>").getBytes());
+				context.write(("<textarea id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\""
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + ">"
+						+ this.getBoundValue(context) + "</textarea>").getBytes());
 			} catch (IOException e) {
 			}
 		}
