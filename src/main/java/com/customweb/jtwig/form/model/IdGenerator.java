@@ -3,7 +3,7 @@ package com.customweb.jtwig.form.model;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;
 
-public class IdGenerator {
+abstract public class IdGenerator {
 	
 	private static final String CONTEXT_ATTRIBUTE_PREFIX = IdGenerator.class.getName() + ".";
 
