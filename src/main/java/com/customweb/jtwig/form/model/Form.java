@@ -20,18 +20,20 @@ public class Form extends AttributeModel<Form> {
 	private static final String DEFAULT_METHOD = "post";
 
 	private static final String DEFAULT_MODEL_ATTRIBUTE_NAME = "formModel";
-	
+
 	private static final String DEFAULT_ERRORS_ATTRIBUTE_NAME = "formErrors";
 
 	private static final String MODEL_ATTRIBUTE = "modelAttribute";
-	
+
 	private static final String ERRORS_ATTRIBUTE = "errorsAttribute";
 
 	public static final String MODEL_ATTRIBUTE_VARIABLE_NAME = Form.class.getName() + "." + MODEL_ATTRIBUTE;
-	
+
 	public static final String ERRORS_ATTRIBUTE_VARIABLE_NAME = Form.class.getName() + "." + ERRORS_ATTRIBUTE;
 
 	public static final String NESTED_PATH_VARIABLE_NAME = AbstractDataBoundFormElement.NESTED_PATH_VARIABLE_NAME;
+
+	public static final String FORM_ID_ATTRIBUTE_NAME = Form.class.getName() + ".id";
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
@@ -80,7 +82,7 @@ public class Form extends AttributeModel<Form> {
 				return DEFAULT_MODEL_ATTRIBUTE_NAME;
 			}
 		}
-		
+
 		public String getErrorsAttribute() {
 			if (this.getAttributeCollection().hasAttribute("errors")) {
 				return this.getAttributeValue("errors");
@@ -96,13 +98,13 @@ public class Form extends AttributeModel<Form> {
 			context.with(ERRORS_ATTRIBUTE_VARIABLE_NAME, this.getErrorsAttribute());
 			context.with(NESTED_PATH_VARIABLE_NAME, this.getModelAttribute()
 					+ PropertyAccessor.NESTED_PROPERTY_SEPARATOR);
+			context.with(FORM_ID_ATTRIBUTE_NAME, this.getId());
 
 			try {
 				context.write(("<form id=\"" + this.getId() + "\" action=\"" + this.getAction() + "\" method=\""
-						+ this.getMethod() + "\"" + this.concatDynamicAttributes() + ">")
-						.getBytes());
+						+ this.getMethod() + "\"" + this.concatDynamicAttributes() + ">").getBytes());
 				this.getContent().render(context);
-				context.write("</form>".getBytes());
+				context.write(("</form>").getBytes());
 			} catch (IOException e) {
 			}
 		}

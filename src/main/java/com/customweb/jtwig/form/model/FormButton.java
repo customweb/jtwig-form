@@ -77,7 +77,7 @@ public class FormButton extends AbstractFormElement<FormButton> {
 						+ (this.hasName() ? " name=\"" + this.getName() + "\"" : "") + " type=\"submit\" value=\"" + this.getValue() + "\""
 						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + ">").getBytes());
 				this.getContent().render(context);
-				context.write("</label>".getBytes());
+				context.write("</button>".getBytes());
 			} catch (IOException e) {
 			}
 		}
