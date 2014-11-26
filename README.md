@@ -335,6 +335,15 @@ FormTokenAddon.getTokenGenerator().validate(receivedToken);
 ```
 
 ### Spring Integration ###
+To use the form tags, they have to be registered first.
+
+```xml
+<bean id="viewResolver" class="com.lyncode.jtwig.mvc.JtwigViewResolver">
+	<property name="prefix" value="/WEB-INF/views/" />
+	<property name="suffix" value=".twig" />
+</bean>
+<bean class="com.customweb.jtwig.form.spring.ViewResolverAddon" />
+```
 
 #### CSRF Protection ####
 The usage of the CSRF protection in spring is easy. To activate it, enable aspectj autoproxy and add these definitions to the spring configuration:
