@@ -14,7 +14,7 @@ import com.customweb.jtwig.form.addon.element.FormTokenAddon;
 @Aspect
 public class TokenMethodInterceptor {
 
-	@Before("@annotation(com.customweb.jtwig.form.spring.TokenProtected)")
+	@Before("@annotation(com.customweb.jtwig.form.spring.TokenProtection)")
 	public void validateToken(JoinPoint joinPoint) {
 		String token = "";
 		Object[] args = joinPoint.getArgs();
