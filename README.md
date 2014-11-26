@@ -1,6 +1,6 @@
 jtwig-form
 ==========
-This library provides some addons for the [Jtwig template engine](http://jtwig.org/) to build forms. It provides an easy integration with the Spring framework.
+This library provides addons for the [Jtwig template engine](http://jtwig.org/) to build forms. It provides an easy integration with the Spring framework.
 
 ## Installation ##
 The project contains a Maven .pom file to include all depencendies.
