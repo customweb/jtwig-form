@@ -3,10 +3,10 @@ package com.customweb.jtwig.form.tag.element;
 import java.io.IOException;
 
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
-import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;

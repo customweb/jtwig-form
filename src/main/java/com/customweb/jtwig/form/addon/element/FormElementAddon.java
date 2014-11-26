@@ -1,7 +1,7 @@
 package com.customweb.jtwig.form.addon.element;
 
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
-import com.customweb.jtwig.lib.AttributeAddon;
+import com.customweb.jtwig.lib.attribute.AttributeAddon;
 import com.lyncode.jtwig.parser.config.ParserConfiguration;
 import com.lyncode.jtwig.resource.JtwigResource;
 

@@ -1,8 +1,8 @@
 package com.customweb.jtwig.form.tag;
 
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
 
 abstract public class AbstractFormInputElementTag<T extends AbstractFormInputElementTag<T>> extends AbstractDataBoundFormElementTag<T> {

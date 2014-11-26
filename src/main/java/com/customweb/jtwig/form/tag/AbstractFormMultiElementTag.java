@@ -6,11 +6,11 @@ import java.util.Collection;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.ObjectUtils;
 
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
-import com.customweb.jtwig.lib.model.VariableAttribute;
-import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.VariableAttribute;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.render.RenderContext;
 

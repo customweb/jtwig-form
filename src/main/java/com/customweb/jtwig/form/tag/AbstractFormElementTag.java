@@ -3,13 +3,13 @@ package com.customweb.jtwig.form.tag;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.util.HtmlUtils;
 
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.AttributeModel;
-import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
 
-abstract public class AbstractFormElementTag<T extends AbstractFormElementTag<T>> extends AttributeModel<T> {
+abstract public class AbstractFormElementTag<T extends AbstractFormElementTag<T>> extends AbstractAttributeTag<T> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {

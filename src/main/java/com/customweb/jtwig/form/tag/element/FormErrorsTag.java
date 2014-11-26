@@ -3,9 +3,9 @@ package com.customweb.jtwig.form.tag.element;
 import java.io.IOException;
 
 import com.customweb.jtwig.form.tag.AbstractDataBoundFormElementTag;
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;

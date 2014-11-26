@@ -5,9 +5,9 @@ import org.springframework.beans.PropertyAccessor;
 
 import com.customweb.jtwig.form.model.BindStatus;
 import com.customweb.jtwig.form.model.SelectedValueComparator;
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;

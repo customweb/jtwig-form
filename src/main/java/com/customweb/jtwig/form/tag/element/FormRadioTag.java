@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import com.customweb.jtwig.form.model.IdGenerator;
 import com.customweb.jtwig.form.tag.AbstractFormInputElementTag;
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;

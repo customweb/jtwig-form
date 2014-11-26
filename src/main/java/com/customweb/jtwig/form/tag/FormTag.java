@@ -4,18 +4,18 @@ import java.io.IOException;
 
 import org.springframework.beans.PropertyAccessor;
 
-import com.customweb.jtwig.lib.model.AttributeCollection;
-import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.model.AttributeModel;
-import com.customweb.jtwig.lib.model.NamedAttributeDefinition;
-import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
+import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.RenderException;
 import com.lyncode.jtwig.render.RenderContext;
 
-public class FormTag extends AttributeModel<FormTag> {
+public class FormTag extends AbstractAttributeTag<FormTag> {
 
 	private static final String DEFAULT_METHOD = "post";
 
