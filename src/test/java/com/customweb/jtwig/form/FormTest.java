@@ -9,6 +9,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.google.common.collect.Lists;
 import com.lyncode.jtwig.JtwigModelMap;
 import com.lyncode.jtwig.JtwigTemplate;
@@ -24,21 +25,7 @@ public class FormTest {
 	public void test() throws ParseException, CompileException, RenderException {
 		
 		JtwigConfiguration config = new JtwigConfiguration();
-		config.parse().addons().withAddon(FormAddon.class);
-		config.parse().addons().withAddon(FormInputAddon.class);
-		config.parse().addons().withAddon(FormHiddenAddon.class);
-		config.parse().addons().withAddon(FormCheckboxAddon.class);
-		config.parse().addons().withAddon(FormMultiCheckboxAddon.class);
-		config.parse().addons().withAddon(FormOptionAddon.class);
-		config.parse().addons().withAddon(FormMultiOptionAddon.class);
-		config.parse().addons().withAddon(FormPasswordAddon.class);
-		config.parse().addons().withAddon(FormRadioAddon.class);
-		config.parse().addons().withAddon(FormMultiRadioAddon.class);
-		config.parse().addons().withAddon(FormSelectAddon.class);
-		config.parse().addons().withAddon(FormTextareaAddon.class);
-		config.parse().addons().withAddon(FormLabelAddon.class);
-		config.parse().addons().withAddon(FormErrorsAddon.class);
-		config.parse().addons().withAddon(FormButtonAddon.class);
+		FormAddon.addons(config);
 		JtwigTemplate template = new JtwigTemplate(new ClasspathJtwigResource("classpath:/views/default.twig"), config);
 		
 		JtwigModelMap map = new JtwigModelMap();

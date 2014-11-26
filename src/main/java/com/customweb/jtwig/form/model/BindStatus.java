@@ -10,6 +10,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.util.HtmlUtils;
 
+import com.customweb.jtwig.form.tag.FormTag;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;
 
@@ -62,7 +63,7 @@ public class BindStatus {
 			this.actualValue = this.value;
 		}
 
-		Object errorTarget = context.map(Form.ERRORS_ATTRIBUTE_VARIABLE_NAME);
+		Object errorTarget = context.map(FormTag.ERRORS_ATTRIBUTE_VARIABLE_NAME);
 		if (errorTarget != null && errorTarget instanceof Errors) {
 			this.errors = (Errors) errorTarget;
 			if (this.expression != null) {

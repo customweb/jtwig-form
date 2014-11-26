@@ -4,8 +4,12 @@
 	{% form:multicheckbox items="itemlist" path="active" %}{% endform:multicheckbox %}
 	{% form:hidden path="active" %}{% endform:hidden %}
 	{% form:input path="active" disabled %}{% endform:input %}
-	{% form:option value="my_value" label="Label" %}{% endform:option %}
-	{% form:multioption items="itemlist" path="active" %}{% endform:multioption %}
+	{% form:select path="active" %}
+		{% form:option value="my_value" label="Label" %}{% endform:option %}
+	{% endform:select %}
+	{% form:select path="active" %}
+		{% form:multioption items="itemlist" path="active" %}{% endform:multioption %}
+	{% endform:select %}
 	{% form:password path="active" disabled %}{% endform:password %}
 	{% form:radio value="testValue" path="active" label="Is active?" disabled %}{% endform:radio %}
 	{% form:multiradio items="itemlist" path="active" %}{% endform:multiradio %}
