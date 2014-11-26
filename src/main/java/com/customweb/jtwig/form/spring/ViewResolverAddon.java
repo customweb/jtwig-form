@@ -15,6 +15,7 @@ public final class ViewResolverAddon {
 
 	@PostConstruct
     public void register() {
+		viewResolver.setCached(false);
 		FormAddon.addons(viewResolver.configuration());
 	}
 }
