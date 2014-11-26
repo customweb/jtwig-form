@@ -26,7 +26,7 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new VariableAttributeDefinition("items", false));
+		attributeDefinitions.add(new VariableAttributeDefinition("items", true));
 		attributeDefinitions.add(new NamedAttributeDefinition("itemLabel", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("itemValue", false));
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("selected");

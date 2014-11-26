@@ -6,6 +6,7 @@ import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.model.AttributeCollection;
 import com.customweb.jtwig.lib.model.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.model.EmptyAttributeDefinition;
+import com.customweb.jtwig.lib.model.VariableAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
@@ -21,6 +22,7 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
+		attributeDefinitions.add(new VariableAttributeDefinition("items", false));
 		attributeDefinitions.add(new EmptyAttributeDefinition("multiple"));
 		return attributeDefinitions;
 	}
