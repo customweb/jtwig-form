@@ -23,6 +23,7 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 		attributeDefinitions.add(new NamedAttributeDefinition("name", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("type");
 		return attributeDefinitions;
 	}
 

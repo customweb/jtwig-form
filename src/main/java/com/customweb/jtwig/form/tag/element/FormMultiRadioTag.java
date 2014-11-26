@@ -19,6 +19,7 @@ public class FormMultiRadioTag extends AbstractFormMultiElementTag<FormMultiRadi
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
 		attributeDefinitions.add(new NamedAttributeDefinition("element", false));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKeys("type", "checked");
 		return attributeDefinitions;
 	}
 

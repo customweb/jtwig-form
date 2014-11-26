@@ -20,6 +20,7 @@ public class FormCheckboxTag extends AbstractFormInputElementTag<FormCheckboxTag
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
 		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("label", false));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKeys("type", "checked");
 		return attributeDefinitions;
 	}
 

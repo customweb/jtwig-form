@@ -27,7 +27,7 @@ public class FormTextareaTag extends AbstractFormInputElementTag<FormTextareaTag
 			try {
 				context.write(("<textarea id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\""
 						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + ">"
-						+ this.getBoundValue(context) + "</textarea>").getBytes());
+						+ this.getBoundDisplayValue(context) + "</textarea>").getBytes());
 			} catch (IOException e) {
 			}
 		}

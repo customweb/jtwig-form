@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.context.NoSuchMessageException;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -63,7 +64,12 @@ public class BindStatus {
 			this.actualValue = this.value;
 		}
 
-		Object errorTarget = context.map(FormTag.ERRORS_ATTRIBUTE_VARIABLE_NAME);
+		Object errorTargetName = context.map(FormTag.ERRORS_ATTRIBUTE_VARIABLE_NAME);
+		if (errorTargetName != null && errorTargetName instanceof String) {
+			
+		}
+		
+		Object errorTarget = this.getErrorTarget(context);
 		if (errorTarget != null && errorTarget instanceof Errors) {
 			this.errors = (Errors) errorTarget;
 			if (this.expression != null) {
@@ -78,10 +84,14 @@ public class BindStatus {
 			this.errorCodes = new String[0];
 			this.errorMessages = new String[0];
 		}
-
-		if (htmlEscape && this.value instanceof String) {
-			this.value = HtmlUtils.htmlEscape((String) this.value);
+	}
+	
+	private Object getErrorTarget(RenderContext context) {
+		Object errorTargetName = context.map(FormTag.ERRORS_ATTRIBUTE_VARIABLE_NAME);
+		if (errorTargetName == null || !(errorTargetName instanceof String)) {
+			return null;
 		}
+		return context.map((String) errorTargetName);
 	}
 
 	private void initErrorCodes() {
@@ -93,13 +103,11 @@ public class BindStatus {
 	}
 
 	private void initErrorMessages() throws NoSuchMessageException {
-		if (this.errorMessages == null) {
-			this.errorMessages = new String[this.objectErrors.size()];
-			for (int i = 0; i < this.objectErrors.size(); i++) {
-				ObjectError error = this.objectErrors.get(i);
-				this.errorMessages[i] = (this.htmlEscape ? HtmlUtils.htmlEscape(error.getDefaultMessage()) : error
-						.getDefaultMessage());
-			}
+		this.errorMessages = new String[this.objectErrors.size()];
+		for (int i = 0; i < this.objectErrors.size(); i++) {
+			ObjectError error = this.objectErrors.get(i);
+			this.errorMessages[i] = (this.htmlEscape ? HtmlUtils.htmlEscape(error.getDefaultMessage()) : error
+					.getDefaultMessage());
 		}
 	}
 
@@ -124,13 +132,8 @@ public class BindStatus {
 	}
 
 	public String getDisplayValue() {
-		if (this.value instanceof String) {
-			return (String) this.value;
-		}
-		if (this.value != null) {
-			return (this.htmlEscape ? HtmlUtils.htmlEscape(this.value.toString()) : this.value.toString());
-		}
-		return "";
+		String displayValue = ObjectUtils.getDisplayString(this.value);
+		return (this.htmlEscape ? HtmlUtils.htmlEscape(displayValue) : displayValue);
 	}
 
 	public boolean isError() {

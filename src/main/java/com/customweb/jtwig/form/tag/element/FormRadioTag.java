@@ -20,6 +20,7 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
 		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("label", false));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKeys("type", "checked");
 		return attributeDefinitions;
 	}
 

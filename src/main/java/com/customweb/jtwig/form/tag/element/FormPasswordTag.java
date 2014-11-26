@@ -18,6 +18,7 @@ public class FormPasswordTag extends AbstractFormInputElementTag<FormPasswordTag
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
 		attributeDefinitions.add(new EmptyAttributeDefinition("showpassword"));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("type");
 		return attributeDefinitions;
 	}
 
@@ -39,7 +40,7 @@ public class FormPasswordTag extends AbstractFormInputElementTag<FormPasswordTag
 		public void render(RenderContext context) throws RenderException {
 			try {
 				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\" type=\"password\" value=\""
-						+ (this.isShowPassword() ? this.getBoundValue(context) : "") + "\""
+						+ (this.isShowPassword() ? this.getBoundDisplayValue(context) : "") + "\""
 						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + " />")
 						.getBytes());
 			} catch (IOException e) {

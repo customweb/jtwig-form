@@ -80,6 +80,10 @@ public class AbstractDataBoundFormElementTag<T extends AbstractDataBoundFormElem
 			return this.getBindStatus(context).getValue();
 		}
 		
+		public String getBoundDisplayValue(RenderContext context) {
+			return this.getBindStatus(context).getDisplayValue();
+		}
+		
 		public boolean isOptionSelected(RenderContext context, Object value) {
 			return SelectedValueComparator.isSelected(getBindStatus(context), value);
 		}

@@ -29,6 +29,7 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 		attributeDefinitions.add(new VariableAttributeDefinition("items", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("itemLabel", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("itemValue", false));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("selected");
 		return attributeDefinitions;
 	}
 

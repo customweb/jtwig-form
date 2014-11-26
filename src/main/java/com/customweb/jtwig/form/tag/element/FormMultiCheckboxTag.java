@@ -19,6 +19,7 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
 		attributeDefinitions.add(new NamedAttributeDefinition("element", false));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKeys("type", "checked");
 		return attributeDefinitions;
 	}
 
@@ -31,7 +32,7 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 		protected Compiled(AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
 		}
-		
+
 		@Override
 		public String getId(RenderContext context) {
 			return IdGenerator.nextId(super.getId(context), context);
@@ -43,7 +44,7 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 			}
 			return "span";
 		}
-		
+
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			try {
@@ -54,7 +55,8 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 					context.write(("<input id=\"" + itemId + "\" name=\"" + this.getName(context) + "\" "
 							+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + "type=\"checkbox\" value=\""
 							+ this.escapeHtml(this.getItemValue(item)) + "\" "
-							+ (this.isOptionSelected(context, this.getItemValue(item)) ? "checked=\"checked\" " : "") + "/>").getBytes());
+							+ (this.isOptionSelected(context, this.getItemValue(item)) ? "checked=\"checked\" " : "")
+							+ this.concatDynamicAttributes() + "/>").getBytes());
 					context.write((" " + this.escapeHtml(this.getItemLabel(item)) + "</label>").getBytes());
 					context.write(("</" + this.getElement() + ">").getBytes());
 				}

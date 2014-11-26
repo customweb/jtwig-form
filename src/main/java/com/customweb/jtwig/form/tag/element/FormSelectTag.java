@@ -43,7 +43,7 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 		public void render(RenderContext context) throws RenderException {
 			try {
 				context.write(("<select id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\""
-						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + (this.isMultiple() ? " multiple=\"multiple\"" : "") + ">").getBytes());
+						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + (this.isMultiple() ? " multiple=\"multiple\"" : "") + this.concatDynamicAttributes() + ">").getBytes());
 				if (this.hasItems()) {
 					for (Object item : this.getItems(context)) {
 						context.write(("<option value=\"" + this.escapeHtml(this.getItemValue(item)) + "\""
