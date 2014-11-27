@@ -78,7 +78,7 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 		}
 		
 		public boolean isChecked() {
-			return this.isOptionSelected(this.getAttributeValue("value"));
+			return this.isOptionSelected(this.getValue());
 		}
 	}
 }
