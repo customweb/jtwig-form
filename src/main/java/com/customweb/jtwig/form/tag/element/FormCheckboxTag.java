@@ -1,8 +1,6 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
-
-import com.customweb.jtwig.form.model.IdGenerator;
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormInputElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -10,8 +8,11 @@ import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefiniti
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormCheckboxTag extends AbstractFormInputElementTag<FormCheckboxTag> {
 
@@ -23,69 +24,65 @@ public class FormCheckboxTag extends AbstractFormInputElementTag<FormCheckboxTag
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKeys("type", "checked");
 		return attributeDefinitions;
 	}
-
+	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(this.getAttributeCollection());
+		try {
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/checkbox");
+			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
 
 	private class Compiled extends AbstractFormInputElementCompiled {
-		protected Compiled(AttributeCollection attributeCollection) {
+		private Renderable block;
+		
+		protected Compiled(Renderable block, AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
-		}
-		
-		@Override
-		public String getId(RenderContext context) {
-			return IdGenerator.nextId(super.getId(context), context);
-		}
-
-		public String getValue() {
-			if (this.getAttributeCollection().hasAttribute("value")) {
-				return this.getAttributeValue("value");
-			} else {
-				return null;
-			}
-		}
-
-		public String getLabel() {
-			return this.getAttributeValue("label");
-		}
-
-		public boolean hasLabel() {
-			return this.getAttributeCollection().hasAttribute("label");
-		}
-		
-		public String renderDetails(RenderContext context, String value) {
-			Object actualValue = this.getBoundValue(context);
-			boolean checked;
-			if (Boolean.class.equals(actualValue.getClass()) || boolean.class.equals(actualValue.getClass())) {
-				if (actualValue instanceof String) {
-					actualValue = Boolean.valueOf((String) actualValue);
-				}
-				checked = (actualValue != null ? (Boolean) actualValue : Boolean.FALSE);
-				value = "true";
-			} else {
-				if (value == null) {
-					throw new RuntimeException("Attribute 'value' is required when binding to non-boolean values");
-				}
-				checked = this.isOptionSelected(context, value);
-			}
-			return "value=\"" + this.escapeHtml(value) + "\"" + (checked ? " checked=\"checked\"" : "");
+			this.block = block;
 		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			try {
-				if (this.hasLabel()) {
-					context.write(("<label>").getBytes());
+			context = context.isolatedModel();
+			context.with("el", new Data(context, this.getAttributeCollection()));
+			block.render(context);
+		}
+	}
+	
+	protected class Data extends AbstractFormInputElementData {
+		protected Data(RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+		}
+		
+		public String getValue() {
+			if (Boolean.class.equals(this.getBoundValue().getClass()) || boolean.class.equals(this.getBoundValue().getClass())) {
+				return "true";
+			}
+			if (this.getAttributeCollection().hasAttribute("value")) {
+				return this.getAttributeValue("value");
+			} else {
+				throw new RuntimeException("Attribute 'value' is required when binding to non-boolean values");
+			}
+		}
+		
+		public String getLabel() {
+			if (!this.getAttributeCollection().hasAttribute("label")) {
+				return null;
+			}
+			return this.getAttributeValue("label");
+		}
+
+		public boolean isChecked() {
+			Object actualValue = this.getBoundValue();
+			if (Boolean.class.equals(actualValue.getClass()) || boolean.class.equals(actualValue.getClass())) {
+				if (actualValue instanceof String) {
+					actualValue = Boolean.valueOf((String) actualValue);
 				}
-				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\" type=\"checkbox\" "
-						+ (this.isDisabled() ? "disabled=\"disabled\" " : "") + this.renderDetails(context, this.getValue())
-						+ this.concatDynamicAttributes() + " />").getBytes());
-				if (this.hasLabel()) {
-					context.write((" " + this.escapeHtml(this.getLabel()) + "</label>").getBytes());
-				}
-			} catch (IOException e) {
+				return (actualValue != null ? (Boolean) actualValue : Boolean.FALSE);
+			} else {
+				return this.isOptionSelected(this.getAttributeValue("value"));
 			}
 		}
 	}

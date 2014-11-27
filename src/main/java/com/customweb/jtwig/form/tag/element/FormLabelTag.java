@@ -1,7 +1,6 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
-
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -9,8 +8,11 @@ import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefin
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormLabelTag extends AbstractFormElementTag<FormLabelTag> {
 
@@ -24,26 +26,44 @@ public class FormLabelTag extends AbstractFormElementTag<FormLabelTag> {
 
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(super.compile(context), this.getAttributeCollection());
+		try {
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/label");
+			return new Compiled(context.parse(resource).compile(context), super.compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
 
 	private class Compiled extends AbstractFormElementCompiled {
-		protected Compiled(Renderable content, AttributeCollection attributeCollection) {
+		private Renderable block;
+		
+		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
 			super(content, attributeCollection);
-		}
-
-		public String getPath() {
-			return this.getAttributeValue("path");
+			this.block = block;
 		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			try {
-				context.write(("<label for=\"" + this.getPath() + "\"" + this.concatDynamicAttributes() + ">").getBytes());
-				this.getContent().render(context);
-				context.write("</label>".getBytes());
-			} catch (IOException e) {
-			}
+			context = context.isolatedModel();
+			context.with("el", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
+			block.render(context);
+		}
+	}
+	
+	protected class Data extends AbstractFormElementData {
+		private String label;
+		
+		protected Data(String label, RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+			this.label = label;
+		}
+		
+		public String getPath() {
+			return this.getAttributeValue("path");
+		}
+		
+		public String getLabel() {
+			return this.label;
 		}
 	}
 

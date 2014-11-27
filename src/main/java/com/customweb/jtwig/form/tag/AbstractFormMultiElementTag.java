@@ -2,10 +2,12 @@ package com.customweb.jtwig.form.tag;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.ObjectUtils;
 
+import com.customweb.jtwig.form.model.IdGenerator;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.VariableAttribute;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -43,33 +45,60 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 			}
 			throw new RuntimeException("The 'items' attribute value has to be a collection.");
 		}
-
-		public String getItemLabel(Object item) {
+	}
+	
+	abstract public class AbstractFormMultiElementData extends AbstractFormInputElementData {
+		private List<String> items;
+		
+		protected AbstractFormMultiElementData(List<String> items, RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+			this.items = items;
+		}
+		
+		public List<String> getItems() {
+			return this.items;
+		}
+	}
+	
+	abstract public class AbstractFormMultiElementItemData extends AbstractDataBoundFormElementData {
+		private Object item;
+		
+		protected AbstractFormMultiElementItemData(Object item, RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+			this.item = item;
+		}
+		
+		@Override
+		public String getId() {
+			return IdGenerator.nextId(super.getId(), this.getContext());
+		}
+		
+		public String getLabel() {
 			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
 				String fieldName = this.getAttributeValue("itemLabel");
 				try {
-					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
 			}
-			return item.toString();
+			return this.item.toString();
 		}
 
-		public String getItemValue(Object item) {
+		public String getValue() {
 			if (this.getAttributeCollection().hasAttribute("itemValue")) {
 				String fieldName = this.getAttributeValue("itemValue");
 				try {
-					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));
 				} catch (Exception e) {
 					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
 				}
 			}
 			try {
-				return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, "value"));
+				return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, "value"));
 			} catch (Exception e) {
 			}
-			return item.toString();
+			return this.item.toString();
 		}
 	}
 

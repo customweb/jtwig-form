@@ -1,9 +1,8 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
-
 import org.apache.commons.lang3.StringUtils;
 
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -12,8 +11,11 @@ import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefiniti
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 
@@ -29,15 +31,42 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(super.compile(context), this.getAttributeCollection());
+		try {
+			JtwigResource formResource = FormAddon.getResourceHandler().resolve("element/button");
+			return new Compiled(context.parse(formResource).compile(context), super.compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
-
+	
 	private class Compiled extends AbstractFormElementCompiled {
-		protected Compiled(Renderable content, AttributeCollection attributeCollection) {
+		private Renderable block;
+		
+		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
 			super(content, attributeCollection);
+			this.block = block;
 		}
 
-		public String getId(RenderContext context) {
+		@Override
+		public void render(RenderContext context) throws RenderException {
+			context = context.isolatedModel();
+			context.with("el", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
+			block.render(context);
+		}
+	}
+	
+	public class Data extends AbstractFormElementData {
+		private String label;
+		
+		protected Data(String label, RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+			this.label = label;
+		}
+		
+		public String getId() {
+			if (!this.getAttributeCollection().hasAttribute("id") && !this.getAttributeCollection().hasAttribute("name")) {
+				return null;
+			}
 			String id = StringUtils.remove(StringUtils.remove(this.getName(), '['), ']');
 			if (this.getAttributeCollection().hasAttribute("id")) {
 				String value = this.getAttributeValue("id");
@@ -48,16 +77,11 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 			return id;
 		}
 
-		public boolean hasId() {
-			return this.getAttributeCollection().hasAttribute("id") || this.hasName();
-		}
-
 		public String getName() {
+			if (!this.getAttributeCollection().hasAttribute("name")) {
+				return null;
+			}
 			return this.getAttributeValue("name");
-		}
-
-		public boolean hasName() {
-			return this.getAttributeCollection().hasAttribute("name");
 		}
 
 		public String getValue() {
@@ -71,17 +95,9 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 		public boolean isDisabled() {
 			return this.getAttributeCollection().hasAttribute("disabled");
 		}
-
-		@Override
-		public void render(RenderContext context) throws RenderException {
-			try {
-				context.write(("<button" + (this.hasId() ? " id=\"" + this.getId(context) + "\"" : "")
-						+ (this.hasName() ? " name=\"" + this.getName() + "\"" : "") + " type=\"submit\" value=\"" + this.getValue() + "\""
-						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + ">").getBytes());
-				this.getContent().render(context);
-				context.write("</button>".getBytes());
-			} catch (IOException e) {
-			}
+		
+		public String getLabel() {
+			return this.label;
 		}
 	}
 

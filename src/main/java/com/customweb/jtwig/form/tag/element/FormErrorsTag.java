@@ -1,66 +1,68 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
+import java.util.List;
 
+import org.springframework.validation.ObjectError;
+
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractDataBoundFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
-import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormErrorsTag extends AbstractDataBoundFormElementTag<FormErrorsTag> {
 
 	@Override
-	public AttributeDefinitionCollection getAttributeDefinitions() {
-		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new NamedAttributeDefinition("element", false));
-		attributeDefinitions.add(new NamedAttributeDefinition("delimiter", false));
-		return attributeDefinitions;
-	}
-
-	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(this.getAttributeCollection());
+		try {
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/errors");
+			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
 
 	private class Compiled extends AbstractDataBoundFormElementCompiled {
-		protected Compiled(AttributeCollection attributeCollection) {
-			super(null, attributeCollection);
-		}
+		private Renderable block;
 		
-		@Override
-		public String getId(RenderContext context) {
-			return super.getId(context) + ".errors";
+		protected Compiled(Renderable block, AttributeCollection attributeCollection) {
+			super(null, attributeCollection);
+			this.block = block;
 		}
-
-		public String getElement() {
-			if (this.getAttributeCollection().hasAttribute("element")) {
-				return this.getAttributeValue("element");
-			}
-			return "span";
-		}
-
-		public String getDelimiter() {
-			if (this.getAttributeCollection().hasAttribute("delimiter")) {
-				return this.getAttributeValue("delimiter");
-			}
-			return "<br>";
-		} 
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			try {
-				if (this.getBindStatus(context).isError()) {
-					context.write(("<" + this.getElement() + " id=\"" + this.getId(context) + "\"" + this.concatDynamicAttributes() + ">").getBytes());
-					context.write(this.getBindStatus(context).getErrorMessagesAsString(this.getDelimiter()).getBytes());
-					context.write(("</" + this.getElement() + ">").getBytes());
-				}
-			} catch (IOException e) {
-			}
+			context = context.isolatedModel();
+			context.with("el", new Data(context, this.getAttributeCollection()));
+			block.render(context);
+		}
+	}
+	
+	public class Data extends AbstractDataBoundFormElementData {
+		protected Data(RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+		}
+		
+		public boolean hasErrors() {
+			return this.getBindStatus().isError();
+		}
+		
+		public List<String> getErrorMessages() {
+			return this.getBindStatus().getErrorMessages();
+		}
+		
+		public List<String> getErrorCodes() {
+			return this.getBindStatus().getErrorCodes();
+		}
+		
+		public  List<? extends ObjectError> getErrors() {
+			return this.getBindStatus().getErrors();
 		}
 	}
 }

@@ -1,0 +1,7 @@
+{% if el.hasErrors %}
+	<span id="{{ el.id }}" {{ el.dynamicAttributes|join(' ') }}>
+		{% for errorMessage in el.errorMessages %}
+			{{ errorMessage }}<br/>
+		{% endfor %}
+	</span>
+{% endif %}

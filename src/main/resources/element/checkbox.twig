@@ -1,0 +1,1 @@
+{% if el.label %}<label>{% endif %}<input id="{{ el.id }}" name="{{ el.name }}" {% if el.disabled %}disabled="disabled"{% endif %} type="checkbox" value="{{ el.value }}" {% if el.checked %}checked="checked"{% endif %} {{ el.dynamicAttributes|join(' ') }} />{% if el.label %} {{ el.label }}</label>{% endif %}

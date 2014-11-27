@@ -1,0 +1,1 @@
+<input id="{{ el.id }}" name="{{ el.name }}" {% if el.disabled %}disabled="disabled"{% endif %} type="text" value="{{ el.value }}" {{ el.dynamicAttributes|join(' ') }} />

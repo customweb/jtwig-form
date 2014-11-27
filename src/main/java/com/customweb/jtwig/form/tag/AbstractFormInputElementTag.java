@@ -4,6 +4,7 @@ import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
+import com.lyncode.jtwig.render.RenderContext;
 
 abstract public class AbstractFormInputElementTag<T extends AbstractFormInputElementTag<T>> extends AbstractDataBoundFormElementTag<T> {
 
@@ -18,7 +19,13 @@ abstract public class AbstractFormInputElementTag<T extends AbstractFormInputEle
 		protected AbstractFormInputElementCompiled(Renderable content, AttributeCollection attributeCollection) {
 			super(content, attributeCollection);
 		}
-
+	}
+	
+	abstract public class AbstractFormInputElementData extends AbstractDataBoundFormElementData {
+		protected AbstractFormInputElementData(RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+		}
+		
 		public boolean isDisabled() {
 			return this.getAttributeCollection().hasAttribute("disabled");
 		}

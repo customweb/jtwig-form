@@ -25,22 +25,28 @@ public class AbstractDataBoundFormElementTag<T extends AbstractDataBoundFormElem
 	}
 
 	protected abstract class AbstractDataBoundFormElementCompiled extends AbstractFormElementCompiled {
-		private BindStatus bindStatus;
-		
 		protected AbstractDataBoundFormElementCompiled(Renderable content, AttributeCollection attributeCollection) {
 			super(content, attributeCollection);
 		}
-
+	}
+	
+	abstract public class AbstractDataBoundFormElementData extends AbstractFormElementData {
+		private BindStatus bindStatus;
+		
+		protected AbstractDataBoundFormElementData(RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+		}
+		
 		public String getPath() {
 			return this.getAttributeValue("path");
 		}
 
-		public String getName(RenderContext context) {
-			return this.getPropertyPath(context);
+		public String getName() {
+			return this.getPropertyPath();
 		}
 
-		public String getId(RenderContext context) {
-			String id = StringUtils.remove(StringUtils.remove(this.getName(context), '['), ']');
+		public String getId() {
+			String id = StringUtils.remove(StringUtils.remove(this.getName(), '['), ']');
 			if (this.getAttributeCollection().hasAttribute("id")) {
 				String value = this.getAttributeValue("id");
 				if (value != null && !value.isEmpty()) {
@@ -50,42 +56,46 @@ public class AbstractDataBoundFormElementTag<T extends AbstractDataBoundFormElem
 			return id;
 		}
 		
-		public BindStatus getBindStatus(RenderContext context) {
+		public BindStatus getBindStatus() {
 			if (this.bindStatus == null) {
 				// HTML escaping in tags is performed by the ValueFormatter class.
-				String nestedPath = getNestedPath(context);
+				String nestedPath = getNestedPath();
 				String pathToUse = (nestedPath != null ? nestedPath + getPath() : getPath());
 				if (pathToUse.endsWith(PropertyAccessor.NESTED_PROPERTY_SEPARATOR)) {
 					pathToUse = pathToUse.substring(0, pathToUse.length() - 1);
 				}
-				this.bindStatus = new BindStatus(context, pathToUse, this.isHtmlEscape());
+				this.bindStatus = new BindStatus(this.getContext(), pathToUse, this.isHtmlEscape());
 			}
 			return this.bindStatus;
 		}
 		
-		private String getNestedPath(RenderContext context) {
-			Object nestedPath = context.map(NESTED_PATH_VARIABLE_NAME);
+		private String getNestedPath() {
+			Object nestedPath = this.getContext().map(NESTED_PATH_VARIABLE_NAME);
 			if (nestedPath == null || nestedPath.equals(Undefined.UNDEFINED)) {
 				return "";
 			}
 			return (String) nestedPath;
 		}
 		
-		private String getPropertyPath(RenderContext context) {
-			String expression = this.getBindStatus(context).getExpression();
+		private String getPropertyPath() {
+			String expression = this.getBindStatus().getExpression();
 			return (expression != null ? expression : "");
 		}
 
-		public Object getBoundValue(RenderContext context) {
-			return this.getBindStatus(context).getValue();
+		public Object getBoundValue() {
+			return this.getBindStatus().getValue();
 		}
 		
-		public String getBoundDisplayValue(RenderContext context) {
-			return this.getBindStatus(context).getDisplayValue();
+		public String getBoundDisplayValue() {
+			return this.getBindStatus().getDisplayValue();
 		}
 		
-		public boolean isOptionSelected(RenderContext context, Object value) {
-			return SelectedValueComparator.isSelected(getBindStatus(context), value);
+		public String getValue() {
+			return this.getBoundDisplayValue();
+		}
+		
+		protected boolean isOptionSelected(Object value) {
+			return SelectedValueComparator.isSelected(getBindStatus(), value);
 		}
 	}
 

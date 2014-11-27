@@ -1,12 +1,12 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.ObjectUtils;
 
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.model.BindStatus;
 import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
@@ -18,8 +18,11 @@ import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefin
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTag> {
 	
@@ -32,15 +35,23 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("selected");
 		return attributeDefinitions;
 	}
-
+	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(this.getAttributeCollection());
+		try {
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/option");
+			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
 
 	private class Compiled extends AbstractFormElementCompiled {
-		protected Compiled(AttributeCollection attributeCollection) {
+		private Renderable block;
+		
+		protected Compiled(Renderable block, AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
+			this.block = block;
 		}
 		
 		public boolean isSelectActive(RenderContext context) {
@@ -57,52 +68,62 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 			throw new RuntimeException("The 'items' attribute value has to be a collection.");
 		}
 
-		public String getItemLabel(Object item) {
-			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
-				String fieldName = this.getAttributeValue("itemLabel");
-				try {
-					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
-				} catch (Exception e) {
-					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
-				}
-			}
-			return item.toString();
-		}
-
-		public String getItemValue(Object item) {
-			if (this.getAttributeCollection().hasAttribute("itemValue")) {
-				String fieldName = this.getAttributeValue("itemValue");
-				try {
-					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, fieldName));
-				} catch (Exception e) {
-					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
-				}
-			}
-			try {
-				return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(item, "value"));
-			} catch (Exception e) {
-			}
-			return item.toString();
-		}
-		
-		public BindStatus getBindStatus(RenderContext context) {
-			return (BindStatus) context.map(FormSelectTag.SELECT_BIND_STATUS_VARIABLE_NAME);
-		}
-
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			if (!this.isSelectActive(context)) {
 				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
 			}
 			
-			try {
-				for (Object item : this.getItems(context)) {
-					context.write(("<option value=\"" + this.escapeHtml(this.getItemValue(item)) + "\""
-							+ (SelectedValueComparator.isSelected(this.getBindStatus(context), this.getItemValue(item)) ? " selected=\"selected\"" : "")
-							+ this.concatDynamicAttributes() + ">" + this.escapeHtml(this.getItemLabel(item)) + "</option>").getBytes());
-				}
-			} catch (IOException e) {
+			for (Object item : this.getItems(context)) {
+				context = context.isolatedModel();
+				context.with("option", new OptionData(item, context, this.getAttributeCollection()));
+				block.render(context);
 			}
+		}
+	}
+	
+	protected class OptionData extends AbstractFormElementData {
+		private Object item;
+		
+		protected OptionData(Object item, RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+			this.item = item;
+		}
+		
+		public BindStatus getBindStatus() {
+			return (BindStatus) getContext().map(FormSelectTag.SELECT_BIND_STATUS_VARIABLE_NAME);
+		}
+		
+		public String getLabel() {
+			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
+				String fieldName = this.getAttributeValue("itemLabel");
+				try {
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));
+				} catch (Exception e) {
+					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
+				}
+			}
+			return this.item.toString();
+		}
+
+		public String getValue() {
+			if (this.getAttributeCollection().hasAttribute("itemValue")) {
+				String fieldName = this.getAttributeValue("itemValue");
+				try {
+					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));
+				} catch (Exception e) {
+					throw new RuntimeException("The item does not have a field named '" + fieldName + "'.");
+				}
+			}
+			try {
+				return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, "value"));
+			} catch (Exception e) {
+			}
+			return this.item.toString();
+		}
+		
+		public boolean isSelected() {
+			return SelectedValueComparator.isSelected(this.getBindStatus(), this.getValue());
 		}
 	}
 }

@@ -40,6 +40,9 @@ public class FormTokenTag extends AbstractFormElementTag<FormTokenTag> {
 		
 		protected Compiled(AttributeCollection attributeCollection, AbstractTokenGenerator tokenGenerator) {
 			super(null, attributeCollection);
+			if (tokenGenerator == null) {
+				throw new RuntimeException("The token generator class has not been defined.");
+			}
 			this.tokenGenerator = tokenGenerator;
 		}
 		

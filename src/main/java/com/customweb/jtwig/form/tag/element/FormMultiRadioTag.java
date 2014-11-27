@@ -1,66 +1,88 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.customweb.jtwig.form.model.IdGenerator;
+import com.customweb.jtwig.form.addon.FormAddon;
+import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormMultiRadioTag extends AbstractFormMultiElementTag<FormMultiRadioTag> {
 
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new NamedAttributeDefinition("element", false));
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKeys("type", "checked");
 		return attributeDefinitions;
 	}
-
+	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(this.getAttributeCollection());
+		try {
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/multiradio");
+			JtwigResource itemResource = FormAddon.getResourceHandler().resolve("element/radio");
+			return new Compiled(context.parse(resource).compile(context), context.parse(itemResource).compile(context), super.compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
 
 	private class Compiled extends AbstractFormMultiElementCompiled {
-		protected Compiled(AttributeCollection attributeCollection) {
-			super(null, attributeCollection);
-		}
+		private Renderable block;
+		private Renderable item;
 		
-		@Override
-		public String getId(RenderContext context) {
-			return IdGenerator.nextId(super.getId(context), context);
-		}
-
-		public String getElement() {
-			if (this.getAttributeCollection().hasAttribute("element")) {
-				return this.getAttributeValue("element");
-			}
-			return "span";
+		protected Compiled(Renderable block, Renderable item, Renderable content, AttributeCollection attributeCollection) {
+			super(content, attributeCollection);
+			this.block = block;
+			this.item = item;
 		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			try {
-				for (Object item : this.getItems(context)) {
-					String itemId = this.getId(context);
-					context.write(("<" + this.getElement() + ">").getBytes());
-					context.write(("<label for=\"" + itemId + "\">").getBytes());
-					context.write(("<input id=\"" + itemId + "\" name=\"" + this.getName(context) + "\" type=\"radio\"" + (this.isDisabled() ? " disabled=\"disabled\"" : "") + " value=\""
-							+ this.escapeHtml(this.getItemValue(item)) + "\""
-							+ (this.isOptionSelected(context, this.getItemValue(item)) ? " checked=\"checked\"" : "")
-						 + " />").getBytes());
-					context.write((" " + this.escapeHtml(this.getItemLabel(item)) + "</label>").getBytes());
-					context.write(("</" + this.getElement() + ">").getBytes());
-				}
-			} catch (IOException e) {
+			List<String> itemsContent = new ArrayList<String>();
+			for (Object item : this.getItems(context)) {
+				ByteArrayOutputStream itemsRenderStream = new ByteArrayOutputStream();
+				context = context.isolatedModel();
+				context.with("el", new ItemData(item, context, this.getAttributeCollection()));
+				this.item.render(context.newRenderContext(itemsRenderStream));
+				itemsContent.add(itemsRenderStream.toString());
 			}
+			
+			Data data = new Data(itemsContent, context, this.getAttributeCollection());
+			context = context.isolatedModel();
+			context.with("el", data);
+			block.render(context);
+		}
+	}
+	
+	protected class Data extends AbstractFormMultiElementData {		
+		protected Data(List<String> items, RenderContext context, AttributeCollection attributeCollection) {
+			super(items, context, attributeCollection);
+		}
+		
+		public List<String> getRadioButtons() {
+			return this.getItems();
+		}
+	}
+	
+	protected class ItemData extends AbstractFormMultiElementItemData {
+		protected ItemData(Object item, RenderContext context, AttributeCollection attributeCollection) {
+			super(item, context, attributeCollection);
+		}
+		
+		public boolean isChecked() {
+			return SelectedValueComparator.isSelected(this.getBindStatus(), this.getValue());
 		}
 	}
 }

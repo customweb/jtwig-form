@@ -1,12 +1,13 @@
 package com.customweb.jtwig.form.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.util.HtmlUtils;
@@ -33,9 +34,9 @@ public class BindStatus {
 
 	private List<? extends ObjectError> objectErrors;
 
-	private String[] errorCodes;
+	private List<String> errorCodes = new ArrayList<String>();
 
-	private String[] errorMessages;
+	private List<String> errorMessages = new ArrayList<String>();
 
 	@SuppressWarnings("unchecked")
 	public BindStatus(RenderContext context, String path, boolean htmlEscape) {
@@ -81,8 +82,6 @@ public class BindStatus {
 			initErrorMessages();
 		} else {
 			this.errors = null;
-			this.errorCodes = new String[0];
-			this.errorMessages = new String[0];
 		}
 	}
 	
@@ -95,18 +94,16 @@ public class BindStatus {
 	}
 
 	private void initErrorCodes() {
-		this.errorCodes = new String[this.objectErrors.size()];
 		for (int i = 0; i < this.objectErrors.size(); i++) {
 			ObjectError error = this.objectErrors.get(i);
-			this.errorCodes[i] = error.getCode();
+			this.errorCodes.add(error.getCode());
 		}
 	}
 
 	private void initErrorMessages() throws NoSuchMessageException {
-		this.errorMessages = new String[this.objectErrors.size()];
 		for (int i = 0; i < this.objectErrors.size(); i++) {
 			ObjectError error = this.objectErrors.get(i);
-			this.errorMessages[i] = (this.htmlEscape ? HtmlUtils.htmlEscape(error.getDefaultMessage()) : error
+			this.errorMessages.add(this.htmlEscape ? HtmlUtils.htmlEscape(error.getDefaultMessage()) : error
 					.getDefaultMessage());
 		}
 	}
@@ -137,31 +134,27 @@ public class BindStatus {
 	}
 
 	public boolean isError() {
-		return (this.errorCodes != null && this.errorCodes.length > 0);
+		return (this.errorCodes != null && this.errorCodes.size() > 0);
 	}
 
-	public String[] getErrorCodes() {
-		return this.errorCodes;
+	public List<String> getErrorCodes() {
+		return Collections.unmodifiableList(this.errorCodes);
 	}
 
 	public String getErrorCode() {
-		return (this.errorCodes.length > 0 ? this.errorCodes[0] : "");
+		return (this.errorCodes.size() > 0 ? this.errorCodes.get(0) : "");
 	}
 
-	public String[] getErrorMessages() {
-		return this.errorMessages;
+	public List<String> getErrorMessages() {
+		return Collections.unmodifiableList(this.errorMessages);
 	}
 
 	public String getErrorMessage() {
-		return (this.errorMessages.length > 0 ? this.errorMessages[0] : "");
+		return (this.errorMessages.size() > 0 ? this.errorMessages.get(0) : "");
 	}
 
-	public String getErrorMessagesAsString(String delimiter) {
-		return StringUtils.arrayToDelimitedString(this.errorMessages, delimiter);
-	}
-
-	public Errors getErrors() {
-		return this.errors;
+	public List<? extends ObjectError> getErrors() {
+		return Collections.unmodifiableList(this.objectErrors);
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
-
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.model.IdGenerator;
 import com.customweb.jtwig.form.tag.AbstractFormInputElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
@@ -10,8 +9,11 @@ import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefiniti
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 
@@ -26,19 +28,40 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(this.getAttributeCollection());
+		try {
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/radio");
+			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
 
 	private class Compiled extends AbstractFormInputElementCompiled {
-		protected Compiled(AttributeCollection attributeCollection) {
+		private Renderable block;
+		
+		protected Compiled(Renderable block, AttributeCollection attributeCollection) {
 			super(null, attributeCollection);
+			this.block = block;
+		}
+
+		@Override
+		public void render(RenderContext context) throws RenderException {
+			context = context.isolatedModel();
+			context.with("el", new Data(context, this.getAttributeCollection()));
+			block.render(context);
+		}
+	}
+	
+	protected class Data extends AbstractFormInputElementData {
+		protected Data(RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
 		}
 		
 		@Override
-		public String getId(RenderContext context) {
-			return IdGenerator.nextId(super.getId(context), context);
+		public String getId() {
+			return IdGenerator.nextId(super.getId(), this.getContext());
 		}
-
+		
 		public String getValue() {
 			if (this.getAttributeCollection().hasAttribute("value")) {
 				return this.getAttributeValue("value");
@@ -46,30 +69,16 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 				return "";
 			}
 		}
-
+		
 		public String getLabel() {
+			if (!this.getAttributeCollection().hasAttribute("label")) {
+				return null;
+			}
 			return this.getAttributeValue("label");
 		}
-
-		public boolean hasLabel() {
-			return this.getAttributeCollection().hasAttribute("label");
-		}
-
-		@Override
-		public void render(RenderContext context) throws RenderException {
-			try {
-				if (this.hasLabel()) {
-					context.write(("<label>").getBytes());
-				}
-				context.write(("<input id=\"" + this.getId(context) + "\" name=\"" + this.getName(context) + "\" type=\"radio\" value=\""
-						+ this.escapeHtml(this.getValue()) + "\"" + (this.isOptionSelected(context, this.getValue()) ? " checked=\"checked\"" : "")
-						+ (this.isDisabled() ? " disabled=\"disabled\"" : "") + this.concatDynamicAttributes() + " />")
-						.getBytes());
-				if (this.hasLabel()) {
-					context.write((" " + this.escapeHtml(this.getLabel()) + "</label>").getBytes());
-				}
-			} catch (IOException e) {
-			}
+		
+		public boolean isChecked() {
+			return this.isOptionSelected(this.getAttributeValue("value"));
 		}
 	}
 }

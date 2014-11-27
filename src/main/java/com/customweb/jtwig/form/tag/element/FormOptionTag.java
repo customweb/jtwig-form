@@ -1,7 +1,6 @@
 package com.customweb.jtwig.form.tag.element;
 
-import java.io.IOException;
-
+import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.model.BindStatus;
 import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
@@ -12,8 +11,11 @@ import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefiniti
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
+import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
+import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 
@@ -25,21 +27,49 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("selected");
 		return attributeDefinitions;
 	}
-
+	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
-		return new Compiled(super.compile(context), this.getAttributeCollection());
+		try {
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/option");
+			return new Compiled(context.parse(resource).compile(context), super.compile(context), this.getAttributeCollection());
+		} catch (ParseException | ResourceException e) {
+			throw new CompileException(e);
+		}
 	}
 
 	private class Compiled extends AbstractFormElementCompiled {
-		protected Compiled(Renderable content, AttributeCollection attributeCollection) {
+		private Renderable block;
+		
+		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
 			super(content, attributeCollection);
+			this.block = block;
 		}
-
+		
 		public boolean isSelectActive(RenderContext context) {
 			return context.map(FormSelectTag.SELECT_ACTIVE_VARIABLE_NAME).equals(Boolean.TRUE);
 		}
 
+		@Override
+		public void render(RenderContext context) throws RenderException {
+			if (!this.isSelectActive(context)) {
+				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
+			}
+			
+			context = context.isolatedModel();
+			context.with("option", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
+			block.render(context);
+		}
+	}
+	
+	protected class Data extends AbstractFormElementData {
+		private String label;
+		
+		protected Data(String label, RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+			this.label = label;
+		}
+		
 		public String getValue() {
 			return this.getAttributeValue("value");
 		}
@@ -48,24 +78,16 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 			return this.getAttributeCollection().hasAttribute("disabled");
 		}
 		
-		public BindStatus getBindStatus(RenderContext context) {
-			return (BindStatus) context.map(FormSelectTag.SELECT_BIND_STATUS_VARIABLE_NAME);
+		public boolean isSelected() {
+			return SelectedValueComparator.isSelected(this.getBindStatus(), this.getValue());
 		}
-
-		@Override
-		public void render(RenderContext context) throws RenderException {
-			if (!this.isSelectActive(context)) {
-				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
-			}
-
-			try {
-				context.write(("<option value=\"" + this.escapeHtml(this.getValue()) + "\"" + (this.isDisabled() ? " disabled=\"disabled\"" : "")
-						+ (SelectedValueComparator.isSelected(this.getBindStatus(context), this.getValue()) ? " selected=\"selected\"" : "")
-						+ this.concatDynamicAttributes() + ">").getBytes());
-				this.getContent().render(context);
-				context.write(("</option>").getBytes());
-			} catch (IOException e) {
-			}
+		
+		public BindStatus getBindStatus() {
+			return (BindStatus) this.getContext().map(FormSelectTag.SELECT_BIND_STATUS_VARIABLE_NAME);
+		}
+		
+		public String getLabel() {
+			return this.label;
 		}
 	}
 }

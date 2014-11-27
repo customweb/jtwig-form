@@ -31,7 +31,7 @@ public class FormTokenAddon extends FormElementAddon<FormTokenTag> {
 
 	@Override
 	public FormTokenTag instance() {
-		return new FormTokenTag(getTokenGenerator());
+		return new FormTokenTag(tokenGenerator);
 	}
 
 }

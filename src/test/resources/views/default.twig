@@ -1,19 +1,34 @@
-{% form:form method="post" action="http://www.sellxed.com" model="dataobject" errors="errors" %}
+{% form:form method="post" test="test" action="http://www.sellxed.com" model="dataobject" key="value" %}
 	{% form:label path="active" class="form-label" %}Active{% endform:label %}
-	{% form:checkbox value="testValue" path="active" label="Is active?" disabled %}{% endform:checkbox %}
-	{% form:multicheckbox items="itemlist" path="active" %}{% endform:multicheckbox %}
-	{% form:hidden path="active" %}{% endform:hidden %}
-	{% form:input path="active" disabled %}{% endform:input %}
+	{% form:input path="active" test="test" disabled %}{% endform:input %}
+	
+	{% form:hidden path="active" test="test" %}{% endform:hidden %}
+	
+	{% form:checkbox path="active" value="test" label="My Label" test="test" disabled %}{% endform:checkbox %}
+	
+	{% form:radio path="active" value="testValue" label="My Label" test="test" %}{% endform:radio %}
+	
+	{% form:password path="active" test="test" showpassword %}{% endform:password %}
+	
+	{% form:textarea path="active" test="lake" disabled %}{% endform:textarea %}
+	
+	{% form:button name="test" %}{% endform:button %}
+	
+	{% form:select path="active" items="itemlist" %}{% endform:select %}
+	
 	{% form:select path="active" %}
-		{% form:option value="my_value" label="Label" %}{% endform:option %}
+		{% form:multioption items="itemlist" %}{% endform:multioption %}
 	{% endform:select %}
+	
 	{% form:select path="active" %}
-		{% form:multioption items="itemlist" path="active" %}{% endform:multioption %}
+		{% form:option value="val" disabled %}Key{% endform:option %}
+		{% form:option value="testValue" %}Label{% endform:option %}
 	{% endform:select %}
-	{% form:password path="active" disabled %}{% endform:password %}
-	{% form:radio value="testValue" path="active" label="Is active?" disabled %}{% endform:radio %}
-	{% form:multiradio items="itemlist" path="active" %}{% endform:multiradio %}
-	{% form:select items="itemlist" path="active" %}{% endform:select %}
-	{% form:textarea path="active" disabled cols="2" rows="4" %}{% endform:textarea %}
-	{% form:errors path="active" class="alert" %}{% endform:errors %}
+	
+	{% form:multicheckbox path="active" items="itemlist" %}{% endform:multicheckbox %}
+	
+	{% form:multiradio path="active" items="itemlist" %}{% endform:multiradio %}
+	
+	{% form:errors path="active" %}{% endform:errors %}
+	
 {% endform:form %}

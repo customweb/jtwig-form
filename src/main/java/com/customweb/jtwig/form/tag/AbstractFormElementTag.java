@@ -1,13 +1,11 @@
 package com.customweb.jtwig.form.tag;
 
-import org.springframework.util.ObjectUtils;
-import org.springframework.web.util.HtmlUtils;
-
 import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
+import com.lyncode.jtwig.render.RenderContext;
 
 abstract public class AbstractFormElementTag<T extends AbstractFormElementTag<T>> extends AbstractAttributeTag<T> {
 
@@ -22,17 +20,15 @@ abstract public class AbstractFormElementTag<T extends AbstractFormElementTag<T>
 		protected AbstractFormElementCompiled(Renderable content, AttributeCollection attributeCollection) {
 			super(content, attributeCollection);
 		}
-
+	}
+	
+	abstract public class AbstractFormElementData extends AbstractAttributeModelData {
+		protected AbstractFormElementData(RenderContext context, AttributeCollection attributeCollection) {
+			super(context, attributeCollection);
+		}
+		
 		public boolean isHtmlEscape() {
 			return this.getAttributeCollection().hasAttribute("htmlescape");
-		}
-
-		public String escapeHtml(Object input) {
-			if (this.isHtmlEscape()) {
-				return HtmlUtils.htmlEscape((String) input);
-			} else {
-				return ObjectUtils.nullSafeToString(input);
-			}
 		}
 	}
 
