@@ -49,7 +49,6 @@ Dynamic attributes are allowed.
 | name        | false     |             | The name attribute for the HTML button tag. |
 | value       | false     |             | The value attribute for the HTML button tag. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Checkbox ####
 Renders an HTML 'input' tag with type 'checkbox'.
@@ -69,7 +68,6 @@ Dynamic attributes are allowed.
 | value       | false     |             | The value attribute for the HTML input tag. Required when binding to non-boolean values. |
 | label       | false     |             | Value to be displayed as part of the tag. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Errors ####
 Renders field errors.
@@ -86,9 +84,6 @@ Dynamic attributes are allowed.
 | ----------- | --------- | ----------- | ----------- |
 | path        | true      |             | Path to property for data binding. |
 | id          | false     | = path      | The id attribute for the HTML tag. |
-| element     | false     | <span>      | Specifies the HTML element that is used to render the enclosing errors. |
-| delimiter   | false     | <br/>       | Delimiter for displaying multiple error messages. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Hidden Input ####
 Renders an HTML 'input' tag with type 'hidden' using the bound value.
@@ -106,7 +101,6 @@ Dynamic attributes are allowed.
 | path        | true      |             | Path to property for data binding. |
 | id          | false     | = path      | The id attribute for the HTML input tag. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Text Input ####
 Renders an HTML 'input' tag with type 'text' using the bound value.
@@ -124,7 +118,6 @@ Dynamic attributes are allowed.
 | path        | true      |             | Path to property for data binding. |
 | id          | false     | = path      | The id attribute for the HTML input tag. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Label ####
 Renders a form field label in an HTML 'label' tag.
@@ -140,7 +133,6 @@ Dynamic attributes are allowed.
 | Attribute   | Required  | Default     | Description |
 | ----------- | --------- | ----------- | ----------- |
 | path        | true      |             | Path to property for data binding. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Multi Checkboxes ####
 Renders multiple HTML 'input' tags with type 'checkbox'.
@@ -160,9 +152,7 @@ Dynamic attributes are allowed.
 | items       | true      |             | The Collection, Map or array of objects used to generate the HTML 'input' tags with type 'checkbox'. |
 | itemLabel   | false     |             | Name of the property mapped to the label to be displayed as part of the HTML 'input' tags with type 'checkbox'. |
 | itemValue   | false     |             | Name of the property mapped to 'value' attribute of the HTML 'input' tags with type 'checkbox'. |
-| element     | false     | <span>      | Specifies the HTML element that is used to enclose each HTML 'input' tag with type 'checkbox'. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Multi Options ####
 Renders a list of HTML 'option' tags. Sets 'selected' as appropriate based on bound value.
@@ -184,7 +174,6 @@ Dynamic attributes are allowed.
 | items       | true      |             | The Collection, Map or array of objects used to generate the HTML 'option' tags. |
 | itemLabel   | false     |             | Name of the property mapped to the inner text of the HTML 'option' tags. |
 | itemValue   | false     |             | Name of the property mapped to 'value' attribute of the HTML 'option' tags. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Multi Radio Buttons ####
 Renders multiple HTML 'input' tags with type 'radio'.
@@ -204,9 +193,7 @@ Dynamic attributes are allowed.
 | items       | true      |             | The Collection, Map or array of objects used to generate the HTML 'input' tags with type 'radio'. |
 | itemLabel   | false     |             | Name of the property mapped to the label to be displayed as part of the HTML 'input' tags with type 'radio'. |
 | itemValue   | false     |             | Name of the property mapped to 'value' attribute of the HTML 'input' tags with type 'radio'. |
-| element     | false     | <span>      | Specifies the HTML element that is used to enclose each HTML 'input' tag with type 'radio'. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Option ####
 Renders a single HTML 'option'. Sets 'selected' as appropriate based on bound value.
@@ -229,7 +216,6 @@ Dynamic attributes are allowed.
 | ----------- | --------- | ----------- | ----------- |
 | value       | true      |             | The 'value' attribute of the HTML 'option' tag. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Password Input ####
 Renders an HTML 'input' tag with type 'password' using the bound value.
@@ -248,7 +234,6 @@ Dynamic attributes are allowed.
 | id            | false     | = path      | The id attribute for the HTML input tag. |
 | showpassword  | false     | false       | Setting this attribute (without a value) will show the password. |
 | disabled      | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape    | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Radio Button ####
 Renders an HTML 'input' tag with type 'radio'.
@@ -268,7 +253,6 @@ Dynamic attributes are allowed.
 | value       | false     |             | The value attribute for the HTML input tag. Required when binding to non-boolean values. |
 | label       | false     |             | Value to be displayed as part of the tag. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Select ####
 Renders an HTML 'select' element. Supports databinding to the selected option.
@@ -290,7 +274,6 @@ Dynamic attributes are allowed.
 | itemValue   | false     |             | Name of the property mapped to 'value' attribute of the HTML 'input' tags with type 'radio'. |
 | multiple    | false     | false       | Setting this attribute (without a value) will allow multiple values to be selected. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 #### Textarea ####
 Renders an HTML 'textarea'.
@@ -308,7 +291,6 @@ Dynamic attributes are allowed.
 | path        | true      |             | Path to property for data binding. |
 | id          | false     | = path      | The id attribute for the HTML textarea tag. |
 | disabled    | false     | false       | Setting this attribute (without a value) will disable the HTML element. |
-| htmlescape  | false     | false       | Setting this attribute (without a value) will enable HTML escaping of rendered values. |
 
 ### CSRF Protection ###
 The Jtwig form library comes with a CSRF protection mechanism.

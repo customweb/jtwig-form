@@ -17,6 +17,7 @@ import com.customweb.jtwig.form.addon.element.FormTextareaAddon;
 import com.customweb.jtwig.form.addon.element.FormTokenAddon;
 import com.customweb.jtwig.form.tag.FormTag;
 import com.customweb.jtwig.lib.attribute.AttributeAddon;
+import com.customweb.jtwig.lib.path.PathHandler;
 import com.customweb.jtwig.lib.template.ResourceHandler;
 import com.lyncode.jtwig.configuration.JtwigConfiguration;
 import com.lyncode.jtwig.parser.config.ParserConfiguration;
@@ -26,8 +27,14 @@ public class FormAddon extends AttributeAddon<FormTag> {
 	
 	private static ResourceHandler resourceHandler = new ResourceHandler();
 	
+	private static PathHandler pathHandler = new PathHandler();
+	
 	public static ResourceHandler getResourceHandler() {
 		return resourceHandler;
+	}
+	
+	public static PathHandler getPathHandler() {
+		return pathHandler;
 	}
 		
 	public static void addons(JtwigConfiguration config) {

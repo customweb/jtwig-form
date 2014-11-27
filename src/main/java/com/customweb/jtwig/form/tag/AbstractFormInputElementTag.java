@@ -3,6 +3,7 @@ package com.customweb.jtwig.form.tag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.render.RenderContext;
 
@@ -11,6 +12,7 @@ abstract public class AbstractFormInputElementTag<T extends AbstractFormInputEle
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
+		attributeDefinitions.add(new NamedAttributeDefinition("name", false));
 		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
 		return attributeDefinitions;
 	}
@@ -24,6 +26,15 @@ abstract public class AbstractFormInputElementTag<T extends AbstractFormInputEle
 	abstract public class AbstractFormInputElementData extends AbstractDataBoundFormElementData {
 		protected AbstractFormInputElementData(RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
+		}
+		
+		@Override
+		public String getName() {
+			if (this.getAttributeCollection().hasAttribute("name")) {
+				return this.getAttributeValue("name");
+			} else {
+				return super.getName();
+			}
 		}
 		
 		public boolean isDisabled() {

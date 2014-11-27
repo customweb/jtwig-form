@@ -10,7 +10,6 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.util.HtmlUtils;
 
 import com.customweb.jtwig.form.tag.FormTag;
 import com.lyncode.jtwig.render.RenderContext;
@@ -19,8 +18,6 @@ import com.lyncode.jtwig.types.Undefined;
 public class BindStatus {
 
 	private final String path;
-
-	private final boolean htmlEscape;
 
 	private final String expression;
 
@@ -39,9 +36,8 @@ public class BindStatus {
 	private List<String> errorMessages = new ArrayList<String>();
 
 	@SuppressWarnings("unchecked")
-	public BindStatus(RenderContext context, String path, boolean htmlEscape) {
+	public BindStatus(RenderContext context, String path) {
 		this.path = path;
-		this.htmlEscape = htmlEscape;
 
 		String beanName;
 		int dotPos = path.indexOf('.');
@@ -67,9 +63,9 @@ public class BindStatus {
 
 		Object errorTargetName = context.map(FormTag.ERRORS_ATTRIBUTE_VARIABLE_NAME);
 		if (errorTargetName != null && errorTargetName instanceof String) {
-			
+
 		}
-		
+
 		Object errorTarget = this.getErrorTarget(context);
 		if (errorTarget != null && errorTarget instanceof Errors) {
 			this.errors = (Errors) errorTarget;
@@ -84,7 +80,7 @@ public class BindStatus {
 			this.errors = null;
 		}
 	}
-	
+
 	private Object getErrorTarget(RenderContext context) {
 		Object errorTargetName = context.map(FormTag.ERRORS_ATTRIBUTE_VARIABLE_NAME);
 		if (errorTargetName == null || !(errorTargetName instanceof String)) {
@@ -103,8 +99,7 @@ public class BindStatus {
 	private void initErrorMessages() throws NoSuchMessageException {
 		for (int i = 0; i < this.objectErrors.size(); i++) {
 			ObjectError error = this.objectErrors.get(i);
-			this.errorMessages.add(this.htmlEscape ? HtmlUtils.htmlEscape(error.getDefaultMessage()) : error
-					.getDefaultMessage());
+			this.errorMessages.add(error.getDefaultMessage());
 		}
 	}
 
@@ -129,8 +124,7 @@ public class BindStatus {
 	}
 
 	public String getDisplayValue() {
-		String displayValue = ObjectUtils.getDisplayString(this.value);
-		return (this.htmlEscape ? HtmlUtils.htmlEscape(displayValue) : displayValue);
+		return ObjectUtils.getDisplayString(this.value);
 	}
 
 	public boolean isError() {

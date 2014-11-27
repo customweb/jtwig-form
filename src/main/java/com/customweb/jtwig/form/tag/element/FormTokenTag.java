@@ -7,7 +7,6 @@ import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.form.tag.FormTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
@@ -25,7 +24,6 @@ public class FormTokenTag extends AbstractFormElementTag<FormTokenTag> {
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new EmptyAttributeDefinition("htmlescape"));
 		attributeDefinitions.setAllowDynamicAttributes(false);
 		return attributeDefinitions;
 	}

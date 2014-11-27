@@ -64,7 +64,7 @@ public class AbstractDataBoundFormElementTag<T extends AbstractDataBoundFormElem
 				if (pathToUse.endsWith(PropertyAccessor.NESTED_PROPERTY_SEPARATOR)) {
 					pathToUse = pathToUse.substring(0, pathToUse.length() - 1);
 				}
-				this.bindStatus = new BindStatus(this.getContext(), pathToUse, this.isHtmlEscape());
+				this.bindStatus = new BindStatus(this.getContext(), pathToUse);
 			}
 			return this.bindStatus;
 		}
