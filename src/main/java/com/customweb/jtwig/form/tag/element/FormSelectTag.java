@@ -59,15 +59,16 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 			if (this.hasItems()) {
 				ByteArrayOutputStream optionRenderStream = new ByteArrayOutputStream();
 				for (Object item : this.getItems(context)) {
-					context = context.isolatedModel();
-					context.with("option", new OptionData(item, context, this.getAttributeCollection()));
-					this.option.render(context.newRenderContext(optionRenderStream));
+					RenderContext itemContext = context.isolatedModel();
+					itemContext.with("option", new OptionData(item, itemContext, this.getAttributeCollection()));
+					this.option.render(itemContext.newRenderContext(optionRenderStream));
 				}
 				content = optionRenderStream.toString();
 			} else {
-				context.with(SELECT_ACTIVE_VARIABLE_NAME, true);
-				context.with(SELECT_BIND_STATUS_VARIABLE_NAME, new Data("", context, this.getAttributeCollection()).getBindStatus());
-				content = this.renderContentAsString(context);
+				RenderContext itemContext = context.isolatedModel();
+				itemContext.with(SELECT_ACTIVE_VARIABLE_NAME, true);
+				itemContext.with(SELECT_BIND_STATUS_VARIABLE_NAME, new Data("", itemContext, this.getAttributeCollection()).getBindStatus());
+				content = this.renderContentAsString(itemContext);
 			}
 
 			context.with("select", new Data(content, context, this.getAttributeCollection()));
