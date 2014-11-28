@@ -9,7 +9,7 @@ public class FormTokenAddon extends FormElementAddon<FormTokenTag> {
 	
 	private static AbstractTokenGenerator tokenGenerator;
 	
-	public static void setTokenGeneratorClass(Class<AbstractTokenGenerator> tokenGeneratorClass) throws InstantiationException, IllegalAccessException {
+	public static void setTokenGeneratorClass(Class<? extends AbstractTokenGenerator> tokenGeneratorClass) throws InstantiationException, IllegalAccessException {
 		tokenGenerator = tokenGeneratorClass.newInstance();
 	}
 	

@@ -5,7 +5,7 @@ import com.customweb.jtwig.lib.path.IPathResolver;
 
 public abstract class AbstractPathResolver implements IPathResolver {
 
-	public void register() {
+	public final void register() {
 		FormAddon.getPathHandler().addResolver(this);
 	}
 

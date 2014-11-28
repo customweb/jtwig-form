@@ -5,7 +5,7 @@ import com.customweb.jtwig.lib.template.IResourceResolver;
 
 public abstract class AbstractResourceResolver implements IResourceResolver {
 
-	public void register() {
+	public final void register() {
 		FormAddon.getResourceHandler().addResolver(this);
 	}
 

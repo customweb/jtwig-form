@@ -14,11 +14,17 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.util.ObjectUtils;
 
+import com.customweb.jtwig.form.addon.element.FormTokenAddon;
+
 abstract public class AbstractTokenGenerator {
 	
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("yyyyMMddHHmmss");
 
 	private static final String HMAC_ALGORITHM = "HmacSHA256";
+	
+	public final void register() throws InstantiationException, IllegalAccessException {
+		FormTokenAddon.setTokenGeneratorClass(this.getClass());
+	}
 	
 	/**
 	 * Return the number of seconds, after which the token is considered invalid (timeout).
