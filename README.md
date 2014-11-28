@@ -26,7 +26,7 @@ Renders an HTML 'form' tag and exposes a binding path to inner tags for binding.
 
 | Attribute   | Required  | Default     | Description |
 | ----------- | --------- | ----------- | ----------- |
-| action      | false     |             | Specifies an address (url) where to submit the form. |
+| action      | false     |             | Specifies an address (url) where to submit the form. The value is given to the path resolver handler. |
 | method      | false     | post        | Specifies the HTTP method used when submitting the form. |
 | model       | false     | formModel   | Name of the JtwigModelMap entry under which the form object is exposed. |
 | errors      | false     | formErrors  | Name of the JtwigModelMap entry unter which the form errors are exposed. |
@@ -73,7 +73,7 @@ Dynamic attributes are allowed.
 Renders field errors.
 
 ```twig
-{% form:errors %}{% endform:errors %}
+{% form:errors path="..." %}{% endform:errors %}
 ```
 
 The tag's content is ignored.
@@ -315,6 +315,22 @@ The validation of the token is done using the token generator again by calling t
 ```java
 FormTokenAddon.getTokenGenerator().validate(receivedToken);
 ```
+
+### Templates ###
+Each element has it's own template. By defining a custom resource resolver, you can override those and use your own templates.
+
+First, write an implementation by extending `com.customweb.jtwig.form.model.AbstractResourceResolver`.
+
+```java
+public class MyResourceResolver extends AbstractResourceResolver {
+	@Override
+	public JtwigResource resolve(String resourceName) throws ResourceException {
+		...
+	}
+}
+```
+
+Then, register the resolver by calling it's register method.
 
 ### Spring Integration ###
 To use the form tags, they have to be registered first.
