@@ -32,28 +32,24 @@ public class FormTokenTag extends AbstractFormElementTag<FormTokenTag> {
 		}
 	}
 
-	private class Compiled extends AbstractFormElementCompiled {
+	private class Compiled extends AbstractFormElementTag<FormTokenTag>.Compiled {
 		private AbstractTokenGenerator tokenGenerator;
-		private Renderable block;
 		
 		protected Compiled(AbstractTokenGenerator tokenGenerator, Renderable block, AttributeCollection attributeCollection) {
-			super(null, attributeCollection);
+			super(block, null, attributeCollection);
 			if (tokenGenerator == null) {
 				throw new RuntimeException("The token generator class has not been defined.");
 			}
 			this.tokenGenerator = tokenGenerator;
-			this.block = block;
 		}
-
+		
 		@Override
-		public void render(RenderContext context) throws RenderException {
-			context = context.isolatedModel();
-			context.with("el", new Data(tokenGenerator, context, this.getAttributeCollection()));
-			block.render(context);
+		public void prepareContext(RenderContext context) throws RenderException {
+			context.with("token", new Data(tokenGenerator, context, this.getAttributeCollection()));
 		}
 	}
 	
-	protected class Data extends AbstractFormElementData {
+	protected class Data extends AbstractFormElementTag<FormTokenTag>.Data {
 		private AbstractTokenGenerator tokenGenerator;
 		
 		protected Data(AbstractTokenGenerator tokenGenerator, RenderContext context, AttributeCollection attributeCollection) {

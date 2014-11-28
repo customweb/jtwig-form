@@ -3,7 +3,6 @@ package com.customweb.jtwig.form.tag;
 import org.springframework.beans.PropertyAccessor;
 
 import com.customweb.jtwig.form.addon.FormAddon;
-import com.customweb.jtwig.lib.attribute.model.AbstractAttributeTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
@@ -17,7 +16,7 @@ import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.resource.JtwigResource;
 
-public class FormTag extends AbstractAttributeTag<FormTag> {
+public class FormTag extends AbstractFormTag<FormTag> {
 
 	private static final String DEFAULT_METHOD = "post";
 
@@ -57,12 +56,9 @@ public class FormTag extends AbstractAttributeTag<FormTag> {
 		}
 	}
 
-	private class Compiled extends AbstractAttributeModelCompiled {
-		private Renderable block;
-		
+	private class Compiled extends AbstractFormTag<FormTag>.Compiled {
 		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
-			this.block = block;
+			super(block, content, attributeCollection);
 		}
 
 		public String getId() {
@@ -86,8 +82,7 @@ public class FormTag extends AbstractAttributeTag<FormTag> {
 		}
 
 		@Override
-		public void render(RenderContext context) throws RenderException {
-			context = context.isolatedModel();
+		public void prepareContext(RenderContext context) throws RenderException {
 			context.with(MODEL_ATTRIBUTE_VARIABLE_NAME, this.getModelAttribute());
 			context.with(ERRORS_ATTRIBUTE_VARIABLE_NAME, this.getErrorsAttribute());
 			context.with(NESTED_PATH_VARIABLE_NAME, this.getModelAttribute()
@@ -95,12 +90,10 @@ public class FormTag extends AbstractAttributeTag<FormTag> {
 			context.with(FORM_ID_ATTRIBUTE_NAME, this.getId());
 			
 			context.with("form", new Data(this.getId(), this.renderContentAsString(context), context, this.getAttributeCollection()));
-			
-			block.render(context);
 		}
 	}
 	
-	public class Data extends AbstractAttributeModelData {
+	public class Data extends AbstractFormTag<FormTag>.Data {
 		private String id;
 		private String content;
 		

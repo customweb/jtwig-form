@@ -17,14 +17,14 @@ abstract public class AbstractFormInputElementTag<T extends AbstractFormInputEle
 		return attributeDefinitions;
 	}
 
-	abstract protected class AbstractFormInputElementCompiled extends AbstractDataBoundFormElementCompiled {
-		protected AbstractFormInputElementCompiled(Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
+	abstract protected class Compiled extends AbstractDataBoundFormElementTag<T>.Compiled {
+		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
+			super(block, content, attributeCollection);
 		}
 	}
 	
-	abstract public class AbstractFormInputElementData extends AbstractDataBoundFormElementData {
-		protected AbstractFormInputElementData(RenderContext context, AttributeCollection attributeCollection) {
+	abstract public class Data extends AbstractDataBoundFormElementTag<T>.Data {
+		protected Data(RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
 		}
 		

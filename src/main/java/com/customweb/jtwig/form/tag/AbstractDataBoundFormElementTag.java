@@ -24,16 +24,16 @@ public class AbstractDataBoundFormElementTag<T extends AbstractDataBoundFormElem
 		return attributeDefinitions;
 	}
 
-	protected abstract class AbstractDataBoundFormElementCompiled extends AbstractFormElementCompiled {
-		protected AbstractDataBoundFormElementCompiled(Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
+	protected abstract class Compiled extends AbstractFormElementTag<T>.Compiled {
+		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
+			super(block, content, attributeCollection);
 		}
 	}
 	
-	abstract public class AbstractDataBoundFormElementData extends AbstractFormElementData {
+	abstract public class Data extends AbstractFormElementTag<T>.Data {
 		private BindStatus bindStatus;
 		
-		protected AbstractDataBoundFormElementData(RenderContext context, AttributeCollection attributeCollection) {
+		protected Data(RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
 		}
 		

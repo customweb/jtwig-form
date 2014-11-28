@@ -38,12 +38,9 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 		}
 	}
 
-	private class Compiled extends AbstractFormElementCompiled {
-		private Renderable block;
-		
+	private class Compiled extends AbstractFormElementTag<FormOptionTag>.Compiled {
 		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
-			this.block = block;
+			super(block, content, attributeCollection);
 		}
 		
 		public boolean isSelectActive(RenderContext context) {
@@ -58,11 +55,11 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 			
 			context = context.isolatedModel();
 			context.with("option", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
-			block.render(context);
+			this.getBlock().render(context);
 		}
 	}
 	
-	protected class Data extends AbstractFormElementData {
+	protected class Data extends AbstractFormElementTag<FormOptionTag>.Data {
 		private String label;
 		
 		protected Data(String label, RenderContext context, AttributeCollection attributeCollection) {

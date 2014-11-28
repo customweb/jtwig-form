@@ -36,23 +36,18 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 		}
 	}
 
-	private class Compiled extends AbstractFormInputElementCompiled {
-		private Renderable block;
-		
+	private class Compiled extends AbstractFormInputElementTag<FormRadioTag>.Compiled {
 		protected Compiled(Renderable block, AttributeCollection attributeCollection) {
-			super(null, attributeCollection);
-			this.block = block;
+			super(block, null, attributeCollection);
 		}
-
+		
 		@Override
-		public void render(RenderContext context) throws RenderException {
-			context = context.isolatedModel();
-			context.with("el", new Data(context, this.getAttributeCollection()));
-			block.render(context);
+		public void prepareContext(RenderContext context) throws RenderException {
+			context.with("radio", new Data(context, this.getAttributeCollection()));
 		}
 	}
 	
-	protected class Data extends AbstractFormInputElementData {
+	protected class Data extends AbstractFormInputElementTag<FormRadioTag>.Data {
 		protected Data(RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
 		}

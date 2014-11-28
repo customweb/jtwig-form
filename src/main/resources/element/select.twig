@@ -1,1 +1,1 @@
-<select id="{{ el.id }}" name="{{ el.name }}" {% if el.disabled %}disabled="disabled"{% endif %} {% if el.multiple %}multiple="multiple"{% endif %} {{ el.dynamicAttributes|join(' ') }}>{{ el.options }}</select>
+<select id="{{ select.id }}" name="{{ select.name }}" {% if select.disabled %}disabled="disabled"{% endif %} {% if select.multiple %}multiple="multiple"{% endif %} {{ select.dynamicAttributes|join(' ') }}>{{ select.options }}</select>

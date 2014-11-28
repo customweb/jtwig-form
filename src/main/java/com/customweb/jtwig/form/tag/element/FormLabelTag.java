@@ -34,23 +34,18 @@ public class FormLabelTag extends AbstractFormElementTag<FormLabelTag> {
 		}
 	}
 
-	private class Compiled extends AbstractFormElementCompiled {
-		private Renderable block;
-		
+	private class Compiled extends AbstractFormElementTag<FormLabelTag>.Compiled {
 		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
-			this.block = block;
+			super(block, content, attributeCollection);
 		}
 
 		@Override
-		public void render(RenderContext context) throws RenderException {
-			context = context.isolatedModel();
-			context.with("el", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
-			block.render(context);
+		public void prepareContext(RenderContext context) throws RenderException {
+			context.with("label", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
 		}
 	}
 	
-	protected class Data extends AbstractFormElementData {
+	protected class Data extends AbstractFormElementTag<FormLabelTag>.Data {
 		private String label;
 		
 		protected Data(String label, RenderContext context, AttributeCollection attributeCollection) {

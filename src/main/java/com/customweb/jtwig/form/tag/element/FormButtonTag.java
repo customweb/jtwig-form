@@ -39,23 +39,18 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 		}
 	}
 	
-	private class Compiled extends AbstractFormElementCompiled {
-		private Renderable block;
-		
+	private class Compiled extends AbstractFormElementTag<FormButtonTag>.Compiled {
 		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
-			this.block = block;
+			super(block, content, attributeCollection);
 		}
 
 		@Override
-		public void render(RenderContext context) throws RenderException {
-			context = context.isolatedModel();
-			context.with("el", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
-			block.render(context);
+		public void prepareContext(RenderContext context) throws RenderException {
+			context.with("button", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
 		}
 	}
 	
-	public class Data extends AbstractFormElementData {
+	public class Data extends AbstractFormElementTag<FormButtonTag>.Data {
 		private String label;
 		
 		protected Data(String label, RenderContext context, AttributeCollection attributeCollection) {

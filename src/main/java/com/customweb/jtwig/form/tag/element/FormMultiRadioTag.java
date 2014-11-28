@@ -38,35 +38,31 @@ public class FormMultiRadioTag extends AbstractFormMultiElementTag<FormMultiRadi
 		}
 	}
 
-	private class Compiled extends AbstractFormMultiElementCompiled {
-		private Renderable block;
+	private class Compiled extends AbstractFormMultiElementTag<FormMultiRadioTag>.Compiled {
 		private Renderable item;
 		
 		protected Compiled(Renderable block, Renderable item, Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
-			this.block = block;
+			super(block, content, attributeCollection);
 			this.item = item;
 		}
-
+		
 		@Override
-		public void render(RenderContext context) throws RenderException {
+		public void prepareContext(RenderContext context) throws RenderException {
 			List<String> itemsContent = new ArrayList<String>();
 			for (Object item : this.getItems(context)) {
 				ByteArrayOutputStream itemsRenderStream = new ByteArrayOutputStream();
-				context = context.isolatedModel();
-				context.with("el", new ItemData(item, context, this.getAttributeCollection()));
-				this.item.render(context.newRenderContext(itemsRenderStream));
+				RenderContext itemContext = context.isolatedModel();
+				itemContext.with("radio", new ItemData(item, itemContext, this.getAttributeCollection()));
+				this.item.render(itemContext.newRenderContext(itemsRenderStream));
 				itemsContent.add(itemsRenderStream.toString());
 			}
 			
 			Data data = new Data(itemsContent, context, this.getAttributeCollection());
-			context = context.isolatedModel();
-			context.with("el", data);
-			block.render(context);
+			context.with("multiradio", data);
 		}
 	}
 	
-	protected class Data extends AbstractFormMultiElementData {		
+	protected class Data extends AbstractFormMultiElementTag<FormMultiRadioTag>.Data {		
 		protected Data(List<String> items, RenderContext context, AttributeCollection attributeCollection) {
 			super(items, context, attributeCollection);
 		}
@@ -76,7 +72,7 @@ public class FormMultiRadioTag extends AbstractFormMultiElementTag<FormMultiRadi
 		}
 	}
 	
-	protected class ItemData extends AbstractFormMultiElementItemData {
+	protected class ItemData extends AbstractFormMultiElementTag<FormMultiRadioTag>.ItemData {
 		protected ItemData(Object item, RenderContext context, AttributeCollection attributeCollection) {
 			super(item, context, attributeCollection);
 		}

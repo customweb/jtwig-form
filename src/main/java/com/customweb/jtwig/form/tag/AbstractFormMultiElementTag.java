@@ -27,9 +27,9 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 		return attributeDefinitions;
 	}
 
-	abstract protected class AbstractFormMultiElementCompiled extends AbstractFormInputElementCompiled {
-		protected AbstractFormMultiElementCompiled(Renderable content, AttributeCollection attributeCollection) {
-			super(content, attributeCollection);
+	abstract protected class Compiled extends AbstractFormInputElementTag<T>.Compiled {
+		protected Compiled(Renderable block, Renderable content, AttributeCollection attributeCollection) {
+			super(block, content, attributeCollection);
 		}
 		
 		public boolean hasItems() {
@@ -47,10 +47,10 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 		}
 	}
 	
-	abstract public class AbstractFormMultiElementData extends AbstractFormInputElementData {
+	abstract public class Data extends AbstractFormInputElementTag<T>.Data {
 		private List<String> items;
 		
-		protected AbstractFormMultiElementData(List<String> items, RenderContext context, AttributeCollection attributeCollection) {
+		protected Data(List<String> items, RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
 			this.items = items;
 		}
@@ -60,10 +60,10 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 		}
 	}
 	
-	abstract public class AbstractFormMultiElementItemData extends AbstractDataBoundFormElementData {
+	abstract public class ItemData extends AbstractFormInputElementTag<T>.Data {
 		private Object item;
 		
-		protected AbstractFormMultiElementItemData(Object item, RenderContext context, AttributeCollection attributeCollection) {
+		protected ItemData(Object item, RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
 			this.item = item;
 		}

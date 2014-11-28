@@ -1,1 +1,1 @@
-<button {% if el.id %}id="{{ el.id }}"{% endif %} {% if el.name %}name="{{ el.name }}"{% endif %} type="submit" value="{{ el.value }}" {% if el.disabled %}disabled="disabled"{% endif %} {{ el.dynamicAttributes|join(' ') }}>{{ el.label }}</button>
+<button {% if button.id %}id="{{ button.id }}"{% endif %} {% if button.name %}name="{{ button.name }}"{% endif %} type="submit" value="{{ button.value }}" {% if button.disabled %}disabled="disabled"{% endif %} {{ button.dynamicAttributes|join(' ') }}>{{ button.label }}</button>
