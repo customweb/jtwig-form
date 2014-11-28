@@ -349,14 +349,7 @@ The usage of the CSRF protection in spring is easy. To activate it, enable aspec
 ```xml
 <bean class="com.customweb.jtwig.form.spring.TokenMethodInterceptor" />
 
-<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-  <property name="staticMethod" value="com.customweb.jtwig.form.addon.element.FormTokenAddon.setTokenGeneratorClass"/>
-  <property name="arguments">
-    <list>
-      <value>my.package.MyTokenGenerator</value>
-    </list>
-  </property>
-</bean>
+<bean class="my.package.MyTokenGenerator" init-method="register"/>
 ```
 
 After it is configured, the CSRF protection can be used by annotating the controller action method that receives the form data with `@TokenProtection`.
@@ -372,4 +365,10 @@ public class MyController {
 	  ...
 	}
 }
+```
+#### Templates ####
+To use a custom resource resolver, it can be registered in the spring configuration:
+
+```xml
+<bean class="my.package.MyResourceResolver" init-method="register"/>
 ```
