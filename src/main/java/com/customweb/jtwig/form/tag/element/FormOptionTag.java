@@ -43,13 +43,13 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 			super(block, content, attributeCollection);
 		}
 		
-		public boolean isSelectActive(RenderContext context) {
-			return context.map(FormSelectTag.SELECT_ACTIVE_VARIABLE_NAME).equals(Boolean.TRUE);
+		public boolean isInSelectContext(RenderContext context) {
+			return context.map(FormSelectTag.SELECT_CONTEXT_VARIABLE_NAME).equals(Boolean.TRUE);
 		}
 
 		@Override
 		public void render(RenderContext context) throws RenderException {
-			if (!this.isSelectActive(context)) {
+			if (!this.isInSelectContext(context)) {
 				throw new RuntimeException("The 'option' tag can only be used inside a valid 'select' tag.");
 			}
 			

@@ -21,7 +21,7 @@ import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 
-	public static final String SELECT_ACTIVE_VARIABLE_NAME = FormSelectTag.class.getName() + ".active";
+	public static final String SELECT_CONTEXT_VARIABLE_NAME = FormSelectTag.class.getName() + ".context";
 
 	public static final String SELECT_BIND_STATUS_VARIABLE_NAME = FormSelectTag.class.getName() + ".bindStatus";
 
@@ -65,10 +65,10 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 				}
 				content = optionRenderStream.toString();
 			} else {
-				RenderContext itemContext = this.isolatedModel(context);
-				itemContext.with(SELECT_ACTIVE_VARIABLE_NAME, true);
-				itemContext.with(SELECT_BIND_STATUS_VARIABLE_NAME, new Data("", itemContext, this.getAttributeCollection()).getBindStatus());
-				content = this.renderContentAsString(itemContext);
+				RenderContext contentContext = this.isolatedModel(context);
+				contentContext.with(SELECT_CONTEXT_VARIABLE_NAME, true);
+				contentContext.with(SELECT_BIND_STATUS_VARIABLE_NAME, new Data("", contentContext, this.getAttributeCollection()).getBindStatus());
+				content = this.renderContentAsString(contentContext);
 			}
 
 			context.with("select", new Data(content, context, this.getAttributeCollection()));
