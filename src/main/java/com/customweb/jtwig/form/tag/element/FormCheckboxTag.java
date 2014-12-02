@@ -64,10 +64,7 @@ public class FormCheckboxTag extends AbstractFormInputElementTag<FormCheckboxTag
 		}
 		
 		public String getLabel() {
-			if (!this.getAttributeCollection().hasAttribute("label")) {
-				return null;
-			}
-			return this.getAttributeValue("label");
+			return this.getAttributeValue("label", null);
 		}
 
 		public boolean isChecked() {

@@ -58,18 +58,11 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 		}
 		
 		public String getValue() {
-			if (this.getAttributeCollection().hasAttribute("value")) {
-				return this.getAttributeValue("value");
-			} else {
-				return "";
-			}
+			return this.getAttributeValue("value", "");
 		}
 		
 		public String getLabel() {
-			if (!this.getAttributeCollection().hasAttribute("label")) {
-				return null;
-			}
-			return this.getAttributeValue("label");
+			return this.getAttributeValue("label", null);
 		}
 		
 		public boolean isChecked() {

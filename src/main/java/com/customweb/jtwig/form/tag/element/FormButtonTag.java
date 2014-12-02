@@ -73,18 +73,11 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 		}
 
 		public String getName() {
-			if (!this.getAttributeCollection().hasAttribute("name")) {
-				return null;
-			}
-			return this.getAttributeValue("name");
+			return this.getAttributeValue("name", null);
 		}
 
 		public String getValue() {
-			if (this.getAttributeCollection().hasAttribute("value")) {
-				return this.getAttributeValue("value");
-			} else {
-				return "Submit";
-			}
+			return this.getAttributeValue("value", "Submit");
 		}
 
 		public boolean isDisabled() {

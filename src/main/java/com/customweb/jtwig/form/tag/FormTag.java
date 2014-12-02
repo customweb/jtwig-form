@@ -66,19 +66,11 @@ public class FormTag extends AbstractFormTag<FormTag> {
 		}
 
 		public String getModelAttribute() {
-			if (this.getAttributeCollection().hasAttribute("model")) {
-				return this.getAttributeValue("model");
-			} else {
-				return DEFAULT_MODEL_ATTRIBUTE_NAME;
-			}
+			return this.getAttributeValue("model", DEFAULT_MODEL_ATTRIBUTE_NAME);
 		}
 
 		public String getErrorsAttribute() {
-			if (this.getAttributeCollection().hasAttribute("errors")) {
-				return this.getAttributeValue("errors");
-			} else {
-				return DEFAULT_ERRORS_ATTRIBUTE_NAME;
-			}
+			return this.getAttributeValue("errors", DEFAULT_ERRORS_ATTRIBUTE_NAME);
 		}
 
 		@Override
@@ -116,11 +108,7 @@ public class FormTag extends AbstractFormTag<FormTag> {
 		}
 
 		public String getMethod() {
-			if (this.getAttributeCollection().hasAttribute("method")) {
-				return this.getAttributeValue("method");
-			} else {
-				return DEFAULT_METHOD;
-			}
+			return this.getAttributeValue("method", DEFAULT_METHOD);
 		}
 		
 		public String getContent() {
