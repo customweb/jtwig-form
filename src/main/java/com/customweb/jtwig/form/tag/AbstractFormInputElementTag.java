@@ -30,11 +30,7 @@ abstract public class AbstractFormInputElementTag<T extends AbstractFormInputEle
 		
 		@Override
 		public String getName() {
-			if (this.getAttributeCollection().hasAttribute("name")) {
-				return this.getAttributeValue("name");
-			} else {
-				return super.getName();
-			}
+			return this.getAttributeValue("name", super.getName());
 		}
 		
 		public boolean isDisabled() {

@@ -58,6 +58,12 @@ public class FormTest extends AbstractFormTest {
 	}
 	
 	@Test
+	public void dynamicAttribute() throws ParseException, CompileException, RenderException {
+		String output = renderTemplate("{% form:form key=\"value\" %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\" key=\"value\"></form>", output);
+	}
+	
+	@Test
 	public void pathResolver() throws ParseException, CompileException, RenderException {
 		new PathResolver().register();
 		String output = renderTemplate("{% form:form action=\"myaction\" %}{% endform:form %}", this.getDefaultMap());

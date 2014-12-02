@@ -58,4 +58,10 @@ public class ButtonTest extends AbstractFormTest {
         assertEquals("<button   type=\"submit\" value=\"Submit\" disabled=\"disabled\" ></button>", output);
 	}
 	
+	@Test
+	public void dynamicAttribute() throws ParseException, CompileException, RenderException {
+		String output = renderTemplate("{% form:button key=\"value\" %}{% endform:button %}");
+        assertEquals("<button   type=\"submit\" value=\"Submit\"  key=\"value\"></button>", output);
+	}
+	
 }

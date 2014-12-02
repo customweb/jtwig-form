@@ -50,10 +50,10 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 		@Override
 		public void render(RenderContext context) throws RenderException {
 			if (!this.isSelectActive(context)) {
-				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
+				throw new RuntimeException("The 'option' tag can only be used inside a valid 'select' tag.");
 			}
 			
-			context = context.isolatedModel();
+			context = this.isolatedModel(context);
 			context.with("option", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
 			this.getBlock().render(context);
 		}

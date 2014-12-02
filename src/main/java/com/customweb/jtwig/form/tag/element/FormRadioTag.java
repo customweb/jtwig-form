@@ -54,19 +54,35 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 		
 		@Override
 		public String getId() {
-			return IdGenerator.nextId(super.getId(), this.getContext());
+			return this.getAttributeValue("id", IdGenerator.nextId(super.getId(), this.getContext()));
 		}
 		
+		@Override
 		public String getValue() {
-			return this.getAttributeValue("value", "");
+			if (Boolean.class.equals(this.getBoundValue().getClass()) || boolean.class.equals(this.getBoundValue().getClass())) {
+				return "true";
+			}
+			if (this.getAttributeCollection().hasAttribute("value")) {
+				return this.getAttributeValue("value");
+			} else {
+				throw new RuntimeException("Attribute 'value' is required when binding to non-boolean values");
+			}
 		}
 		
 		public String getLabel() {
 			return this.getAttributeValue("label", null);
 		}
-		
+
 		public boolean isChecked() {
-			return this.isOptionSelected(this.getValue());
+			Object actualValue = this.getBoundValue();
+			if (Boolean.class.equals(actualValue.getClass()) || boolean.class.equals(actualValue.getClass())) {
+				if (actualValue instanceof String) {
+					actualValue = Boolean.valueOf((String) actualValue);
+				}
+				return (actualValue != null ? (Boolean) actualValue : Boolean.FALSE);
+			} else {
+				return this.isOptionSelected(this.getAttributeValue("value"));
+			}
 		}
 	}
 }

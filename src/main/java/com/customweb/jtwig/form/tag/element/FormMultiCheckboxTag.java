@@ -51,7 +51,7 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 			List<String> itemsContent = new ArrayList<String>();
 			for (Object item : this.getItems(context)) {
 				ByteArrayOutputStream itemsRenderStream = new ByteArrayOutputStream();
-				RenderContext itemContext = context.isolatedModel();
+				RenderContext itemContext = this.isolatedModel(context);
 				itemContext.with("checkbox", new ItemData(item, itemContext, this.getAttributeCollection()));
 				this.item.render(itemContext.newRenderContext(itemsRenderStream));
 				itemsContent.add(itemsRenderStream.toString());

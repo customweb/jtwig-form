@@ -1,7 +1,11 @@
 package com.customweb.jtwig.form.tag.element;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.ObjectUtils;
@@ -10,6 +14,7 @@ import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.model.BindStatus;
 import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
+import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag.MapItem;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.VariableAttribute;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -61,6 +66,12 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 				return (Collection<?>) items;
 			} else if (items.getClass().isArray()) {
 				return Arrays.asList((Object[]) items);
+			} else if (items instanceof Map) {
+				List<MapItem> itemList = new ArrayList<MapItem>();
+				for (Entry<?, ?> item : ((Map<?, ?>) items).entrySet()) {
+					itemList.add(new MapItem(item.getKey(), item.getValue()));
+				}
+				return itemList;
 			}
 			throw new RuntimeException("The 'items' attribute value has to be a collection.");
 		}
@@ -72,7 +83,7 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 			}
 			
 			for (Object item : this.getItems(context)) {
-				context = context.isolatedModel();
+				context = this.isolatedModel(context);
 				context.with("option", new OptionData(item, context, this.getAttributeCollection()));
 				this.getBlock().render(context);
 			}
@@ -92,7 +103,9 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 		}
 		
 		public String getLabel() {
-			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
+			if (item instanceof MapItem) {
+				return ObjectUtils.nullSafeToString(((MapItem) item).getLabel());
+			} else if (this.getAttributeCollection().hasAttribute("itemLabel")) {
 				String fieldName = this.getAttributeValue("itemLabel");
 				try {
 					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));
@@ -104,7 +117,9 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 		}
 
 		public String getValue() {
-			if (this.getAttributeCollection().hasAttribute("itemValue")) {
+			if (item instanceof MapItem) {
+				return ObjectUtils.nullSafeToString(((MapItem) item).getValue());
+			} else if (this.getAttributeCollection().hasAttribute("itemValue")) {
 				String fieldName = this.getAttributeValue("itemValue");
 				try {
 					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));

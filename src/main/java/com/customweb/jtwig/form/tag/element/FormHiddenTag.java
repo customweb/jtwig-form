@@ -4,6 +4,7 @@ import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractDataBoundFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
@@ -18,6 +19,7 @@ public class FormHiddenTag extends AbstractDataBoundFormElementTag<FormHiddenTag
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
+		attributeDefinitions.add(new NamedAttributeDefinition("name", false));
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("type");
 		return attributeDefinitions;
 	}
@@ -46,6 +48,11 @@ public class FormHiddenTag extends AbstractDataBoundFormElementTag<FormHiddenTag
 	protected class Data extends AbstractDataBoundFormElementTag<FormHiddenTag>.Data {
 		protected Data(RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
+		}
+		
+		@Override
+		public String getName() {
+			return this.getAttributeValue("name", super.getName());
 		}
 	}
 }

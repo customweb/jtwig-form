@@ -1,6 +1,7 @@
 package com.customweb.jtwig.form.tag.element;
 
 import com.customweb.jtwig.form.addon.FormAddon;
+import com.customweb.jtwig.form.model.IdGenerator;
 import com.customweb.jtwig.form.tag.AbstractFormInputElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -49,6 +50,11 @@ public class FormCheckboxTag extends AbstractFormInputElementTag<FormCheckboxTag
 	protected class Data extends AbstractFormInputElementTag<FormCheckboxTag>.Data {
 		protected Data(RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
+		}
+		
+		@Override
+		public String getId() {
+			return this.getAttributeValue("id", IdGenerator.nextId(super.getId(), this.getContext()));
 		}
 		
 		@Override

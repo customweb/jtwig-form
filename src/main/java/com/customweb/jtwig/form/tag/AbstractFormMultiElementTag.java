@@ -1,8 +1,11 @@
 package com.customweb.jtwig.form.tag;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.ObjectUtils;
@@ -42,8 +45,14 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 				return (Collection<?>) items;
 			} else if (items.getClass().isArray()) {
 				return Arrays.asList((Object[]) items);
+			} else if (items instanceof Map) {
+				List<MapItem> itemList = new ArrayList<MapItem>();
+				for (Entry<?, ?> item : ((Map<?, ?>) items).entrySet()) {
+					itemList.add(new MapItem(item.getKey(), item.getValue()));
+				}
+				return itemList;
 			}
-			throw new RuntimeException("The 'items' attribute value has to be a collection.");
+			throw new RuntimeException("The 'items' attribute value has to be an array, a collection or a map.");
 		}
 	}
 	
@@ -70,11 +79,13 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 		
 		@Override
 		public String getId() {
-			return IdGenerator.nextId(super.getId(), this.getContext());
+			return this.getAttributeValue("id", IdGenerator.nextId(super.getId(), this.getContext()));
 		}
 		
 		public String getLabel() {
-			if (this.getAttributeCollection().hasAttribute("itemLabel")) {
+			if (item instanceof MapItem) {
+				return ObjectUtils.nullSafeToString(((MapItem) item).getLabel());
+			} else if (this.getAttributeCollection().hasAttribute("itemLabel")) {
 				String fieldName = this.getAttributeValue("itemLabel");
 				try {
 					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));
@@ -86,7 +97,9 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 		}
 
 		public String getValue() {
-			if (this.getAttributeCollection().hasAttribute("itemValue")) {
+			if (item instanceof MapItem) {
+				return ObjectUtils.nullSafeToString(((MapItem) item).getValue());
+			} else if (this.getAttributeCollection().hasAttribute("itemValue")) {
 				String fieldName = this.getAttributeValue("itemValue");
 				try {
 					return ObjectUtils.nullSafeToString(PropertyUtils.getProperty(this.item, fieldName));
@@ -99,6 +112,24 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 			} catch (Exception e) {
 			}
 			return this.item.toString();
+		}
+	}
+	
+	public static class MapItem {
+		private final Object value;
+		private final Object label;
+		
+		public MapItem(Object value, Object label) {
+			this.value = value;
+			this.label = label;
+		}
+		
+		public Object getValue() {
+			return value;
+		}
+		
+		public Object getLabel() {
+			return label;
 		}
 	}
 

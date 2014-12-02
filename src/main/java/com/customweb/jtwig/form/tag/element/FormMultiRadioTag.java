@@ -51,7 +51,7 @@ public class FormMultiRadioTag extends AbstractFormMultiElementTag<FormMultiRadi
 			List<String> itemsContent = new ArrayList<String>();
 			for (Object item : this.getItems(context)) {
 				ByteArrayOutputStream itemsRenderStream = new ByteArrayOutputStream();
-				RenderContext itemContext = context.isolatedModel();
+				RenderContext itemContext = this.isolatedModel(context);
 				itemContext.with("radio", new ItemData(item, itemContext, this.getAttributeCollection()));
 				this.item.render(itemContext.newRenderContext(itemsRenderStream));
 				itemsContent.add(itemsRenderStream.toString());
