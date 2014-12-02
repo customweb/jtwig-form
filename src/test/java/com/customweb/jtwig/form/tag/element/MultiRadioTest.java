@@ -1,4 +1,4 @@
-package com.customweb.jtwig.form;
+package com.customweb.jtwig.form.tag.element;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.customweb.jtwig.form.AbstractFormTest;
 import com.lyncode.jtwig.JtwigModelMap;
 import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.ParseException;
