@@ -35,7 +35,6 @@ public class BindStatus {
 
 	private List<String> errorMessages = new ArrayList<String>();
 
-	@SuppressWarnings("unchecked")
 	public BindStatus(RenderContext context, String path) {
 		this.path = path;
 
