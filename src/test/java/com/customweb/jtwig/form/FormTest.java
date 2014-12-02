@@ -1,230 +1,100 @@
 package com.customweb.jtwig.form;
 
 
-import java.util.Arrays;
-import java.util.List;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 
 import com.customweb.jtwig.form.addon.FormAddon;
-import com.google.common.collect.Lists;
+import com.customweb.jtwig.form.model.AbstractPathResolver;
+import com.customweb.jtwig.form.model.AbstractResourceResolver;
+import com.customweb.jtwig.lib.path.ResolverException;
 import com.lyncode.jtwig.JtwigModelMap;
-import com.lyncode.jtwig.JtwigTemplate;
-import com.lyncode.jtwig.configuration.JtwigConfiguration;
 import com.lyncode.jtwig.exception.CompileException;
 import com.lyncode.jtwig.exception.ParseException;
 import com.lyncode.jtwig.exception.RenderException;
+import com.lyncode.jtwig.exception.ResourceException;
 import com.lyncode.jtwig.resource.ClasspathJtwigResource;
+import com.lyncode.jtwig.resource.JtwigResource;
 
-public class FormTest {
-
+public class FormTest extends AbstractFormTest {
+	
 	@Test
-	public void test() throws ParseException, CompileException, RenderException {
-		
-		JtwigConfiguration config = new JtwigConfiguration();
-		FormAddon.addons(config);
-		JtwigTemplate template = new JtwigTemplate(new ClasspathJtwigResource("classpath:/views/default.twig"), config);
-		
+	public void empty() throws ParseException, CompileException, RenderException {
+		String output = renderTemplate("{% form:form %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\" ></form>", output);
+	}
+	
+	@Test
+	public void emptyActionAttribute() throws ParseException, CompileException, RenderException {
+		String output = renderTemplate("{% form:form action=\"\" %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\" ></form>", output);
+	}
+	
+	@Test
+	public void actionAttribute() throws ParseException, CompileException, RenderException {
+        String output = renderTemplate("{% form:form action=\"myaction\" %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<form id=\"formModel\" action=\"myaction\" method=\"post\" ></form>", output);
+	}
+	
+	@Test
+	public void emptyMethodAttribute() throws ParseException, CompileException, RenderException {
+		String output = renderTemplate("{% form:form method=\"\" %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\" ></form>", output);
+	}
+	
+	@Test
+	public void methodAttribute() throws ParseException, CompileException, RenderException {
+		String output = renderTemplate("{% form:form method=\"get\" %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"get\" ></form>", output);
+	}
+	
+	@Test
+	public void modelAttribute() throws ParseException, CompileException, RenderException {
 		JtwigModelMap map = new JtwigModelMap();
-		
-		
-		map.add("dataobject", new DataObject());
-		map.add("errors", new ErrorModel());
-		map.add("itemlist", Arrays.asList(new String[]{ "testValue", "hallo", "welt" }));
-		
-        String result = template.output(map);
-        
-        System.out.println(result);
-        
+		map.add("myModel", new Object());
+		String output = renderTemplate("{% form:form model=\"myModel\" %}{% endform:form %}", map);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\" ></form>", output);
 	}
 	
-	public class DataObject {
-		private String active  = "test";
-		
-		public String getActive() {
-			return this.active + "Value";
+	@Test
+	public void pathResolver() throws ParseException, CompileException, RenderException {
+		new PathResolver().register();
+		String output = renderTemplate("{% form:form action=\"myaction\" %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<form id=\"formModel\" action=\"prefix://myaction\" method=\"post\" ></form>", output);
+        FormAddon.getPathHandler().reset();
+	}
+	
+	public static class PathResolver extends AbstractPathResolver {
+		@Override
+		public String resolve(String relativePath) throws ResolverException {
+			return "prefix://" + relativePath;
 		}
 	}
 	
-	public class ErrorModel implements Errors {
-
+	@Test
+	public void resourceResolver() throws ParseException, CompileException, RenderException {
+		new ResourceResolver().register();
+		String output = renderTemplate("{% form:form %}{% endform:form %}", this.getDefaultMap());
+        assertEquals("<div id=\"formModel\"></div>", output);
+        FormAddon.getResourceHandler().reset();
+	}
+	
+	public static class ResourceResolver extends AbstractResourceResolver {
 		@Override
-		public String getObjectName() {
-			// TODO Auto-generated method stub
-			return null;
+		public JtwigResource resolve(String resourceName) throws ResourceException {
+			JtwigResource resource = new ClasspathJtwigResource("/views/formTest/" + resourceName + ".twig");
+			if (!resource.exists()) {
+				throw new ResourceException("Resource '" + resourceName + "' not found");
+			}
+			return resource;
 		}
-
-		@Override
-		public void setNestedPath(String nestedPath) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public String getNestedPath() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void pushNestedPath(String subPath) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void popNestedPath() throws IllegalStateException {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void reject(String errorCode) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void reject(String errorCode, String defaultMessage) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void reject(String errorCode, Object[] errorArgs, String defaultMessage) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void rejectValue(String field, String errorCode) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void rejectValue(String field, String errorCode, String defaultMessage) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void rejectValue(String field, String errorCode, Object[] errorArgs, String defaultMessage) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void addAllErrors(Errors errors) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public boolean hasErrors() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public int getErrorCount() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public List getAllErrors() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean hasGlobalErrors() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public int getGlobalErrorCount() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public List getGlobalErrors() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public ObjectError getGlobalError() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean hasFieldErrors() {
-			return true;
-		}
-
-		@Override
-		public int getFieldErrorCount() {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public List<FieldError> getFieldErrors() {
-			List<FieldError> errors = Lists.newArrayList();
-			errors.add(new FieldError("dataobject", "active", "testValue", false, new String[]{}, new String[]{}, "An error message."));
-			errors.add(new FieldError("dataobject", "active", "testValue", false, new String[]{}, new String[]{}, "A second error message."));
-			errors.add(new FieldError("dataobject", "test", "testValue", false, new String[]{}, new String[]{}, "A different error message."));
-			return errors;
-		}
-
-		@Override
-		public FieldError getFieldError() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean hasFieldErrors(String field) {
-			return true;
-		}
-
-		@Override
-		public int getFieldErrorCount(String field) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
-		@Override
-		public List<FieldError> getFieldErrors(String field) {
-			return null;
-		}
-
-		@Override
-		public FieldError getFieldError(String field) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Object getFieldValue(String field) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Class getFieldType(String field) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
+	}
+	
+	private JtwigModelMap getDefaultMap() {
+		JtwigModelMap map = new JtwigModelMap();
+		map.add("formModel", new Object());
+		return map;
 	}
 
 }

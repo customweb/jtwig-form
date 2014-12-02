@@ -43,6 +43,7 @@ public class FormTag extends AbstractFormTag<FormTag> {
 		attributeDefinitions.add(new NamedAttributeDefinition("method", false));
 		attributeDefinitions.add(new VariableAttributeDefinition("model", false));
 		attributeDefinitions.add(new VariableAttributeDefinition("errors", false));
+		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKeys("id");
 		return attributeDefinitions;
 	}
 
@@ -77,24 +78,23 @@ public class FormTag extends AbstractFormTag<FormTag> {
 		public void prepareContext(RenderContext context) throws RenderException {
 			context.with(MODEL_ATTRIBUTE_VARIABLE_NAME, this.getModelAttribute());
 			context.with(ERRORS_ATTRIBUTE_VARIABLE_NAME, this.getErrorsAttribute());
-			context.with(NESTED_PATH_VARIABLE_NAME, this.getModelAttribute()
-					+ PropertyAccessor.NESTED_PROPERTY_SEPARATOR);
+			context.with(NESTED_PATH_VARIABLE_NAME, this.getModelAttribute() + PropertyAccessor.NESTED_PROPERTY_SEPARATOR);
 			context.with(FORM_ID_ATTRIBUTE_NAME, this.getId());
-			
+
 			context.with("form", new Data(this.getId(), this.renderContentAsString(context), context, this.getAttributeCollection()));
 		}
 	}
-	
+
 	public class Data extends AbstractFormTag<FormTag>.Data {
 		private String id;
 		private String content;
-		
+
 		protected Data(String id, String content, RenderContext context, AttributeCollection attributeCollection) {
 			super(context, attributeCollection);
 			this.id = id;
 			this.content = content;
 		}
-		
+
 		public String getId() {
 			return this.id;
 		}
@@ -110,7 +110,7 @@ public class FormTag extends AbstractFormTag<FormTag> {
 		public String getMethod() {
 			return this.getAttributeValue("method", DEFAULT_METHOD);
 		}
-		
+
 		public String getContent() {
 			return this.content;
 		}

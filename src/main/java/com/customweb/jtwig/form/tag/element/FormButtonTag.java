@@ -22,6 +22,7 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
+		attributeDefinitions.add(new NamedAttributeDefinition("id", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("name", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
