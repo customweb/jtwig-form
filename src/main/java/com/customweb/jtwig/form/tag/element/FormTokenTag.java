@@ -24,8 +24,9 @@ public class FormTokenTag extends AbstractFormElementTag<FormTokenTag> {
 	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/token");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("token");
 			return new Compiled(tokenGenerator, context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

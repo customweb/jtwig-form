@@ -15,6 +15,7 @@ import com.customweb.jtwig.form.addon.element.FormRadioAddon;
 import com.customweb.jtwig.form.addon.element.FormSelectAddon;
 import com.customweb.jtwig.form.addon.element.FormTextareaAddon;
 import com.customweb.jtwig.form.addon.element.FormTokenAddon;
+import com.customweb.jtwig.form.model.DefaultResourceResolver;
 import com.customweb.jtwig.form.tag.FormTag;
 import com.customweb.jtwig.lib.attribute.AttributeAddon;
 import com.customweb.jtwig.lib.path.PathHandler;
@@ -25,7 +26,7 @@ import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormAddon extends AttributeAddon<FormTag> {
 	
-	private static ResourceHandler resourceHandler = new ResourceHandler();
+	private static ResourceHandler resourceHandler = new ResourceHandler().addResolver(new DefaultResourceResolver());
 	
 	private static PathHandler pathHandler = new PathHandler();
 	

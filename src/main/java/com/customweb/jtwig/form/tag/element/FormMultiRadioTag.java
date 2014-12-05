@@ -30,8 +30,8 @@ public class FormMultiRadioTag extends AbstractFormMultiElementTag<FormMultiRadi
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/multiradio");
-			JtwigResource itemResource = FormAddon.getResourceHandler().resolve("element/radio");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("multiradio");
+			JtwigResource itemResource = FormAddon.getResourceHandler().resolve("radio");
 			return new Compiled(context.parse(resource).compile(context), context.parse(itemResource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

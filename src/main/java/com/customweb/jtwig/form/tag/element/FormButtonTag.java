@@ -33,7 +33,7 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource formResource = FormAddon.getResourceHandler().resolve("element/button");
+			JtwigResource formResource = FormAddon.getResourceHandler().resolve("button");
 			return new Compiled(context.parse(formResource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

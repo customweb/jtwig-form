@@ -20,8 +20,9 @@ public class FormErrorsTag extends AbstractDataBoundFormElementTag<FormErrorsTag
 
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/errors");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("errors");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

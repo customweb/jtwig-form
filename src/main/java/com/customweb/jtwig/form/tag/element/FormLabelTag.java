@@ -27,7 +27,7 @@ public class FormLabelTag extends AbstractFormElementTag<FormLabelTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/label");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("label");
 			return new Compiled(context.parse(resource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

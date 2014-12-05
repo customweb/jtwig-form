@@ -23,7 +23,7 @@ public class ResourceResolverTest extends AbstractFormTest {
 		map.add("formModel", new Object());
 		String output = renderTemplate("{% form:form %}{% endform:form %}", map);
         assertEquals("<div id=\"formModel\"></div>", output);
-        FormAddon.getResourceHandler().reset();
+        FormAddon.getResourceHandler().reset().addResolver(new DefaultResourceResolver());
 	}
 	
 	public static class ResourceResolver extends AbstractResourceResolver {

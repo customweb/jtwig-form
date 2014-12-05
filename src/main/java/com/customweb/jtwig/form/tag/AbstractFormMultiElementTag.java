@@ -40,7 +40,7 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 		}
 
 		public Collection<?> getItems(RenderContext context) {
-			Object items = this.getAttributeCollection().getAttribute("items", VariableAttribute.class).getVariable(context);
+			Object items = this.getAttributeCollection().getAttribute("items", VariableAttribute.class).getVariable();
 			if (items instanceof Collection) {
 				return (Collection<?>) items;
 			} else if (items.getClass().isArray()) {

@@ -43,8 +43,9 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/option");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("option");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
@@ -61,7 +62,7 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 		}
 		
 		public Collection<?> getItems(RenderContext context) {
-			Object items = this.getAttributeCollection().getAttribute("items", VariableAttribute.class).getVariable(context);
+			Object items = this.getAttributeCollection().getAttribute("items", VariableAttribute.class).getVariable();
 			if (items instanceof Collection) {
 				return (Collection<?>) items;
 			} else if (items.getClass().isArray()) {
@@ -81,6 +82,7 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 			if (!this.isInSelectContext(context)) {
 				throw new RuntimeException("The 'multioption' tag can only be used inside a valid 'select' tag.");
 			}
+			this.getAttributeCollection().render(context);
 			
 			for (Object item : this.getItems(context)) {
 				context = this.isolatedModel(context);

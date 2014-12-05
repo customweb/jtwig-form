@@ -28,8 +28,9 @@ public class FormCheckboxTag extends AbstractFormInputElementTag<FormCheckboxTag
 	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/checkbox");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("checkbox");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

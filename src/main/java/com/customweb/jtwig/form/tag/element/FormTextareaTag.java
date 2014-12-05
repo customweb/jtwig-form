@@ -16,8 +16,9 @@ public class FormTextareaTag extends AbstractFormInputElementTag<FormTextareaTag
 	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/textarea");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("textarea");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

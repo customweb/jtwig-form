@@ -30,8 +30,8 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/multicheckbox");
-			JtwigResource itemResource = FormAddon.getResourceHandler().resolve("element/checkbox");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("multicheckbox");
+			JtwigResource itemResource = FormAddon.getResourceHandler().resolve("checkbox");
 			return new Compiled(context.parse(resource).compile(context), context.parse(itemResource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

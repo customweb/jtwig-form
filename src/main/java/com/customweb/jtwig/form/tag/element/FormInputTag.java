@@ -24,8 +24,9 @@ public class FormInputTag extends AbstractFormInputElementTag<FormInputTag> {
 	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/input");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("input");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

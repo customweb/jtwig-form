@@ -36,8 +36,8 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/select");
-			JtwigResource optionResource = FormAddon.getResourceHandler().resolve("element/option");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("select");
+			JtwigResource optionResource = FormAddon.getResourceHandler().resolve("option");
 			return new Compiled(context.parse(resource).compile(context), context.parse(optionResource).compile(context), super.compile(context),
 					this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {

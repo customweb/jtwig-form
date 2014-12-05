@@ -26,8 +26,9 @@ public class FormPasswordTag extends AbstractFormInputElementTag<FormPasswordTag
 	
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
+		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/password");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("password");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

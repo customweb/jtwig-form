@@ -31,7 +31,7 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("element/option");
+			JtwigResource resource = FormAddon.getResourceHandler().resolve("option");
 			return new Compiled(context.parse(resource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
@@ -52,6 +52,7 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 			if (!this.isInSelectContext(context)) {
 				throw new RuntimeException("The 'option' tag can only be used inside a valid 'select' tag.");
 			}
+			this.getAttributeCollection().render(context);
 			
 			context = this.isolatedModel(context);
 			context.with("option", new Data(this.renderContentAsString(context), context, this.getAttributeCollection()));
