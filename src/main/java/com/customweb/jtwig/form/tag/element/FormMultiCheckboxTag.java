@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.customweb.jtwig.form.addon.FormAddon;
-import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -77,7 +76,7 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 		}
 		
 		public boolean isChecked() {
-			return SelectedValueComparator.isSelected(this.getBindStatus(), this.getValue());
+			return this.isSelected();
 		}
 	}
 }

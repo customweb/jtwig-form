@@ -4,7 +4,7 @@ import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefinition;
+import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.exception.CompileException;
@@ -19,7 +19,7 @@ public class FormLabelTag extends AbstractFormElementTag<FormLabelTag> {
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new VariableAttributeDefinition("path", true));
+		attributeDefinitions.add(new NamedAttributeDefinition("path", true));
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("for");
 		return attributeDefinitions;
 	}

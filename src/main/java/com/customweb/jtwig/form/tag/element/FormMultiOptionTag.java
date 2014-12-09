@@ -137,7 +137,7 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 		}
 		
 		public boolean isSelected() {
-			return SelectedValueComparator.isSelected(this.getBindStatus(), this.getValue());
+			return SelectedValueComparator.isSelected(this.getBindStatus(), this.item);
 		}
 	}
 }

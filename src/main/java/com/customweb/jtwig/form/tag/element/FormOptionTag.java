@@ -22,7 +22,7 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 	@Override
 	public AttributeDefinitionCollection getAttributeDefinitions() {
 		AttributeDefinitionCollection attributeDefinitions = super.getAttributeDefinitions();
-		attributeDefinitions.add(new NamedAttributeDefinition("value", true));
+		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
 		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("selected");
 		return attributeDefinitions;
@@ -69,7 +69,7 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 		}
 		
 		public String getValue() {
-			return this.getAttributeValue("value");
+			return this.getAttributeValue("value", "");
 		}
 		
 		public boolean isDisabled() {

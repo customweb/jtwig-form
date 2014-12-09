@@ -3,7 +3,6 @@ package com.customweb.jtwig.form.tag.element;
 import java.io.ByteArrayOutputStream;
 
 import com.customweb.jtwig.form.addon.FormAddon;
-import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -92,10 +91,6 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 	protected class OptionData extends AbstractFormMultiElementTag<FormSelectTag>.ItemData {
 		protected OptionData(Object item, RenderContext context, AttributeCollection attributeCollection) {
 			super(item, context, attributeCollection);
-		}
-
-		public boolean isSelected() {
-			return SelectedValueComparator.isSelected(this.getBindStatus(), this.getValue());
 		}
 	}
 }

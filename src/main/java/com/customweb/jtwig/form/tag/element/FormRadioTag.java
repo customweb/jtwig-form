@@ -60,7 +60,7 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 		
 		@Override
 		public String getValue() {
-			if (Boolean.class.equals(this.getBoundValue().getClass()) || boolean.class.equals(this.getBoundValue().getClass())) {
+			if (Boolean.class.equals(this.getBindStatus().getValueType()) || boolean.class.equals(this.getBindStatus().getValueType())) {
 				return "true";
 			}
 			if (this.getAttributeCollection().hasAttribute("value")) {
@@ -76,7 +76,7 @@ public class FormRadioTag extends AbstractFormInputElementTag<FormRadioTag> {
 
 		public boolean isChecked() {
 			Object actualValue = this.getBoundValue();
-			if (Boolean.class.equals(actualValue.getClass()) || boolean.class.equals(actualValue.getClass())) {
+			if (Boolean.class.equals(this.getBindStatus().getValueType()) || boolean.class.equals(this.getBindStatus().getValueType())) {
 				if (actualValue instanceof String) {
 					actualValue = Boolean.valueOf((String) actualValue);
 				}

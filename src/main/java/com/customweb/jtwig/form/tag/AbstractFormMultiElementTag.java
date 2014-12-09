@@ -11,6 +11,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.ObjectUtils;
 
 import com.customweb.jtwig.form.model.IdGenerator;
+import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.VariableAttribute;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -112,6 +113,10 @@ abstract public class AbstractFormMultiElementTag<T extends AbstractFormMultiEle
 			} catch (Exception e) {
 			}
 			return this.item.toString();
+		}
+		
+		public boolean isSelected() {
+			return SelectedValueComparator.isSelected(this.getBindStatus(), this.getValue());
 		}
 	}
 	
