@@ -11,6 +11,7 @@ import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefiniti
 import com.lyncode.jtwig.content.api.Renderable;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;
+import com.lyncode.jtwig.util.ObjectExtractor.ExtractException;
 
 public class AbstractDataBoundFormElementTag<T extends AbstractDataBoundFormElementTag<T>> extends AbstractFormElementTag<T> {
 	
@@ -64,7 +65,11 @@ public class AbstractDataBoundFormElementTag<T extends AbstractDataBoundFormElem
 				if (pathToUse.endsWith(PropertyAccessor.NESTED_PROPERTY_SEPARATOR)) {
 					pathToUse = pathToUse.substring(0, pathToUse.length() - 1);
 				}
-				this.bindStatus = new BindStatus(this.getContext(), pathToUse);
+				try {
+					this.bindStatus = new BindStatus(this.getContext(), pathToUse);
+				} catch (ExtractException e) {
+					throw new RuntimeException(e);
+				}
 			}
 			return this.bindStatus;
 		}

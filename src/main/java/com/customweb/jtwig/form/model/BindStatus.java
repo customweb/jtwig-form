@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.Errors;
@@ -14,6 +12,8 @@ import org.springframework.validation.ObjectError;
 import com.customweb.jtwig.form.tag.FormTag;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;
+import com.lyncode.jtwig.util.ObjectExtractor;
+import com.lyncode.jtwig.util.ObjectExtractor.ExtractException;
 
 public class BindStatus {
 
@@ -35,7 +35,7 @@ public class BindStatus {
 
 	private List<String> errorMessages = new ArrayList<String>();
 
-	public BindStatus(RenderContext context, String path) {
+	public BindStatus(RenderContext context, String path) throws ExtractException {
 		this.path = path;
 
 		String beanName;
@@ -54,9 +54,9 @@ public class BindStatus {
 					+ "' available as model map attribute.");
 		}
 		if (this.expression != null) {
-			BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(target);
-			this.value = beanWrapper.getPropertyValue(this.expression);
-			this.valueType = beanWrapper.getPropertyType(this.expression);
+			ObjectExtractor extractor = new ObjectExtractor(target);
+			this.value = extractor.extract(this.expression);
+			this.valueType = this.value.getClass();
 			this.actualValue = this.value;
 		}
 

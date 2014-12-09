@@ -52,6 +52,14 @@ public class InputTest extends AbstractFormTest {
         assertEquals("<input id=\"stringValue\" name=\"stringValue\"  type=\"text\" value=\"stringValue\" key=\"value\" />", output);
 	}
 	
+	@Test
+	public void modelInheritance() throws ParseException, CompileException, RenderException {
+		JtwigModelMap map = new JtwigModelMap();
+		map.add("myModel", new Client());
+		String output = renderTemplate("{% form:input path=\"myModel.username\" %}{% endform:input %}", map);
+        assertEquals("<input id=\"username\" name=\"username\"  type=\"text\" value=\"foo\"  />", output);
+	}
+	
 	private JtwigModelMap getDefaultMap() {
 		JtwigModelMap map = new JtwigModelMap();
 		map.add("myModel", new Model());
@@ -64,4 +72,12 @@ public class InputTest extends AbstractFormTest {
 		}
 	}
 	
+	public static class User {
+	    public long id = 1;
+	    public String username = "foo";
+	}
+	
+	public static class Client extends User {
+	    public String type = "bar";
+	}
 }
