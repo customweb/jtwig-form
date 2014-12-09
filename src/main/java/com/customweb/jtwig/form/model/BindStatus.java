@@ -56,7 +56,9 @@ public class BindStatus {
 		if (this.expression != null) {
 			ObjectExtractor extractor = new ObjectExtractor(target);
 			this.value = extractor.extract(this.expression);
-			this.valueType = this.value.getClass();
+			if (this.value != null) {
+				this.valueType = this.value.getClass();
+			}
 			this.actualValue = this.value;
 		}
 
