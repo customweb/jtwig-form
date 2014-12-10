@@ -56,16 +56,13 @@ public class BindStatus {
 		if (this.expression != null) {
 			ObjectExtractor extractor = new ObjectExtractor(target);
 			this.value = extractor.extract(this.expression);
-			if (this.value != null) {
-				this.valueType = this.value.getClass();
-			}
-			this.actualValue = this.value;
+		} else {
+			this.value = target;
 		}
-
-		Object errorTargetName = context.map(FormTag.ERRORS_ATTRIBUTE_VARIABLE_NAME);
-		if (errorTargetName != null && errorTargetName instanceof String) {
-
+		if (this.value != null) {
+			this.valueType = this.value.getClass();
 		}
+		this.actualValue = this.value;
 
 		Object errorTarget = this.getErrorTarget(context);
 		if (errorTarget != null && errorTarget instanceof Errors) {
