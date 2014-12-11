@@ -10,9 +10,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 
 import com.customweb.jtwig.form.tag.FormTag;
+import com.customweb.jtwig.lib.model.ObjectExtractor;
 import com.lyncode.jtwig.render.RenderContext;
 import com.lyncode.jtwig.types.Undefined;
-import com.lyncode.jtwig.util.ObjectExtractor;
 import com.lyncode.jtwig.util.ObjectExtractor.ExtractException;
 
 public class BindStatus {
@@ -54,8 +54,7 @@ public class BindStatus {
 					+ "' available as model map attribute.");
 		}
 		if (this.expression != null) {
-			ObjectExtractor extractor = new ObjectExtractor(target);
-			this.value = extractor.extract(this.expression);
+			this.value = ObjectExtractor.extract(target, this.expression);
 		} else {
 			this.value = target;
 		}
