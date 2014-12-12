@@ -19,31 +19,31 @@ public class MultiOptionTest extends AbstractFormTest {
 	@Test
 	public void inFormContext() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:select path=\"stringValue\" %}{% form:multioption items=\"singleItem\" %}{% endform:multioption %}{% endform:select %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\" ><select id=\"stringValue\" name=\"stringValue\"   ><option  value=\"stringValue\" selected=\"selected\" >stringValue</option></select></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ><select id=\"stringValue\" name=\"stringValue\"     ><option  value=\"stringValue\" selected=\"selected\"   >stringValue</option></select></form>", output);
 	}
 
 	@Test
 	public void itemsFromArrayToString() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:select path=\"myModel.stringValue\" %}{% form:multioption items=\"itemArray\" %}{% endform:multioption %}{% endform:select %}", this.getDefaultMap());
-        assertEquals("<select id=\"stringValue\" name=\"stringValue\"   ><option  value=\"value1\"  >value1</option><option  value=\"stringValue\" selected=\"selected\" >stringValue</option></select>", output);
+        assertEquals("<select id=\"stringValue\" name=\"stringValue\"     ><option  value=\"value1\"    >value1</option><option  value=\"stringValue\" selected=\"selected\"   >stringValue</option></select>", output);
 	}
 	
 	@Test
 	public void itemsFromArray() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:select path=\"myModel.stringValue\" %}{% form:multioption items=\"itemArray\" itemLabel=\"label\" itemValue=\"value\" %}{% endform:multioption %}{% endform:select %}", this.getDefaultMap());
-        assertEquals("<select id=\"stringValue\" name=\"stringValue\"   ><option  value=\"value1\"  >Label1</option><option  value=\"stringValue\" selected=\"selected\" >Label2</option></select>", output);
+        assertEquals("<select id=\"stringValue\" name=\"stringValue\"     ><option  value=\"value1\"    >Label1</option><option  value=\"stringValue\" selected=\"selected\"   >Label2</option></select>", output);
 	}
 	
 	@Test
 	public void itemsFromList() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:select path=\"myModel.stringValue\" %}{% form:multioption items=\"itemList\" itemLabel=\"label\" itemValue=\"value\" %}{% endform:multioption %}{% endform:select %}", this.getDefaultMap());
-        assertEquals("<select id=\"stringValue\" name=\"stringValue\"   ><option  value=\"value1\"  >Label1</option><option  value=\"stringValue\" selected=\"selected\" >Label2</option></select>", output);
+        assertEquals("<select id=\"stringValue\" name=\"stringValue\"     ><option  value=\"value1\"    >Label1</option><option  value=\"stringValue\" selected=\"selected\"   >Label2</option></select>", output);
 	}
 	
 	@Test
 	public void itemsFromMap() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:select path=\"myModel.stringValue\" %}{% form:multioption items=\"itemMap\" %}{% endform:multioption %}{% endform:select %}", this.getDefaultMap());
-        assertEquals("<select id=\"stringValue\" name=\"stringValue\"   ><option  value=\"value1\"  >Label1</option><option  value=\"stringValue\" selected=\"selected\" >Label2</option></select>", output);
+        assertEquals("<select id=\"stringValue\" name=\"stringValue\"     ><option  value=\"value1\"    >Label1</option><option  value=\"stringValue\" selected=\"selected\"   >Label2</option></select>", output);
 	}
 	
 	@Test(expected = ParseException.class)
@@ -59,7 +59,7 @@ public class MultiOptionTest extends AbstractFormTest {
 	@Test
 	public void dynamicAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:select path=\"myModel.stringValue\" %}{% form:multioption items=\"singleItem\" key=\"value\" %}{% endform:multioption %}{% endform:select %}", this.getDefaultMap());
-        assertEquals("<select id=\"stringValue\" name=\"stringValue\"   ><option  value=\"stringValue\" selected=\"selected\" key=\"value\">stringValue</option></select>", output);
+        assertEquals("<select id=\"stringValue\" name=\"stringValue\"     ><option  value=\"stringValue\" selected=\"selected\"   key=\"value\">stringValue</option></select>", output);
 	}
 	
 	private JtwigModelMap getDefaultMap() {

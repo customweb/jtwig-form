@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.tag.element;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -33,7 +32,7 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource formResource = FormAddon.getResourceHandler().resolve("button");
+			JtwigResource formResource = this.retrieveResource(context, "form/button");
 			return new Compiled(context.parse(formResource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

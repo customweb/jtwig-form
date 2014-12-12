@@ -15,25 +15,4 @@ import com.lyncode.jtwig.resource.ClasspathJtwigResource;
 import com.lyncode.jtwig.resource.JtwigResource;
 
 public class ResourceResolverTest extends AbstractFormTest {
-
-	@Test
-	public void resourceResolver() throws ParseException, CompileException, RenderException {
-		new ResourceResolver().register();
-		JtwigModelMap map = new JtwigModelMap();
-		map.add("formModel", new Object());
-		String output = renderTemplate("{% form:form %}{% endform:form %}", map);
-        assertEquals("<div id=\"formModel\"></div>", output);
-        FormAddon.getResourceHandler().reset().addResolver(new DefaultResourceResolver());
-	}
-	
-	public static class ResourceResolver extends AbstractResourceResolver {
-		@Override
-		public JtwigResource resolve(String resourceName) throws ResourceException {
-			JtwigResource resource = new ClasspathJtwigResource("/views/formTest/" + resourceName + ".twig");
-			if (!resource.exists()) {
-				throw new ResourceException("Resource '" + resourceName + "' not found");
-			}
-			return resource;
-		}
-	}
 }

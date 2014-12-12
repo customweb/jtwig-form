@@ -1,0 +1,1 @@
+<option {% if option.disabled %}disabled="disabled"{% endif %} value="{{ option.value }}" {% if option.selected %}selected="selected"{% endif %} {% if option.cssClass %}class="{{ option.cssClass }}"{% endif %} {% if option.cssStyle %}style="{{ option.cssStyle }}"{% endif %} {{ option.dynamicAttributes|join(' ') }}>{{ option.label }}</option>

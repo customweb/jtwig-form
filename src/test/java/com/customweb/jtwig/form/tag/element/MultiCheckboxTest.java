@@ -19,49 +19,49 @@ public class MultiCheckboxTest extends AbstractFormTest {
 	@Test
 	public void inFormContext() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:multicheckbox path=\"stringValue\" items=\"singleItem\" %}{% endform:multicheckbox %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\" ><span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> stringValue</label></span></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"prefix://\" method=\"post\"   ><span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span></form>", output);
 	}
 	
 	@Test
 	public void nameAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" name=\"myName\" %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"myName1\" name=\"myName\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> stringValue</label></span>", output);
+        assertEquals("<span><label><input id=\"myName1\" name=\"myName\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" disabled %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\" disabled=\"disabled\" type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> stringValue</label></span>", output);
+        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\" disabled=\"disabled\" type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
 	public void idAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\"  items=\"singleItem\" id=\"myId\" %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"myId\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> stringValue</label></span>", output);
+        assertEquals("<span><label><input id=\"myId\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
 	public void itemsFromArrayToString() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemArray\" %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"   /> value1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> stringValue</label></span>", output);
+        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> value1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
 	public void itemsFromArray() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemArray\" itemLabel=\"label\" itemValue=\"value\" %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"   /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> Label2</label></span>", output);
+        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> Label2</label></span>", output);
 	}
 	
 	@Test
 	public void itemsFromList() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemList\" itemLabel=\"label\" itemValue=\"value\" %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"   /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> Label2</label></span>", output);
+        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> Label2</label></span>", output);
 	}
 	
 	@Test
 	public void itemsFromMap() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemMap\" %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"   /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"  /> Label2</label></span>", output);
+        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> Label2</label></span>", output);
 	}
 	
 	@Test(expected = ParseException.class)
@@ -77,7 +77,7 @@ public class MultiCheckboxTest extends AbstractFormTest {
 	@Test
 	public void dynamicAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" key=\"value\" %}{% endform:multicheckbox %}", this.getDefaultMap());
-        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\" key=\"value\" /> stringValue</label></span>", output);
+        assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"   key=\"value\" /> stringValue</label></span>", output);
 	}
 	
 	private JtwigModelMap getDefaultMap() {

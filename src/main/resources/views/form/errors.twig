@@ -1,7 +1,0 @@
-{% if errors.hasErrors %}
-	<span id="{{ errors.id }}" class="{{ button.cssClass }}" style="{{ button.cssStyle }}" {{ errors.dynamicAttributes|join(' ') }}>
-		{% for errorMessage in errors.errorMessages %}
-			{{ errorMessage }}<br/>
-		{% endfor %}
-	</span>
-{% endif %}

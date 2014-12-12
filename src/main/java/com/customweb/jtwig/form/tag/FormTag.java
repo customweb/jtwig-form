@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.tag;
 
 import org.springframework.beans.PropertyAccessor;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
@@ -50,7 +49,7 @@ public class FormTag extends AbstractFormTag<FormTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("form");
+			JtwigResource resource = this.retrieveResource(context, "form/form");
 			return new Compiled(context.parse(resource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
@@ -100,7 +99,7 @@ public class FormTag extends AbstractFormTag<FormTag> {
 		}
 
 		public String getAction() throws ResourceException {
-			return FormAddon.getPathHandler().resolve(this.getAttributeValue("action", ""));
+			return this.getAttributeValue("action", "");
 		}
 
 		public String getMethod() {

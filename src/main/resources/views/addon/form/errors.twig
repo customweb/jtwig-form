@@ -1,0 +1,7 @@
+{% if errors.hasErrors %}
+	<span id="{{ errors.id }}" {% if errors.cssClass %}class="{{ errors.cssClass }}"{% endif %} {% if errors.cssStyle %}style="{{ errors.cssStyle }}"{% endif %} {{ errors.dynamicAttributes|join(' ') }}>
+		{% for errorMessage in errors.errorMessages %}
+			{{ errorMessage }}<br/>
+		{% endfor %}
+	</span>
+{% endif %}

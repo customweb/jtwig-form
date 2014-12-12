@@ -1,6 +1,5 @@
 package com.customweb.jtwig.form.tag.element;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.model.BindStatus;
 import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
@@ -31,7 +30,7 @@ public class FormOptionTag extends AbstractFormElementTag<FormOptionTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("option");
+			JtwigResource resource = this.retrieveResource(context, "form/option");
 			return new Compiled(context.parse(resource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.validation.ObjectError;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractDataBoundFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.lyncode.jtwig.compile.CompileContext;
@@ -22,7 +21,7 @@ public class FormErrorsTag extends AbstractDataBoundFormElementTag<FormErrorsTag
 	public Renderable compile(CompileContext context) throws CompileException {
 		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("errors");
+			JtwigResource resource = this.retrieveResource(context, "form/errors");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

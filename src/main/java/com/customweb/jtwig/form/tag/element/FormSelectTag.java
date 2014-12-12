@@ -2,7 +2,6 @@ package com.customweb.jtwig.form.tag.element;
 
 import java.io.ByteArrayOutputStream;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -35,8 +34,8 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("select");
-			JtwigResource optionResource = FormAddon.getResourceHandler().resolve("option");
+			JtwigResource resource = this.retrieveResource(context, "form/select");
+			JtwigResource optionResource = this.retrieveResource(context, "form/option");
 			return new Compiled(context.parse(resource).compile(context), context.parse(optionResource).compile(context), super.compile(context),
 					this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {

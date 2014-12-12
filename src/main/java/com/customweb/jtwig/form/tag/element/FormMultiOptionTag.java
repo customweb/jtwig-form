@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.util.ObjectUtils;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.model.BindStatus;
 import com.customweb.jtwig.form.model.SelectedValueComparator;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
@@ -45,7 +44,7 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 	public Renderable compile(CompileContext context) throws CompileException {
 		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("option");
+			JtwigResource resource = this.retrieveResource(context, "form/option");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

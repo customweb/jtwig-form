@@ -1,6 +1,5 @@
 package com.customweb.jtwig.form.tag.element;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.model.AbstractTokenGenerator;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.form.tag.FormTag;
@@ -26,7 +25,7 @@ public class FormTokenTag extends AbstractFormElementTag<FormTokenTag> {
 	public Renderable compile(CompileContext context) throws CompileException {
 		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("token");
+			JtwigResource resource = this.retrieveResource(context, "form/token");
 			return new Compiled(tokenGenerator, context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

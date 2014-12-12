@@ -1,0 +1,1 @@
+<select id="{{ select.id }}" name="{{ select.name }}" {% if select.disabled %}disabled="disabled"{% endif %} {% if select.multiple %}multiple="multiple"{% endif %} {% if select.cssClass %}class="{{ select.cssClass }}"{% endif %} {% if select.cssStyle %}style="{{ select.cssStyle }}"{% endif %} {{ select.dynamicAttributes|join(' ') }}>{{ select.options }}</select>

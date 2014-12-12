@@ -1,0 +1,1 @@
+<textarea id="{{ textarea.id }}" name="{{ textarea.name }}" {% if textarea.disabled %}disabled="disabled"{% endif %} {% if textarea.cssClass %}class="{{ textarea.cssClass }}"{% endif %} {% if textarea.cssStyle %}style="{{ textarea.cssStyle }}"{% endif %} {{ textarea.dynamicAttributes|join(' ') }}>{{ textarea.value }}</textarea>

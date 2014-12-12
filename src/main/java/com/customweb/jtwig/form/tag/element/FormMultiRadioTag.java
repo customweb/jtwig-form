@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -29,8 +28,8 @@ public class FormMultiRadioTag extends AbstractFormMultiElementTag<FormMultiRadi
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("multiradio");
-			JtwigResource itemResource = FormAddon.getResourceHandler().resolve("radio");
+			JtwigResource resource = this.retrieveResource(context, "form/multiradio");
+			JtwigResource itemResource = this.retrieveResource(context, "form/radio");
 			return new Compiled(context.parse(resource).compile(context), context.parse(itemResource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

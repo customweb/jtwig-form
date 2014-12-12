@@ -1,0 +1,1 @@
+<form id="{{ form.id }}" action="{{ form.action }}" method="{{ form.method }}" {% if form.cssClass %}class="{{ form.cssClass }}"{% endif %} {% if form.cssStyle %}style="{{ form.cssStyle }}"{% endif %} {{ form.dynamicAttributes|join(' ') }}>{{ form.content }}</form>

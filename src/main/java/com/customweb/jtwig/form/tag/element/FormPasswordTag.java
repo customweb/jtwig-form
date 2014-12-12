@@ -1,6 +1,5 @@
 package com.customweb.jtwig.form.tag.element;
 
-import com.customweb.jtwig.form.addon.FormAddon;
 import com.customweb.jtwig.form.tag.AbstractFormInputElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
@@ -28,7 +27,7 @@ public class FormPasswordTag extends AbstractFormInputElementTag<FormPasswordTag
 	public Renderable compile(CompileContext context) throws CompileException {
 		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = FormAddon.getResourceHandler().resolve("password");
+			JtwigResource resource = this.retrieveResource(context, "form/password");
 			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

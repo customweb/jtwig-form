@@ -1,0 +1,1 @@
+<input id="{{ input.id }}" name="{{ input.name }}" {% if input.disabled %}disabled="disabled"{% endif %} type="text" value="{{ input.value }}" {% if input.cssClass %}class="{{ input.cssClass }}"{% endif %} {% if input.cssStyle %}style="{{ input.cssStyle }}"{% endif %} {{ input.dynamicAttributes|join(' ') }} />

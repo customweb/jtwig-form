@@ -29,11 +29,11 @@ abstract public class AbstractFormTag<T extends AbstractFormTag<T>> extends Abst
 		}
 		
 		public String getCssClass() {
-			return this.getAttributeValue("class", "");
+			return this.getAttributeValue("class", null);
 		}
 		
 		public String getCssStyle() {
-			return this.getAttributeValue("style", "");
+			return this.getAttributeValue("style", null);
 		}
 	}
 

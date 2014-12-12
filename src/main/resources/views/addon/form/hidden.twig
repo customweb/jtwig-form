@@ -1,0 +1,1 @@
+<input id="{{ hidden.id }}" name="{{ hidden.name }}" type="hidden" value="{{ hidden.value }}" {% if hidden.cssClass %}class="{{ hidden.cssClass }}"{% endif %} {% if hidden.cssStyle %}style="{{ hidden.cssStyle }}"{% endif %} {{ hidden.dynamicAttributes|join(' ') }} />
