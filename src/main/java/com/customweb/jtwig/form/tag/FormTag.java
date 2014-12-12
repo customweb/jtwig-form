@@ -100,11 +100,7 @@ public class FormTag extends AbstractFormTag<FormTag> {
 		}
 
 		public String getAction() throws ResourceException {
-			if (this.getAttributeCollection().hasAttribute("action")) {
-				return FormAddon.getPathHandler().resolve(this.getAttributeValue("action"));
-			} else {
-				return "";
-			}
+			return FormAddon.getPathHandler().resolve(this.getAttributeValue("action", ""));
 		}
 
 		public String getMethod() {
