@@ -16,31 +16,31 @@ public class FormTest extends AbstractFormTest {
 	@Test
 	public void empty() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"formModel\" action=\"prefix://\" method=\"post\"   ></form>", output);
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\"   ></form>", output);
 	}
 	
 	@Test
 	public void emptyActionAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form action=\"\" %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"formModel\" action=\"prefix://\" method=\"post\"   ></form>", output);
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\"   ></form>", output);
 	}
 	
 	@Test
 	public void actionAttribute() throws ParseException, CompileException, RenderException {
         String output = renderTemplate("{% form:form action=\"myaction\" %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"formModel\" action=\"prefix://myaction\" method=\"post\"   ></form>", output);
+        assertEquals("<form id=\"formModel\" action=\"myaction\" method=\"post\"   ></form>", output);
 	}
 	
 	@Test
 	public void emptyMethodAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form method=\"\" %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"formModel\" action=\"prefix://\" method=\"post\"   ></form>", output);
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\"   ></form>", output);
 	}
 	
 	@Test
 	public void methodAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form method=\"get\" %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"formModel\" action=\"prefix://\" method=\"get\"   ></form>", output);
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"get\"   ></form>", output);
 	}
 	
 	@Test
@@ -48,13 +48,13 @@ public class FormTest extends AbstractFormTest {
 		JtwigModelMap map = new JtwigModelMap();
 		map.add("myModel", new Object());
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% endform:form %}", map);
-        assertEquals("<form id=\"myModel\" action=\"prefix://\" method=\"post\"   ></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ></form>", output);
 	}
 	
 	@Test
 	public void dynamicAttribute() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form key=\"value\" %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"formModel\" action=\"prefix://\" method=\"post\"   key=\"value\"></form>", output);
+        assertEquals("<form id=\"formModel\" action=\"\" method=\"post\"   key=\"value\"></form>", output);
 	}
 	
 	private JtwigModelMap getDefaultMap() {

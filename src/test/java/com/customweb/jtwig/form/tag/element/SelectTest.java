@@ -19,7 +19,7 @@ public class SelectTest extends AbstractFormTest {
 	@Test
 	public void inFormContext() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:select path=\"stringValue\" %}{% endform:select %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"myModel\" action=\"prefix://\" method=\"post\"   ><select id=\"stringValue\" name=\"stringValue\"     ></select></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ><select id=\"stringValue\" name=\"stringValue\"     ></select></form>", output);
 	}
 	
 	@Test
@@ -81,6 +81,12 @@ public class SelectTest extends AbstractFormTest {
         assertEquals("<select id=\"stringValue\" name=\"stringValue\"     key=\"value\"></select>", output);
 	}
 	
+	@Test
+	public void enumValue() throws ParseException, CompileException, RenderException {
+		String output = renderTemplate("{% form:select path=\"myModel.enumValue\" %}{% form:option value=\"TEST\" %}TEST{% endform:option %}{% endform:select %}", this.getDefaultMap());
+        assertEquals("<select id=\"enumValue\" name=\"enumValue\"     ><option  value=\"TEST\" selected=\"selected\"   >TEST</option></select>", output);
+	}
+	
 	private JtwigModelMap getDefaultMap() {
 		JtwigModelMap map = new JtwigModelMap();
 		map.add("myModel", new Model());
@@ -126,6 +132,14 @@ public class SelectTest extends AbstractFormTest {
 		public String getStringValue() {
 			return "stringValue";
 		}
+		
+		public Enum getEnumValue() {
+			return Enum.TEST;
+		}
+	}
+	
+	public static enum Enum {
+		TEST
 	}
 	
 }

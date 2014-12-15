@@ -19,7 +19,7 @@ public class MultiRadioTest extends AbstractFormTest {
 	@Test
 	public void inFormContext() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:multiradio path=\"stringValue\" items=\"singleItem\" %}{% endform:multiradio %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"myModel\" action=\"prefix://\" method=\"post\"   ><span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"radio\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ><span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"radio\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span></form>", output);
 	}
 	
 	@Test

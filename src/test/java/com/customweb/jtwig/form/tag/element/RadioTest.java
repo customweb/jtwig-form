@@ -15,7 +15,7 @@ public class RadioTest extends AbstractFormTest {
 	@Test
 	public void inFormContext() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:radio path=\"falseValue\" %}{% endform:radio %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"myModel\" action=\"prefix://\" method=\"post\"   ><input id=\"falseValue1\" name=\"falseValue\"  type=\"radio\" value=\"true\"     /></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ><input id=\"falseValue1\" name=\"falseValue\"  type=\"radio\" value=\"true\"     /></form>", output);
 	}
 	
 	@Test

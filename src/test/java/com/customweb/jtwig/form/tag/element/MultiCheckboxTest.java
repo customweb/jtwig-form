@@ -19,7 +19,7 @@ public class MultiCheckboxTest extends AbstractFormTest {
 	@Test
 	public void inFormContext() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:multicheckbox path=\"stringValue\" items=\"singleItem\" %}{% endform:multicheckbox %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"myModel\" action=\"prefix://\" method=\"post\"   ><span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ><span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span></form>", output);
 	}
 	
 	@Test

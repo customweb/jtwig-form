@@ -15,7 +15,7 @@ public class InputTest extends AbstractFormTest {
 	@Test
 	public void inFormContext() throws ParseException, CompileException, RenderException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:input path=\"stringValue\" %}{% endform:input %}{% endform:form %}", this.getDefaultMap());
-        assertEquals("<form id=\"myModel\" action=\"prefix://\" method=\"post\"   ><input id=\"stringValue\" name=\"stringValue\"  type=\"text\" value=\"stringValue\"    /></form>", output);
+        assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ><input id=\"stringValue\" name=\"stringValue\"  type=\"text\" value=\"stringValue\"    /></form>", output);
 	}
 	
 	@Test
