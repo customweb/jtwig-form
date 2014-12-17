@@ -2,3 +2,6 @@
 .project
 .classpath
 .settings
+/build
+/.gradle
+/.eclipse-classes

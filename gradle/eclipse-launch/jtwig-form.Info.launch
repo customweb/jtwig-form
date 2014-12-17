@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.springsource.ide.eclipse.gradle.launch">
+<stringAttribute key="bad_container_name" value="/jtwig-fr/gradle/eclipse-launch"/>
+<stringAttribute key="org.springsource.ide.eclipse.gradle.launch.PROJECT" value="jtwig-form"/>
+<stringAttribute key="org.springsource.ide.eclipse.gradle.launch.TASKTEXT" value="tasks&#10;dependencies&#10;properties&#10;"/>
+</launchConfiguration>

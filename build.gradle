@@ -1,0 +1,34 @@
+// ====== Gradle Build Script for wallee-applications ======
+
+// ------ Plugins ------
+
+buildscript {
+  repositories {
+    maven { url 'http://localhost:32257/artifactory/repo/' }
+  }
+
+  dependencies {
+    classpath 'io.wallee:buildtools:0.1.+'
+  }
+}
+
+group = 'com.customweb'
+ext.buildVersion = '1.0.0'
+
+apply plugin: 'io.wallee.single-java-project'
+
+
+// ------ Dependencies ------
+
+dependencies {
+  compile "com.customweb:jtwig-lib:1.0.+"
+  compile "commons-lang:commons-lang:2.6"
+  compile "org.springframework:spring-beans:4.1.2.RELEASE"
+  compile "org.springframework.security:spring-security-core:3.2.5.RELEASE"
+  compile "joda-time:joda-time:2.5"
+  compile "org.aspectj:aspectjrt:1.7.4"
+  compile "javax.servlet:javax.servlet-api:3.0.1"
+  
+  testCompile "junit:junit:4.11"
+}
+
