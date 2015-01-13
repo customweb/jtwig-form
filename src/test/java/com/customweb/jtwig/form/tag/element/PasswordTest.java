@@ -26,7 +26,7 @@ public class PasswordTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:password path=\"myModel.stringValue\" disabled %}{% endform:password %}", this.getDefaultMap());
+		String output = renderTemplate("{% form:password path=\"myModel.stringValue\" disabled=\"true\" %}{% endform:password %}", this.getDefaultMap());
         assertEquals("<input id=\"stringValue\" name=\"stringValue\" disabled=\"disabled\" type=\"password\"     />", output);
 	}
 	

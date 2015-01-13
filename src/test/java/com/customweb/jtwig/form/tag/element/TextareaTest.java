@@ -26,7 +26,7 @@ public class TextareaTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:textarea path=\"myModel.stringValue\" disabled %}{% endform:textarea %}", this.getDefaultMap());
+		String output = renderTemplate("{% form:textarea path=\"myModel.stringValue\" disabled=\"true\" %}{% endform:textarea %}", this.getDefaultMap());
         assertEquals("<textarea id=\"stringValue\" name=\"stringValue\" disabled=\"disabled\"   >stringValue</textarea>", output);
 	}
 	

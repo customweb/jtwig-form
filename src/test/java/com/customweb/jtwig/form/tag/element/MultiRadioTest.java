@@ -30,7 +30,7 @@ public class MultiRadioTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:multiradio path=\"myModel.stringValue\" items=\"singleItem\" disabled %}{% endform:multiradio %}", this.getDefaultMap());
+		String output = renderTemplate("{% form:multiradio path=\"myModel.stringValue\" items=\"singleItem\" disabled=\"true\" %}{% endform:multiradio %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\" disabled=\"disabled\" type=\"radio\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	

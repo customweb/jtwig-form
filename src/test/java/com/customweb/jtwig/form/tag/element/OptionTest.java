@@ -20,7 +20,7 @@ public class OptionTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:select path=\"myModel.stringValue\" %}{% form:option value=\"stringValue\" disabled %}Label{% endform:option %}{% endform:select %}", this.getDefaultMap());
+		String output = renderTemplate("{% form:select path=\"myModel.stringValue\" %}{% form:option value=\"stringValue\" disabled=\"true\" %}Label{% endform:option %}{% endform:select %}", this.getDefaultMap());
         assertEquals("<select id=\"stringValue\" name=\"stringValue\"     ><option disabled=\"disabled\" value=\"stringValue\" selected=\"selected\"   >Label</option></select>", output);
 	}
 

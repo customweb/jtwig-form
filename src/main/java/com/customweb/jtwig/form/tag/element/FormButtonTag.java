@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
-import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
 import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.lyncode.jtwig.compile.CompileContext;
 import com.lyncode.jtwig.content.api.Renderable;
@@ -24,7 +23,7 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 		attributeDefinitions.add(new NamedAttributeDefinition("id", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("name", false));
 		attributeDefinitions.add(new NamedAttributeDefinition("value", false));
-		attributeDefinitions.add(new EmptyAttributeDefinition("disabled"));
+		attributeDefinitions.add(new NamedAttributeDefinition("disabled", false));
 		attributeDefinitions.getDynamicAttributeDefinition().addDisallowedKey("type");
 		return attributeDefinitions;
 	}
@@ -81,7 +80,7 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 		}
 
 		public boolean isDisabled() {
-			return this.getAttributeCollection().hasAttribute("disabled");
+			return Boolean.parseBoolean(this.getAttributeValue("disabled", "false"));
 		}
 		
 		public String getLabel() {

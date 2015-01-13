@@ -32,7 +32,7 @@ public class RadioTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:radio path=\"myModel.falseValue\" disabled %}{% endform:radio %}", this.getDefaultMap());
+		String output = renderTemplate("{% form:radio path=\"myModel.falseValue\" disabled=\"true\" %}{% endform:radio %}", this.getDefaultMap());
         assertEquals("<input id=\"falseValue1\" name=\"falseValue\" disabled=\"disabled\" type=\"radio\" value=\"true\"     />", output);
 	}
 	

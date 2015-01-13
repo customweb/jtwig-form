@@ -55,7 +55,7 @@ public class ButtonTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:button disabled %}{% endform:button %}");
+		String output = renderTemplate("{% form:button disabled=\"true\" %}{% endform:button %}");
         assertEquals("<button   type=\"submit\" value=\"Submit\" disabled=\"disabled\"   ></button>", output);
 	}
 	

@@ -32,7 +32,7 @@ public class CheckboxTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:checkbox path=\"myModel.falseValue\" disabled %}{% endform:checkbox %}", this.getDefaultMap());
+		String output = renderTemplate("{% form:checkbox path=\"myModel.falseValue\" disabled=\"true\" %}{% endform:checkbox %}", this.getDefaultMap());
         assertEquals("<input id=\"falseValue1\" name=\"falseValue\" disabled=\"disabled\" type=\"checkbox\" value=\"true\"     />", output);
 	}
 	

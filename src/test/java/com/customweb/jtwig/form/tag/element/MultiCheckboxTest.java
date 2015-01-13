@@ -30,7 +30,7 @@ public class MultiCheckboxTest extends AbstractFormTest {
 	
 	@Test
 	public void disabledAttribute() throws ParseException, CompileException, RenderException {
-		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" disabled %}{% endform:multicheckbox %}", this.getDefaultMap());
+		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" disabled=\"true\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\" disabled=\"disabled\" type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
