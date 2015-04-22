@@ -1,13 +1,14 @@
 package com.customweb.jtwig.form.addon.element;
 
+import org.jtwig.Environment;
+import org.jtwig.loader.Loader;
+
 import com.customweb.jtwig.form.tag.element.FormErrorsTag;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormErrorsAddon extends FormElementAddon<FormErrorsTag> {
 
-	public FormErrorsAddon(JtwigResource resource, ParserConfiguration configuration) {
-		super(resource, configuration);
+	public FormErrorsAddon(Loader.Resource resource, Environment environment) {
+		super(resource, environment);
 	}
 
 	@Override

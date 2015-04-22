@@ -1,17 +1,18 @@
 package com.customweb.jtwig.form.tag.element;
 
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.ParseException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.loader.Loader;
+import org.jtwig.render.RenderContext;
+
 import com.customweb.jtwig.form.tag.AbstractDataBoundFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.exception.ResourceException;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormHiddenTag extends AbstractDataBoundFormElementTag<FormHiddenTag> {
 	
@@ -27,8 +28,8 @@ public class FormHiddenTag extends AbstractDataBoundFormElementTag<FormHiddenTag
 	public Renderable compile(CompileContext context) throws CompileException {
 		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = this.retrieveResource(context, "form/hidden");
-			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
+			Loader.Resource resource = this.retrieveResource(context, "form/hidden");
+			return new Compiled(context.environment().parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
 		}

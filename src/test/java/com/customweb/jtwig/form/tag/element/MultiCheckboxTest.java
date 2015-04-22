@@ -6,76 +6,75 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.jtwig.JtwigModelMap;
+import org.jtwig.exception.JtwigException;
+import org.jtwig.exception.ParseException;
 import org.junit.Test;
 
 import com.customweb.jtwig.form.AbstractFormTest;
-import com.lyncode.jtwig.JtwigModelMap;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
 
 public class MultiCheckboxTest extends AbstractFormTest {
 	
 	@Test
-	public void inFormContext() throws ParseException, CompileException, RenderException {
+	public void inFormContext() throws JtwigException {
 		String output = renderTemplate("{% form:form model=\"myModel\" %}{% form:multicheckbox path=\"stringValue\" items=\"singleItem\" %}{% endform:multicheckbox %}{% endform:form %}", this.getDefaultMap());
         assertEquals("<form id=\"myModel\" action=\"\" method=\"post\"   ><span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span></form>", output);
 	}
 	
 	@Test
-	public void nameAttribute() throws ParseException, CompileException, RenderException {
+	public void nameAttribute() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" name=\"myName\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"myName1\" name=\"myName\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
-	public void disabledAttribute() throws ParseException, CompileException, RenderException {
+	public void disabledAttribute() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" disabled=\"true\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\" disabled=\"disabled\" type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
-	public void idAttribute() throws ParseException, CompileException, RenderException {
+	public void idAttribute() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\"  items=\"singleItem\" id=\"myId\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"myId\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
-	public void itemsFromArrayToString() throws ParseException, CompileException, RenderException {
+	public void itemsFromArrayToString() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemArray\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> value1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> stringValue</label></span>", output);
 	}
 	
 	@Test
-	public void itemsFromArray() throws ParseException, CompileException, RenderException {
+	public void itemsFromArray() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemArray\" itemLabel=\"label\" itemValue=\"value\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> Label2</label></span>", output);
 	}
 	
 	@Test
-	public void itemsFromList() throws ParseException, CompileException, RenderException {
+	public void itemsFromList() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemList\" itemLabel=\"label\" itemValue=\"value\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> Label2</label></span>", output);
 	}
 	
 	@Test
-	public void itemsFromMap() throws ParseException, CompileException, RenderException {
+	public void itemsFromMap() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"itemMap\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"value1\"     /> Label1</label></span><span><label><input id=\"stringValue2\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"    /> Label2</label></span>", output);
 	}
 	
 	@Test(expected = ParseException.class)
-	public void missingPathAttribute() throws ParseException, CompileException, RenderException {
+	public void missingPathAttribute() throws JtwigException {
 		renderTemplate("{% form:multicheckbox items=\"singleItem\" %}{% endform:multicheckbox %}", this.getDefaultMap());
 	}
 	
 	@Test(expected = ParseException.class)
-	public void missingItemsAttribute() throws ParseException, CompileException, RenderException {
+	public void missingItemsAttribute() throws JtwigException {
 		renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" %}{% endform:multicheckbox %}", this.getDefaultMap());
 	}
 	
 	@Test
-	public void dynamicAttribute() throws ParseException, CompileException, RenderException {
+	public void dynamicAttribute() throws JtwigException {
 		String output = renderTemplate("{% form:multicheckbox path=\"myModel.stringValue\" items=\"singleItem\" key=\"value\" %}{% endform:multicheckbox %}", this.getDefaultMap());
         assertEquals("<span><label><input id=\"stringValue1\" name=\"stringValue\"  type=\"checkbox\" value=\"stringValue\" checked=\"checked\"   key=\"value\" /> stringValue</label></span>", output);
 	}

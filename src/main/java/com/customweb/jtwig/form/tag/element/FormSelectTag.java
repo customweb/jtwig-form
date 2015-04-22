@@ -2,20 +2,21 @@ package com.customweb.jtwig.form.tag.element;
 
 import java.io.ByteArrayOutputStream;
 
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.ParseException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.loader.Loader;
+import org.jtwig.render.RenderContext;
+
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.EmptyAttributeDefinition;
 import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefinition;
 import com.google.common.collect.Lists;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.exception.ResourceException;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 
@@ -34,9 +35,9 @@ public class FormSelectTag extends AbstractFormMultiElementTag<FormSelectTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = this.retrieveResource(context, "form/select");
-			JtwigResource optionResource = this.retrieveResource(context, "form/option");
-			return new Compiled(context.parse(resource).compile(context), context.parse(optionResource).compile(context), super.compile(context),
+			Loader.Resource resource = this.retrieveResource(context, "form/select");
+			Loader.Resource optionResource = this.retrieveResource(context, "form/option");
+			return new Compiled(context.environment().parse(resource).compile(context), context.environment().parse(optionResource).compile(context), super.compile(context),
 					this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);

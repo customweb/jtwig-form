@@ -8,6 +8,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.ParseException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.loader.Loader;
+import org.jtwig.render.RenderContext;
 import org.springframework.util.ObjectUtils;
 
 import com.customweb.jtwig.form.model.BindStatus;
@@ -19,14 +27,6 @@ import com.customweb.jtwig.lib.attribute.model.VariableAttribute;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
 import com.customweb.jtwig.lib.attribute.model.definition.VariableAttributeDefinition;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.exception.ResourceException;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTag> {
 	
@@ -44,8 +44,8 @@ public class FormMultiOptionTag extends AbstractFormElementTag<FormMultiOptionTa
 	public Renderable compile(CompileContext context) throws CompileException {
 		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = this.retrieveResource(context, "form/option");
-			return new Compiled(context.parse(resource).compile(context), this.getAttributeCollection());
+			Loader.Resource resource = this.retrieveResource(context, "form/option");
+			return new Compiled(context.environment().parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
 		}

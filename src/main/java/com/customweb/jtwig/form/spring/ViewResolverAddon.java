@@ -2,11 +2,12 @@ package com.customweb.jtwig.form.spring;
 
 import javax.annotation.PostConstruct;
 
+import org.jtwig.cache.impl.NoCacheSystem;
+import org.jtwig.mvc.JtwigViewResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.customweb.jtwig.form.addon.FormAddon;
-import com.lyncode.jtwig.mvc.JtwigViewResolver;
 
 @Component
 public final class ViewResolverAddon {
@@ -15,7 +16,7 @@ public final class ViewResolverAddon {
 
 	@PostConstruct
     public void register() {
-		viewResolver.setCached(false);
-		FormAddon.addons(viewResolver.configuration());
+		viewResolver.setCacheSystem(new NoCacheSystem());
+		FormAddon.addons(viewResolver.getEnvironment().getConfiguration());
 	}
 }

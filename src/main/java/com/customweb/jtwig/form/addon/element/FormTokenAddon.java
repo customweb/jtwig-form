@@ -1,9 +1,10 @@
 package com.customweb.jtwig.form.addon.element;
 
+import org.jtwig.Environment;
+import org.jtwig.loader.Loader;
+
 import com.customweb.jtwig.form.model.AbstractTokenGenerator;
 import com.customweb.jtwig.form.tag.element.FormTokenTag;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormTokenAddon extends FormElementAddon<FormTokenTag> {
 	
@@ -20,8 +21,8 @@ public class FormTokenAddon extends FormElementAddon<FormTokenTag> {
 		return tokenGenerator;
 	}
 
-	public FormTokenAddon(JtwigResource resource, ParserConfiguration configuration) {
-		super(resource, configuration);
+	public FormTokenAddon(Loader.Resource resource, Environment environment) {
+		super(resource, environment);
 	}
 
 	@Override

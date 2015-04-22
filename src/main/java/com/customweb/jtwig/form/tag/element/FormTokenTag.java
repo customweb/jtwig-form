@@ -1,17 +1,18 @@
 package com.customweb.jtwig.form.tag.element;
 
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.ParseException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.loader.Loader;
+import org.jtwig.render.RenderContext;
+
 import com.customweb.jtwig.form.model.AbstractTokenGenerator;
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.form.tag.FormTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.exception.ResourceException;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormTokenTag extends AbstractFormElementTag<FormTokenTag> {
 	
@@ -25,8 +26,8 @@ public class FormTokenTag extends AbstractFormElementTag<FormTokenTag> {
 	public Renderable compile(CompileContext context) throws CompileException {
 		this.getAttributeCollection().compile(context);
 		try {
-			JtwigResource resource = this.retrieveResource(context, "form/token");
-			return new Compiled(tokenGenerator, context.parse(resource).compile(context), this.getAttributeCollection());
+			Loader.Resource resource = this.retrieveResource(context, "form/token");
+			return new Compiled(tokenGenerator, context.environment().parse(resource).compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
 		}

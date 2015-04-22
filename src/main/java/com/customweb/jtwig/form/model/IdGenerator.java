@@ -1,7 +1,7 @@
 package com.customweb.jtwig.form.model;
 
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.types.Undefined;
+import org.jtwig.render.RenderContext;
+import org.jtwig.types.Undefined;
 
 abstract public class IdGenerator {
 	

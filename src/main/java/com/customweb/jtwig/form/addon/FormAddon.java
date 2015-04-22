@@ -1,5 +1,9 @@
 package com.customweb.jtwig.form.addon;
 
+import org.jtwig.Environment;
+import org.jtwig.configuration.JtwigConfiguration;
+import org.jtwig.loader.Loader;
+
 import com.customweb.jtwig.form.addon.element.FormButtonAddon;
 import com.customweb.jtwig.form.addon.element.FormCheckboxAddon;
 import com.customweb.jtwig.form.addon.element.FormErrorsAddon;
@@ -17,33 +21,30 @@ import com.customweb.jtwig.form.addon.element.FormTextareaAddon;
 import com.customweb.jtwig.form.addon.element.FormTokenAddon;
 import com.customweb.jtwig.form.tag.FormTag;
 import com.customweb.jtwig.lib.attribute.AttributeAddon;
-import com.lyncode.jtwig.configuration.JtwigConfiguration;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormAddon extends AttributeAddon<FormTag> {
 	
-	public static void addons(JtwigConfiguration config) {
-		config.parse().addons().withAddon(FormAddon.class);
-		config.parse().addons().withAddon(FormButtonAddon.class);
-		config.parse().addons().withAddon(FormCheckboxAddon.class);
-		config.parse().addons().withAddon(FormErrorsAddon.class);
-		config.parse().addons().withAddon(FormHiddenAddon.class);
-		config.parse().addons().withAddon(FormInputAddon.class);
-		config.parse().addons().withAddon(FormLabelAddon.class);
-		config.parse().addons().withAddon(FormMultiCheckboxAddon.class);
-		config.parse().addons().withAddon(FormMultiOptionAddon.class);
-		config.parse().addons().withAddon(FormMultiRadioAddon.class);
-		config.parse().addons().withAddon(FormOptionAddon.class);
-		config.parse().addons().withAddon(FormPasswordAddon.class);
-		config.parse().addons().withAddon(FormRadioAddon.class);
-		config.parse().addons().withAddon(FormSelectAddon.class);
-		config.parse().addons().withAddon(FormTextareaAddon.class);
-		config.parse().addons().withAddon(FormTokenAddon.class);
+	public static void addons(JtwigConfiguration configuration) {
+		configuration.getAddonParserList().withAddon(FormAddon.class);
+		configuration.getAddonParserList().withAddon(FormButtonAddon.class);
+		configuration.getAddonParserList().withAddon(FormCheckboxAddon.class);
+		configuration.getAddonParserList().withAddon(FormErrorsAddon.class);
+		configuration.getAddonParserList().withAddon(FormHiddenAddon.class);
+		configuration.getAddonParserList().withAddon(FormInputAddon.class);
+		configuration.getAddonParserList().withAddon(FormLabelAddon.class);
+		configuration.getAddonParserList().withAddon(FormMultiCheckboxAddon.class);
+		configuration.getAddonParserList().withAddon(FormMultiOptionAddon.class);
+		configuration.getAddonParserList().withAddon(FormMultiRadioAddon.class);
+		configuration.getAddonParserList().withAddon(FormOptionAddon.class);
+		configuration.getAddonParserList().withAddon(FormPasswordAddon.class);
+		configuration.getAddonParserList().withAddon(FormRadioAddon.class);
+		configuration.getAddonParserList().withAddon(FormSelectAddon.class);
+		configuration.getAddonParserList().withAddon(FormTextareaAddon.class);
+		configuration.getAddonParserList().withAddon(FormTokenAddon.class);
 	}
 
-	public FormAddon(JtwigResource resource, ParserConfiguration configuration) {
-		super(resource, configuration);
+	public FormAddon(Loader.Resource resource, Environment environment) {
+		super(resource, environment);
 	}
 
 	@Override

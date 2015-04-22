@@ -1,13 +1,14 @@
 package com.customweb.jtwig.form.addon.element;
 
+import org.jtwig.Environment;
+import org.jtwig.loader.Loader;
+
 import com.customweb.jtwig.form.tag.element.FormSelectTag;
-import com.lyncode.jtwig.parser.config.ParserConfiguration;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormSelectAddon extends FormElementAddon<FormSelectTag> {
 
-	public FormSelectAddon(JtwigResource resource, ParserConfiguration configuration) {
-		super(resource, configuration);
+	public FormSelectAddon(Loader.Resource resource, Environment environment) {
+		super(resource, environment);
 	}
 
 	@Override

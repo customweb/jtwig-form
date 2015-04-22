@@ -1,19 +1,19 @@
 package com.customweb.jtwig.form.tag.element;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.ParseException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.loader.Loader;
+import org.jtwig.render.RenderContext;
 
 import com.customweb.jtwig.form.tag.AbstractFormElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.NamedAttributeDefinition;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.exception.ResourceException;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 
@@ -31,8 +31,8 @@ public class FormButtonTag extends AbstractFormElementTag<FormButtonTag> {
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource formResource = this.retrieveResource(context, "form/button");
-			return new Compiled(context.parse(formResource).compile(context), super.compile(context), this.getAttributeCollection());
+			Loader.Resource formResource = this.retrieveResource(context, "form/button");
+			return new Compiled(context.environment().parse(formResource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
 		}

@@ -4,17 +4,18 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jtwig.compile.CompileContext;
+import org.jtwig.content.api.Renderable;
+import org.jtwig.exception.CompileException;
+import org.jtwig.exception.ParseException;
+import org.jtwig.exception.RenderException;
+import org.jtwig.exception.ResourceException;
+import org.jtwig.loader.Loader;
+import org.jtwig.render.RenderContext;
+
 import com.customweb.jtwig.form.tag.AbstractFormMultiElementTag;
 import com.customweb.jtwig.lib.attribute.model.AttributeCollection;
 import com.customweb.jtwig.lib.attribute.model.definition.AttributeDefinitionCollection;
-import com.lyncode.jtwig.compile.CompileContext;
-import com.lyncode.jtwig.content.api.Renderable;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
-import com.lyncode.jtwig.exception.ResourceException;
-import com.lyncode.jtwig.render.RenderContext;
-import com.lyncode.jtwig.resource.JtwigResource;
 
 public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiCheckboxTag> {
 
@@ -28,9 +29,9 @@ public class FormMultiCheckboxTag extends AbstractFormMultiElementTag<FormMultiC
 	@Override
 	public Renderable compile(CompileContext context) throws CompileException {
 		try {
-			JtwigResource resource = this.retrieveResource(context, "form/multicheckbox");
-			JtwigResource itemResource = this.retrieveResource(context, "form/checkbox");
-			return new Compiled(context.parse(resource).compile(context), context.parse(itemResource).compile(context), super.compile(context), this.getAttributeCollection());
+			Loader.Resource resource = this.retrieveResource(context, "form/multicheckbox");
+			Loader.Resource itemResource = this.retrieveResource(context, "form/checkbox");
+			return new Compiled(context.environment().parse(resource).compile(context), context.environment().parse(itemResource).compile(context), super.compile(context), this.getAttributeCollection());
 		} catch (ParseException | ResourceException e) {
 			throw new CompileException(e);
 		}

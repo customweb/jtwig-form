@@ -1,23 +1,23 @@
 package com.customweb.jtwig.form;
 
+import org.jtwig.JtwigModelMap;
+import org.jtwig.JtwigTemplate;
+import org.jtwig.configuration.JtwigConfiguration;
+import org.jtwig.configuration.JtwigConfigurationBuilder;
+import org.jtwig.exception.JtwigException;
+
 import com.customweb.jtwig.form.addon.FormAddon;
-import com.lyncode.jtwig.JtwigModelMap;
-import com.lyncode.jtwig.JtwigTemplate;
-import com.lyncode.jtwig.configuration.JtwigConfiguration;
-import com.lyncode.jtwig.exception.CompileException;
-import com.lyncode.jtwig.exception.ParseException;
-import com.lyncode.jtwig.exception.RenderException;
 
 abstract public class AbstractFormTest {
 	
-	protected String renderTemplate(String content, JtwigModelMap map) throws ParseException, CompileException, RenderException {
-		JtwigConfiguration config = new JtwigConfiguration();
-		FormAddon.addons(config);
-		JtwigTemplate template = new JtwigTemplate(content, config);
-        return template.output(map);
+	protected String renderTemplate(String content, JtwigModelMap map) throws JtwigException {
+		JtwigConfiguration configuration = JtwigConfigurationBuilder.newConfiguration().build();
+		FormAddon.addons(configuration);
+		JtwigTemplate template = JtwigTemplate.inlineTemplate(content, configuration);
+        return template.render(map);
 	}
 	
-	protected String renderTemplate(String content) throws ParseException, CompileException, RenderException {
+	protected String renderTemplate(String content) throws JtwigException {
 		return this.renderTemplate(content, new JtwigModelMap());
 	}
 
