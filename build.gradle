@@ -13,7 +13,7 @@ buildscript {
 }
 
 group = 'com.customweb'
-ext.buildVersion = '1.0.0'
+ext.buildVersion = '1.1.0'
 
 apply plugin: 'io.wallee.single-java-project'
 
@@ -21,7 +21,7 @@ apply plugin: 'io.wallee.single-java-project'
 // ------ Dependencies ------
 
 dependencies {
-  compile "com.customweb:jtwig-lib:1.0.+"
+  compile "com.customweb:jtwig-lib:1.1.+"
   compile "commons-lang:commons-lang:2.6"
   compile "org.springframework:spring-beans:4.1.2.RELEASE"
   compile "org.springframework.security:spring-security-core:3.2.5.RELEASE"
